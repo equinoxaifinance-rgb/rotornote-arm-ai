@@ -1,0 +1,33 @@
+
+> rotornote@1.1.0 test
+> node --test --test-reporter=spec
+
+✔ parses one-column and timestamped CSV (8.670472ms)
+✔ rejects malformed and hostile values (1.415462ms)
+✔ rejects out-of-range sample rates (1.860249ms)
+✔ enforces byte and sample-count ceilings before analysis (39.486272ms)
+✔ gateway requires identity and refuses plaintext remote transport (7.500378ms)
+✔ gateway parses a complete command and retries a transient server failure (4.457277ms)
+✔ gateway sends machine context through the real API (84.37784ms)
+✔ FP32 and INT8 SIMD engines classify all conditions consistently (44.599851ms)
+✔ unseen broadband noise falls outside the fitted envelope and abstains (17.06237ms)
+✔ model loader fails closed on artifact tampering (13.184154ms)
+✔ quality gate accepts a modeled vibration trace (7.411905ms)
+✔ quality gate detects flatline, clipping, bias, and dropout (2.518664ms)
+✔ happy path serves UI, health, sample, and optimized analysis (138.335584ms)
+✔ API abstains on unusable sensor data and validates machine context (26.306703ms)
+✔ API enforces media type, engine allowlist, routes, and method boundaries (8.970133ms)
+✔ dependency failure returns retry contract and then recovers (5.629562ms)
+✔ malformed uploads return bounded, structured errors (4.759921ms)
+✔ simulator and feature extraction are deterministic and finite (18.344385ms)
+✔ every modeled condition produces a distinct feature vector (23.52452ms)
+✔ FFT rejects non-power-of-two input (0.443404ms)
+✔ segmentation uses 50 percent overlap and ignores incomplete tails (0.150982ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 402.579222
