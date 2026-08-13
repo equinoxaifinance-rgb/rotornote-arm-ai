@@ -5,6 +5,7 @@ import { FEATURE_COUNT, LABELS } from "../src/signal.js";
 const TRAINING_URL = new URL("../field/training/", import.meta.url);
 const RESULTS_URL = new URL("../field/results/", import.meta.url);
 const sha256 = (buffer) => createHash("sha256").update(buffer).digest("hex");
+const canonicalTextBytes = (buffer) => Buffer.from(buffer.toString("utf8").replace(/\r\n/g, "\n"));
 
 const [manifestText, exportText, validationBytes, featureBuffer, labelBuffer] = await Promise.all([
   readFile(new URL("mechanical-manifest.json", TRAINING_URL), "utf8"),
@@ -150,7 +151,7 @@ const metadata = {
     physicalTests: exported.fitTests,
     validationProtocol: exported.validationProtocol,
     groupedValidationReceipt: "field/results/open-grouped-cross-validation.json",
-    groupedValidationSha256: sha256(validationBytes),
+    groupedValidationSha256: sha256(canonicalTextBytes(validationBytes)),
     windowBalancedAccuracy: validation.aggregate.windowLevel.balancedAccuracy,
     singleChannelRecordingBalancedAccuracy: validation.aggregate.singleChannelRecording.balancedAccuracy,
     fourChannelRecordingBalancedAccuracy: validation.aggregate.fourChannelRecording.balancedAccuracy,

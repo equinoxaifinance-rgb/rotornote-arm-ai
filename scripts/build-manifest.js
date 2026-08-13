@@ -50,13 +50,16 @@ const files = [
   "samples/real-looseness.csv",
 ];
 const hashes = {};
+const textExtensions = new Set([".c", ".css", ".html", ".js", ".json", ".md", ".py", ".txt", ".wat"]);
 for (const path of files) {
-  const bytes = await readFile(new URL(`../${path}`, import.meta.url));
+  let bytes = await readFile(new URL(`../${path}`, import.meta.url));
+  const extension = path.slice(path.lastIndexOf("."));
+  if (textExtensions.has(extension)) bytes = Buffer.from(bytes.toString("utf8").replace(/\r\n/g, "\n"));
   hashes[path] = createHash("sha256").update(bytes).digest("hex");
 }
 const manifest = {
   schema: "rotornote.build-manifest.v1",
-  reproducibility: "Generated deterministically from the listed source and artifact bytes.",
+  reproducibility: "Generated deterministically from the listed source and artifact bytes; text inputs are canonicalized to LF before hashing.",
   files: hashes,
 };
 await writeFile(new URL("../dist/build-manifest.json", import.meta.url), `${JSON.stringify(manifest, null, 2)}\n`);

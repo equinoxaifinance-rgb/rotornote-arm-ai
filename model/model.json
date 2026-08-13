@@ -62,7 +62,7 @@
     ],
     "validationProtocol": "five folds; one whole physical test per class held out per fold; production refit after cross-validation",
     "groupedValidationReceipt": "field/results/open-grouped-cross-validation.json",
-    "groupedValidationSha256": "16e7a3559e66d8a5cc78d6fd06383eca17017b11a37a2622dcdf2c5459601b32",
+    "groupedValidationSha256": "bab42f563a3e48acc259eb2528f5071dcbe15d4e2c98263dea499e44b4d1be71",
     "windowBalancedAccuracy": 0.7106,
     "singleChannelRecordingBalancedAccuracy": 0.711125,
     "fourChannelRecordingBalancedAccuracy": 0.763,
