@@ -19,7 +19,7 @@ const validation = JSON.parse(validationBytes);
 if (manifest.format !== "rotornote-upatras-features-v1" || exported.format !== "rotornote-upatras-mlp-export-v1") throw new Error("UPATRAS model source contract mismatch");
 if (sha256(featureBuffer) !== manifest.featuresSha256 || sha256(labelBuffer) !== manifest.labelsSha256 || sha256(groupBuffer) !== manifest.groupsSha256) throw new Error("UPATRAS source artifact integrity failed");
 if (exported.sourceFeatureSha256 !== manifest.featuresSha256 || validation.modelExportSha256 !== sha256(Buffer.from(exportText))) throw new Error("UPATRAS export receipt binding failed");
-if (JSON.stringify(exported.architecture) !== JSON.stringify([48, 128, 64, 2])) throw new Error("UPATRAS network architecture mismatch");
+if (exported.architecture[0] !== 48 || exported.architecture.at(-1) !== 2 || exported.architecture.length !== 4) throw new Error("UPATRAS network architecture mismatch");
 
 const signalFeatures = new Float32Array(manifest.signals * manifest.featureCount);
 const featureRows = new Float32Array(featureBuffer.buffer, featureBuffer.byteOffset, featureBuffer.byteLength / 4);
@@ -93,6 +93,31 @@ const optimized = (input) => {
   }
   return softmax(values);
 };
+const hiddenActivationCounts = layers.slice(0, -1).map((layer) => new Uint32Array(layer.outputs));
+for (const row of normalizedRows) {
+  let values = row;
+  for (let index = 0; index < layers.length - 1; index += 1) {
+    values = relu(denseFloat(values, layers[index]));
+    for (let unit = 0; unit < values.length; unit += 1) if (values[unit] > 0) hiddenActivationCounts[index][unit] += 1;
+  }
+}
+const utilization = hiddenActivationCounts.map((counts, index) => {
+  const rates = Array.from(counts, (count) => count / normalizedRows.length);
+  const rowMaxima = Array.from({ length: layers[index].outputs }, (_, output) => {
+    let maximum = 0;
+    for (let input = 0; input < layers[index].inputs; input += 1) maximum = Math.max(maximum, Math.abs(layers[index].weights[output * layers[index].inputs + input]));
+    return maximum;
+  });
+  return {
+    layer: layers[index].name,
+    units: counts.length,
+    activeUnits: rates.filter((rate) => rate > 0).length,
+    minimumActivationRate: Math.min(...rates),
+    maximumActivationRate: Math.max(...rates),
+    rowsBelowMaximumWeight1e6: rowMaxima.filter((value) => value < 1e-6).length,
+    minimumRowMaximumWeight: Math.min(...rowMaxima),
+  };
+});
 const argmax = (values) => values.reduce((best, value, index) => value > values[best] ? index : best, 0);
 let agreement = 0;
 const probabilityDeltas = [];
@@ -167,7 +192,8 @@ const metadata = {
   inputFeatures: manifest.featureCount,
   architecture: exported.architecture,
   training: {
-    method: "class-balanced 48-to-128-to-64-to-2 ReLU MLP over mean features from two real vibration windows per speed signal",
+    method: `class-balanced ${exported.architecture.join("-to-")} ReLU MLP over mean features from two real vibration windows per speed signal; inactive production units pruned with zero fitted-bank logit drift`,
+    pruning: exported.training,
     dataKind: "real experimental vibration only",
     source: manifest.sourceDataset,
     sourceInnerArchiveSha256: manifest.sourceInnerArchiveSha256,
@@ -193,6 +219,7 @@ const metadata = {
   normalization: { means: Array.from(means), deviations: Array.from(deviations) },
   ood: { method: "mean squared normalized-feature distance to nearest real-training class centroid", trainingQuantile: oodQuantile, threshold: oodThreshold, centroids: centroids.map((centroid) => Array.from(centroid)) },
   quantization: { activations: "dynamic symmetric per layer", weights: "symmetric per output row" },
+  utilization: { source: "all 2,925 real training-bank signal representations", hiddenLayers: utilization },
   float: { file: "rotornote-anomaly-fp32.bin", bytes: floatBuffer.length, sha256: sha256(floatBuffer), layers: floatDescriptors },
   int8: { file: "rotornote-anomaly-int8.bin", bytes: int8Buffer.length, sha256: sha256(int8Buffer), layers: int8Descriptors },
 };

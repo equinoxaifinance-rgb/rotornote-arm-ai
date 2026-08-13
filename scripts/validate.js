@@ -46,7 +46,9 @@ for (const label of model.metadata.labels) {
   assert.equal(baseline.primary, optimized.primary, `${file} engine disagreement`);
 }
 const anomalyModel = await loadInferenceModel(new URL("../model/anomaly-model.json", import.meta.url));
-assert.deepEqual(anomalyModel.metadata.architecture, [48, 128, 64, 2]);
+assert.deepEqual(anomalyModel.metadata.architecture, [48, 63, 32, 2]);
+assert.deepEqual(anomalyModel.metadata.training.pruning.inactiveUnitsPruned, [1, 0]);
+assert.ok(anomalyModel.metadata.training.pruning.maximumTrainingBankLogitDeltaAfterPruning <= 1e-5);
 assert.equal(anomalyModel.metadata.training.dataKind, "real experimental vibration only");
 assert.equal(anomalyModel.metadata.training.signalBalancedAccuracy, 1);
 assert.equal(anomalyModel.metadata.training.measurementSequenceAccuracy, 1);
@@ -54,6 +56,8 @@ assert.equal(anomalyModel.metadata.training.measurementSequences, 39);
 assert.ok(anomalyModel.metadata.training.measurementSequenceAccuracyWilson95[0] >= 0.9);
 assert.equal(anomalyModel.metadata.training.engineLabelAgreement, 1);
 assert.ok(anomalyModel.metadata.int8.bytes <= anomalyModel.metadata.float.bytes * 0.27);
+assert.ok(anomalyModel.metadata.utilization.hiddenLayers.every((layer) => layer.activeUnits === layer.units));
+assert.ok(anomalyModel.metadata.utilization.hiddenLayers.every((layer) => layer.rowsBelowMaximumWeight1e6 === 0));
 const anomalyCsv = parseCsv(await readFile(new URL("../samples/real-variable-speed-anomaly.csv", import.meta.url), "utf8"), 1024, { minimumSamples: 2048 });
 const anomalyResult = analyzeVariableSpeedAnomaly(anomalyModel, anomalyCsv.values, 1024, 2100);
 assert.equal(anomalyResult.primary, "anomaly");

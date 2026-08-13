@@ -17,7 +17,7 @@ test("deep anomaly head executes attributed physical data with cross-engine agre
   assert.equal(optimized.primary, "anomaly");
   assert.equal(optimized.engineAgreement, true);
   assert.equal(optimized.signal.featureWindows, 2);
-  assert.deepEqual(model.metadata.architecture, [48, 128, 64, 2]);
+  assert.deepEqual(model.metadata.architecture, [48, 63, 32, 2]);
 });
 
 test("deep anomaly model fails closed if its quantized bytes are changed", async () => {

@@ -1,7 +1,7 @@
 {
   "format": "rotornote-upatras-grouped-anomaly-v1",
-  "executedAt": "2026-08-13T11:44:14.884615+00:00",
-  "modelSpecification": "standard scaling plus 48-to-128-to-64-to-2 ReLU multilayer perceptron; class-balanced sample weighting; fixed 120-epoch maximum schedule",
+  "executedAt": "2026-08-13T12:17:20.028418+00:00",
+  "modelSpecification": "standard scaling plus 48-to-64-to-32-to-2 ReLU multilayer perceptron; class-balanced sample weighting; fixed 180-epoch maximum schedule; post-fit removal of units never activated by any of 2,925 real training-bank signals",
   "source": {
     "title": "UPATRAS Rotating Machinery Vibration Dataset for Incipient Fault Diagnosis under Varying Rotating Speeds",
     "authors": [
@@ -21,7 +21,7 @@
     "changes": "Two deterministic 2,048-sample windows per signal and RotorNote 48-feature vectors; binary labels preserve healthy versus observed anomaly without inventing unsupported fault equivalence."
   },
   "sourceFeatureSha256": "5a68fc21c72bd0e5fd7935a64e86763f5c17c28437506aa6305de05a2f37bc2d",
-  "modelExportSha256": "4ffbf3f9f371bbee30bfcf533e2aa67d03cd8556cc94d7f62788cf784aaceccd",
+  "modelExportSha256": "bd2dcf8fcd761af529dd527b84d17131f59a4d9ce18db63699c337b64d426920",
   "folds": [
     {
       "fold": 1,
@@ -506,22 +506,22 @@
       },
       {
         "minimumConfidence": 0.99,
-        "coverage": 0.9726495726495726,
-        "acceptedSignals": 2845,
+        "coverage": 0.9747008547008547,
+        "acceptedSignals": 2851,
         "selectiveAccuracy": 1.0,
         "selectiveBalancedAccuracy": 1.0
       },
       {
         "minimumConfidence": 0.995,
-        "coverage": 0.9357264957264957,
-        "acceptedSignals": 2737,
+        "coverage": 0.9476923076923077,
+        "acceptedSignals": 2772,
         "selectiveAccuracy": 1.0,
         "selectiveBalancedAccuracy": 1.0
       },
       {
         "minimumConfidence": 0.999,
-        "coverage": 0.7582905982905983,
-        "acceptedSignals": 2218,
+        "coverage": 0.7736752136752136,
+        "acceptedSignals": 2263,
         "selectiveAccuracy": 1.0,
         "selectiveBalancedAccuracy": 1.0
       }

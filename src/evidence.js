@@ -18,15 +18,15 @@ export function createAnalysisReceipt({ csv, sampleRate, engine, model, context,
   const decisionEvidence = {
     primary: result.primary,
     confidence: result.confidence,
-    decision: result.decision,
+    decision: result.decision ?? { status: result.status, reasons: result.reasons, engineAgreement: result.engineAgreement },
     distribution: result.distribution,
-    timeline: result.timeline,
+    timeline: result.timeline ?? null,
     signal: {
       samples: result.signal.samples,
       sampleRate: result.signal.sampleRate,
-      durationSeconds: result.signal.durationSeconds,
-      rms: result.signal.rms,
-      peak: result.signal.peak,
+      durationSeconds: result.signal.durationSeconds ?? result.signal.samples / result.signal.sampleRate,
+      rms: result.signal.rms ?? null,
+      peak: result.signal.peak ?? null,
     },
   };
   const outputSha256 = sha256(JSON.stringify(canonicalize(decisionEvidence)));
@@ -49,7 +49,7 @@ export function createAnalysisReceipt({ csv, sampleRate, engine, model, context,
       fp32Sha256: model.metadata.float.sha256,
       int8Sha256: model.metadata.int8.sha256,
     },
+    route: model.metadata.labels.length === 2 ? "variable_speed_anomaly" : "four_sensor_specialist",
     statement: "Hash receipt proves reproducibility of these bytes and settings; it is not a digital signature or field certification.",
   };
 }
-

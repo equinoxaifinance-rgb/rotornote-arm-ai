@@ -30,7 +30,7 @@ one 3,500-sample uniaxial signal + RPM
   -> two deterministic 2,048-sample windows
   -> mean 48-feature representation
   -> standard scaling
-  -> FP32 48->128->64->2 ReLU MLP
+  -> FP32 48->63->32->2 ReLU MLP (one inactive fitted unit pruned)
        <-> exact alternate-engine witness
      dynamic-input/per-output-weight INT8 WASM SIMD
   -> training-envelope + confidence + engine-agreement gates
@@ -38,3 +38,5 @@ one 3,500-sample uniaxial signal + RPM
 ```
 
 This second head deliberately answers a broader but shallower question. It was trained on 2,925 real UPATRAS speed signals across 39 complete physical measurement sequences. Four-fold validation holds out whole sequences, so neither another speed nor another window from a held sequence can leak into training. It never maps those states onto RotorNote's four fault-family labels and never estimates severity.
+
+`POST /api/screen` makes the two heads one bounded cascade. A single uniaxial capture routes to the broad variable-speed screen. Four synchronized channels route to the specialist. Both paths run FP32 and INT8 witnesses, apply their own training envelope, and emit a hash-bound analysis passport; the server returns the chosen route so no consumer has to infer which claim was made.

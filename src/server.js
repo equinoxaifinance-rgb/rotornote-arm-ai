@@ -145,7 +145,29 @@ export function createHandler({
         if (context.operatingRpm === null || context.operatingRpm <= 0) return respond(response, 422, { error: "operating_rpm_required", message: "A positive operating RPM is required", requestId });
         const model = await getAnomalyModel();
         const result = analyzeVariableSpeedAnomaly(model, channels[0], sampleRate, context.operatingRpm, engine);
+        result.receipt = createAnalysisReceipt({ csv: body, sampleRate, engine, model, context, result });
         return respond(response, 200, { requestId, result });
+      }
+      if (request.method === "POST" && url.pathname === "/api/screen") {
+        const contentType = request.headers["content-type"] || "";
+        if (!contentType.toLowerCase().startsWith("text/csv")) return respond(response, 415, { error: "content_type_must_be_text_csv", requestId });
+        const engine = url.searchParams.get("engine") || "optimized";
+        if (!new Set(["baseline", "optimized"]).has(engine)) return respond(response, 400, { error: "unknown_engine", requestId });
+        const body = await readBody(request);
+        const { channels, sampleRate } = parseCsv(body, request.headers["x-sample-rate"] || 1024, { minimumSamples: 2048 });
+        const context = parseContext(request.headers);
+        if (channels.length === 4) {
+          if (channels[0].length < 8192) return respond(response, 422, { error: "too_few_samples", message: "The four-sensor specialist requires at least 8,192 synchronized samples", requestId });
+          const model = await getModel();
+          const result = analyzeChannels(model, channels, sampleRate, engine, { verifyParity: true, context });
+          result.receipt = createAnalysisReceipt({ csv: body, sampleRate, engine, model, context, result });
+          return respond(response, 200, { requestId, route: "four_sensor_specialist", result });
+        }
+        if (context.operatingRpm === null || context.operatingRpm <= 0) return respond(response, 422, { error: "operating_rpm_required", message: "A positive operating RPM is required", requestId });
+        const model = await getAnomalyModel();
+        const result = analyzeVariableSpeedAnomaly(model, channels[0], sampleRate, context.operatingRpm, engine);
+        result.receipt = createAnalysisReceipt({ csv: body, sampleRate, engine, model, context, result });
+        return respond(response, 200, { requestId, route: "variable_speed_anomaly", result });
       }
       if (STATIC.has(url.pathname)) {
         if (request.method !== "GET" && request.method !== "HEAD") return respond(response, 405, { error: "method_not_allowed", requestId }, undefined, { allow: "GET, HEAD" });

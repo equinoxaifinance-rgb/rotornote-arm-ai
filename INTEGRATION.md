@@ -39,3 +39,5 @@ The response contains the decision, channel quality, supported-class distributio
 ## Variable-speed anomaly route
 
 `POST /api/anomaly?engine=optimized` accepts one uniaxial `text/csv` channel with 2,048-131,072 samples. Send `X-Sample-Rate` and a positive `X-Operating-RPM`. The response is limited to `healthy`, `anomaly`, or `review_required`, includes FP32/INT8 agreement and fitted-envelope status, and does not identify a fault family or severity. Multi-sensor payloads and missing RPM fail closed with structured 422 responses.
+
+`POST /api/screen?engine=optimized` is the unified cascade boundary. It selects `variable_speed_anomaly` for one-channel evidence and `four_sensor_specialist` for four synchronized channels, returns the selected route explicitly, and emits the same deterministic analysis-passport contract from either model. Route selection depends only on the validated sensor contract; it never promotes a broad anomaly into a named fault.

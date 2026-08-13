@@ -64,7 +64,35 @@ test("variable-speed anomaly path serves a real attributed signal through both e
       assert.equal(payload.result.engineAgreement, true);
       assert.equal(payload.result.signal.featureWindows, 2);
       assert.match(payload.result.model.source, /UPATRAS/);
+      assert.equal(payload.result.receipt.route, "variable_speed_anomaly");
+      assert.match(payload.result.receipt.evidenceId, /^[a-f0-9]{20}$/);
     }
+  });
+});
+
+test("unified screen route selects the honest model contract and emits receipts", async () => {
+  await withServer(createHandler(), async (url) => {
+    const anomaly = await (await fetch(`${url}/samples/real-variable-speed-anomaly.csv`)).text();
+    const broadResponse = await fetch(`${url}/api/screen`, {
+      method: "POST",
+      headers: { "content-type": "text/csv", "x-sample-rate": "1024", "x-operating-rpm": "2100" },
+      body: anomaly,
+    });
+    assert.equal(broadResponse.status, 200);
+    const broad = await broadResponse.json();
+    assert.equal(broad.route, "variable_speed_anomaly");
+    assert.equal(broad.result.receipt.route, "variable_speed_anomaly");
+    const specialist = await readFile(new URL("../samples/real-imbalance.csv", import.meta.url), "utf8");
+    const specialistResponse = await fetch(`${url}/api/screen`, {
+      method: "POST",
+      headers: { "content-type": "text/csv", "x-sample-rate": "25000", "x-operating-rpm": "1238" },
+      body: specialist,
+    });
+    assert.equal(specialistResponse.status, 200);
+    const specific = await specialistResponse.json();
+    assert.equal(specific.route, "four_sensor_specialist");
+    assert.equal(specific.result.primary, "imbalance");
+    assert.equal(specific.result.receipt.route, "four_sensor_specialist");
   });
 });
 

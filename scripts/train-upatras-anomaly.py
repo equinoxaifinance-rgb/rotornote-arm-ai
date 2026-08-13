@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "field" / "training"
 RESULTS = ROOT / "field" / "results"
 SEED = 5246534
-ARCHITECTURE = [48, 128, 64, 2]
+TRAINING_ARCHITECTURE = [48, 64, 32, 2]
 
 
 def wilson_interval(successes, total, z=1.959963984540054):
@@ -39,16 +39,16 @@ def wilson_interval(successes, total, z=1.959963984540054):
 def fit_model(features, labels):
     scaler = StandardScaler().fit(features)
     model = MLPClassifier(
-        hidden_layer_sizes=(128, 64),
+        hidden_layer_sizes=(64, 32),
         activation="relu",
         solver="adam",
         alpha=0.1,
         batch_size=128,
         learning_rate_init=0.001,
-        max_iter=120,
+        max_iter=180,
         random_state=SEED,
         tol=1e-5,
-        n_iter_no_change=20,
+        n_iter_no_change=30,
     )
     counts = np.bincount(labels, minlength=2)
     sample_weights = np.asarray([len(labels) / (2 * counts[label]) for label in labels])
@@ -108,9 +108,32 @@ def main():
         })
 
     production_scaler, production_model = fit_model(features, labels)
-    coefs = [matrix.T for matrix in production_model.coefs_]
-    intercepts = [vector for vector in production_model.intercepts_]
-    if coefs[-1].shape != (1, 64):
+    scaled_features = production_scaler.transform(features)
+    first_activations = np.maximum(0, scaled_features @ production_model.coefs_[0] + production_model.intercepts_[0])
+    keep_first = np.flatnonzero(np.any(first_activations > 0, axis=0))
+    second_activations = np.maximum(0, first_activations @ production_model.coefs_[1] + production_model.intercepts_[1])
+    keep_second = np.flatnonzero(np.any(second_activations > 0, axis=0))
+    pruned_coefs = [
+        production_model.coefs_[0][:, keep_first],
+        production_model.coefs_[1][keep_first, :][:, keep_second],
+        production_model.coefs_[2][keep_second, :],
+    ]
+    pruned_intercepts = [
+        production_model.intercepts_[0][keep_first],
+        production_model.intercepts_[1][keep_second],
+        production_model.intercepts_[2],
+    ]
+    original_logits = second_activations @ production_model.coefs_[2] + production_model.intercepts_[2]
+    pruned_first = np.maximum(0, scaled_features @ pruned_coefs[0] + pruned_intercepts[0])
+    pruned_second = np.maximum(0, pruned_first @ pruned_coefs[1] + pruned_intercepts[1])
+    pruned_logits = pruned_second @ pruned_coefs[2] + pruned_intercepts[2]
+    maximum_pruning_logit_delta = float(np.max(np.abs(original_logits - pruned_logits)))
+    if maximum_pruning_logit_delta > 1e-5:
+        raise RuntimeError(f"Inactive-unit pruning changed fitted-bank logits: {maximum_pruning_logit_delta}")
+    architecture = [48, len(keep_first), len(keep_second), 2]
+    coefs = [matrix.T for matrix in pruned_coefs]
+    intercepts = [vector for vector in pruned_intercepts]
+    if coefs[-1].shape != (1, len(keep_second)):
         raise RuntimeError(f"Unexpected binary MLP output shape: {coefs[-1].shape}")
     coefs[-1] = np.vstack([np.zeros((1, coefs[-1].shape[1])), coefs[-1]])
     intercepts[-1] = np.asarray([0.0, intercepts[-1][0]])
@@ -118,13 +141,13 @@ def main():
         "format": "rotornote-upatras-mlp-export-v1",
         "seed": SEED,
         "labels": manifest["labels"],
-        "architecture": ARCHITECTURE,
+        "architecture": architecture,
         "recordingRepresentation": "mean of two deterministic 2,048-sample feature windows from one 3,500-sample speed signal",
         "normalization": {"means": production_scaler.mean_.tolist(), "deviations": production_scaler.scale_.tolist()},
         "layers": [{"weights": matrix.tolist(), "bias": bias.tolist()} for matrix, bias in zip(coefs, intercepts)],
         "sourceFeatureSha256": manifest["featuresSha256"],
         "fitMeasurementSequences": sorted(set(groups.tolist())),
-        "training": {"epochs": int(production_model.n_iter_), "finalLoss": float(production_model.loss_), "fixedMaximumEpochs": 120, "alpha": 0.1, "solver": "adam"},
+        "training": {"epochs": int(production_model.n_iter_), "finalLoss": float(production_model.loss_), "fixedMaximumEpochs": 180, "alpha": 0.1, "solver": "adam", "trainingArchitecture": TRAINING_ARCHITECTURE, "exportArchitecture": architecture, "inactiveUnitsPruned": [64 - len(keep_first), 32 - len(keep_second)], "maximumTrainingBankLogitDeltaAfterPruning": maximum_pruning_logit_delta},
         "validationProtocol": "four-fold stratified whole-measurement-sequence cross-validation; no speed signal or feature window from a held sequence is used in training",
     }
     export_bytes = (json.dumps(export, indent=2) + "\n").encode()
@@ -134,7 +157,7 @@ def main():
     receipt = {
         "format": "rotornote-upatras-grouped-anomaly-v1",
         "executedAt": datetime.now(timezone.utc).isoformat(),
-        "modelSpecification": "standard scaling plus 48-to-128-to-64-to-2 ReLU multilayer perceptron; class-balanced sample weighting; fixed 120-epoch maximum schedule",
+        "modelSpecification": "standard scaling plus 48-to-64-to-32-to-2 ReLU multilayer perceptron; class-balanced sample weighting; fixed 180-epoch maximum schedule; post-fit removal of units never activated by any of 2,925 real training-bank signals",
         "source": manifest["sourceDataset"],
         "sourceFeatureSha256": manifest["featuresSha256"],
         "modelExportSha256": hashlib.sha256(export_bytes).hexdigest(),
