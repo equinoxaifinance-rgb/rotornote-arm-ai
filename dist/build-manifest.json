@@ -17,6 +17,7 @@
     "package.json": "2958ee0e45c4523aa3bfa30af63f54c3140ec8e18244bac18a685f0a22b2cd96",
     "package-lock.json": "bda2e9c9f101fdaba7e05c19a7e10563593f6e319a341b60286aa605f8fbc3bc",
     "Dockerfile": "2c53587e89769d1dddc7740ecf362267c69352cddf17880dbd1c04c018336107",
+    ".dockerignore": "4747d98292151fdda2bc6ea535784008df36bdc10cc5d107bf7908380a44adf7",
     "compose.yaml": "8f0f370506fc32606e75404deb980de03d7cb63f3f5a6ed6b66e44c175f1b7c0",
     ".github/workflows/native-arm64.yml": "bf3622304fd3bd7143d0d5f1a01b30902d2348c31c7a8caee1853dbc9fa7682d",
     ".github/workflows/external-boundary.yml": "583b6a1acaac6e80594d87e006ff096cc3ddc5fa4696635b4061e19c9b91b743",

@@ -17,6 +17,7 @@ const files = [
   "package.json",
   "package-lock.json",
   "Dockerfile",
+  ".dockerignore",
   "compose.yaml",
   ".github/workflows/native-arm64.yml",
   ".github/workflows/external-boundary.yml",
