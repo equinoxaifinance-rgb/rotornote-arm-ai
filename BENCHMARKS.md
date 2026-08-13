@@ -17,9 +17,11 @@ The JSON records raw alternating-order samples, checksums, medians, p95, paired 
 
 The model artifact reduction is deterministic: FP32 is 784 bytes and INT8 is 208 bytes, a 73.4694% reduction. Across all 40,000 real training/evaluation feature rows, build-time parity is 99.7825% by window and 100% after four-channel recording aggregation; p99 probability drift is 0.02774 and the disclosed maximum isolated drift is 0.42964.
 
-The latest local x64 benchmark is not Arm evidence. Its separate medians slightly favored INT8, but the paired 95% interval crossed 1.0; therefore **no x64 speedup claim is supported**. The current smaller real-data model must run through `.github/workflows/native-arm64.yml` before any native throughput claim is attached to it.
+Run 31690244613 measured the current commit on a native Arm64 Neoverse-N2 runner under Node 22.18.0. For 51 alternating-order samples of 2,048 inferences, baseline delivered 180,420 median inferences/second and the optimized path delivered 569,352. The paired-median speedup was **3.1498×**, with a deterministic bootstrap 95% interval of **3.1264×–3.1711×**. Label agreement was 100% on the benchmark feature bank and maximum probability delta was 0.02014.
 
-Historical native receipts under `receipts/native-arm64/` belong to superseded model artifacts. They preserve engineering history and the Arm dot-product proof, but their end-to-end ratios are not current product evidence.
+The separate compiled `vdotq_s32` witness matched the scalar result exactly and measured a 16.4295× kernel-only median ratio. That microkernel ratio is not presented as product throughput; the 3.1498× end-to-end paired result is the product claim. The [green workflow run](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31690244613) and the repository copy under `receipts/native-arm64/run-31690244613/` bind the claim to commit `cb10849427e60b33483e24a4f1b105c25b939aa3`. The downloaded GitHub artifact SHA-256 is `d253181f8b4e5afae9aba8774147c290f13d77c0d44854f0945c2eac7170432b`.
+
+Earlier native receipts under `receipts/native-arm64/` belong to superseded model artifacts. They preserve engineering history but are not current product evidence; run 31690244613 is the current receipt.
 
 ## Native Arm gate
 

@@ -42,7 +42,7 @@ npm run gateway -- --url http://127.0.0.1:8787 --file samples/real-imbalance.csv
 
 The real classifier is a transparent 48→4 multinomial logistic model. FP32 weights and bias occupy 784 bytes; row-wise INT8 weights plus FP32 bias occupy 208 bytes—a **73.47% reduction**. Dynamic per-inference activation scaling and per-output weight scales achieved **99.7825% window label agreement, 100% recording-level agreement, and 0.02774 p99 probability drift** over all 40,000 real windows. The maximum isolated probability delta (0.42964) remains disclosed.
 
-The WebAssembly SIMD kernel and native Arm dot-product proof remain reproducible, but earlier speed receipts belonged to the superseded larger model. New native throughput is yellow until the current model runs on the Arm workflow; x64 timing is never relabeled as Arm evidence.
+The current commit is measured on a native Arm64 Neoverse-N2 runner: the optimized path delivered a **3.1498× paired-median end-to-end speedup** over FP32, with a deterministic bootstrap 95% interval of **3.1264×–3.1711×** across 51 alternating-order samples. It processed 569,352 median inferences/second versus 180,420 for baseline on the defined 2,048-inference workload. The same run rebuilt the artifacts, passed all tests, proved exact NEON `vdotq_s32` agreement, hashed the outputs, and uploaded the raw evidence. This is workload-specific throughput—not an energy, fleet, or universal-device claim. [Inspect the green native run](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31690244613).
 
 ## API boundary
 

@@ -1,0 +1,35 @@
+
+> rotornote@2.0.0 test
+> node --test --test-reporter=spec
+
+✔ parses one-column and timestamped CSV (31.843341ms)
+✔ parses four synchronized sensor channels (39.024867ms)
+✔ rejects malformed and hostile values (3.762884ms)
+✔ rejects out-of-range sample rates (5.110152ms)
+✔ enforces byte and sample-count ceilings before analysis (94.142476ms)
+✔ gateway requires identity and refuses plaintext remote transport (7.834189ms)
+✔ gateway parses a complete command and retries a transient server failure (6.542814ms)
+✔ gateway sends machine context through the real API (144.579066ms)
+✔ FP32 and INT8 SIMD engines agree on attributed real recordings (249.318095ms)
+✔ unseen broadband noise falls outside the fitted envelope and abstains (22.628534ms)
+✔ ambiguous real-signal mixture abstains below the confidence policy (61.131896ms)
+✔ model loader fails closed on artifact tampering (25.999922ms)
+✔ quality gate accepts a real vibration trace (42.490497ms)
+✔ quality gate detects flatline, clipping, bias, and dropout (1.125081ms)
+✔ happy path serves UI, health, sample, and optimized analysis (203.375014ms)
+✔ API abstains on unusable sensor data and validates machine context (58.414411ms)
+✔ API executes the four-sensor aggregation path (136.664115ms)
+✔ API enforces media type, engine allowlist, routes, and method boundaries (8.984269ms)
+✔ dependency failure returns retry contract and then recovers (9.325632ms)
+✔ malformed uploads return bounded, structured errors (4.183665ms)
+✔ feature extraction is deterministic and finite (28.497542ms)
+✔ FFT rejects non-power-of-two input (2.691559ms)
+✔ segmentation uses 50 percent overlap and ignores incomplete tails (0.205155ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 815.62793
