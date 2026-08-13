@@ -43,10 +43,10 @@ npm run benchmark -- --output benchmark/results/native-arm64.json --repetitions 
 | Generated FP32/INT8 artifacts and byte reduction | implemented and locally verified | `model/model.json`, local hashes |
 | Unit/integration/hostile/failure/retry tests on x64 | locally tested | `receipts/LOCAL-VALIDATION.md` |
 | Deterministic benchmark harness on x64 | locally run; not Arm evidence | `benchmark/results/local-x64.json` |
-| Native Arm64 tests and benchmark | **PENDING GATE** | requires a successful workflow artifact |
+| Native Arm64 tests and benchmark | **VERIFIED** | [run 31674256739](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31674256739), `receipts/native-arm64/run-31674256739/` |
 | Live Arm cloud deployment | **PENDING GATE** | requires a deployed URL and health receipt |
 
-Do not copy local x64 timing into a native-Arm claim. When the action succeeds, download the artifact, verify its SHA-256, commit or link the unedited `native-arm64.json`, and update this table with the workflow run URL and commit SHA.
+The verified GitHub artifact SHA-256 is `db7d4a4a5ce3cf202fe36f93acf0decd26b28ecf6b01acebfc85060ac2ba4273`. On commit `99bc324`, the four-vCPU Ubuntu Arm64 runner recorded a 94.9591 ms baseline median and 76.2218 ms optimized median per 1,024-inference batch: **1.2458× speedup**, 74.3669% fewer weight bytes, 100% label agreement, and maximum probability delta 0.000375754. All 25 raw samples per path are in `benchmark/results/native-arm64.json` inside the preserved receipt directory.
 
 ## Interpreting results
 

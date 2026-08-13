@@ -44,9 +44,9 @@ Both paths run the same 48→256→128→5 learned network and the same signal f
 | Baseline | FP32, 184,340-byte artifact | scalar JavaScript dense loops |
 | Optimized | symmetric INT8, 47,252-byte artifact | WebAssembly SIMD `v128` loads and dot products |
 
-The optimized artifact uses 74.37% fewer weight bytes. That is a byte-level artifact fact. Native performance is measured—not presumed—by [the Arm64 workflow](.github/workflows/native-arm64.yml), whose architecture gate requires `aarch64` on `ubuntu-24.04-arm` and uploads raw samples and hashes.
+The optimized artifact uses 74.37% fewer weight bytes. On exact public commit `99bc324`, [native Arm64 workflow run 31674256739](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31674256739) recorded `aarch64`, 100% label agreement, a 0.000376 maximum probability delta, and a **1.2458× median inference speedup** (94.9591 ms to 76.2218 ms per 1,024-inference batch). The unedited evidence is preserved under [`receipts/native-arm64/run-31674256739`](receipts/native-arm64/run-31674256739).
 
-**Evidence status:** local x64 tests and benchmark-harness validation are available in [`receipts/LOCAL-VALIDATION.md`](receipts/LOCAL-VALIDATION.md). Native Arm64 performance remains **PENDING** until a real workflow artifact is linked. x64 timing is never presented as native Arm evidence.
+**Evidence status:** local x64 validation is available in [`receipts/LOCAL-VALIDATION.md`](receipts/LOCAL-VALIDATION.md); native Arm64 is verified by the linked workflow and downloaded artifact. x64 timing is never presented as native Arm evidence.
 
 ## Model and data
 

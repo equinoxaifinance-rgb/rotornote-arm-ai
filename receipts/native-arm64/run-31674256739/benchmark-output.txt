@@ -1,0 +1,19 @@
+
+> rotornote@1.0.0 benchmark
+> node benchmark/run.js --output benchmark/results/native-arm64.json --repetitions 25 --batch 1024
+
+{
+  "baseline": {
+    "medianMs": 94.9591,
+    "p95Ms": 95.7369,
+    "medianInferencesPerSecond": 10783.59
+  },
+  "optimized": {
+    "medianMs": 76.2218,
+    "p95Ms": 77.7305,
+    "medianInferencesPerSecond": 13434.48
+  },
+  "medianSpeedup": 1.2458,
+  "weightByteReduction": 0.743669
+}
+wrote benchmark/results/native-arm64.json (native-arm64)

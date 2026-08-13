@@ -1,0 +1,26 @@
+
+> rotornote@1.0.0 test
+> node --test --test-reporter=spec
+
+✔ parses one-column and timestamped CSV (8.876309ms)
+✔ rejects malformed and hostile values (1.359696ms)
+✔ rejects out-of-range sample rates (2.365342ms)
+✔ enforces byte and sample-count ceilings before analysis (37.076543ms)
+✔ FP32 and INT8 SIMD engines classify all conditions consistently (40.278197ms)
+✔ model loader fails closed on artifact tampering (23.625485ms)
+✔ happy path serves UI, health, sample, and optimized analysis (107.313652ms)
+✔ API enforces media type, engine allowlist, routes, and method boundaries (16.396841ms)
+✔ dependency failure returns retry contract and then recovers (9.108779ms)
+✔ malformed uploads return bounded, structured errors (3.825736ms)
+✔ simulator and feature extraction are deterministic and finite (9.405548ms)
+✔ every modeled condition produces a distinct feature vector (18.440492ms)
+✔ FFT rejects non-power-of-two input (0.385563ms)
+✔ segmentation uses 50 percent overlap and ignores incomplete tails (0.154693ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 217.752378

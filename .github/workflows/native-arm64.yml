@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: 22.18.0
           cache: npm
@@ -40,7 +40,7 @@ jobs:
           find dist model assets/gallery -type f -print0 | sort -z | xargs -0 sha256sum | tee artifact-sha256.txt
           sha256sum package-lock.json benchmark/results/native-arm64.json >> artifact-sha256.txt
       - name: Upload raw evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: rotornote-native-arm64-evidence-${{ github.run_id }}
           if-no-files-found: error
