@@ -13,7 +13,8 @@ test("FP32 and INT8 SIMD engines agree on attributed real recordings", async () 
   assert.match(model.metadata.training.method, /linear discriminant/);
   assert.equal(model.metadata.training.dataKind, "real experimental vibration only");
   assert.equal(model.metadata.decisionPolicy.minimumConfidence, 0.99);
-  assert.ok(model.metadata.decisionPolicy.nestedValidation.aggregate.selectiveAccuracy >= 0.95);
+  assert.equal(model.metadata.decisionPolicy.nestedValidation.aggregate.calibrationTargetMetAllFolds, false);
+  assert.equal(model.metadata.decisionPolicy.nestedValidation.aggregate.selectiveAccuracy, null);
   assert.ok(model.metadata.training.fourChannelRecordingBalancedAccuracy >= 0.93);
   assert.ok(model.metadata.training.foldBalancedAccuracyRange[0] >= 0.85);
   assert.ok(model.metadata.training.recordingEngineAgreement >= 0.999);

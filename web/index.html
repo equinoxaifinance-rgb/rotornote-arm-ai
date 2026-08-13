@@ -107,12 +107,12 @@
 
     <section class="underhood">
       <span class="step">ARM</span>
-      <div><h2>Real signals. Smaller and 3.2× faster on Arm.</h2><p>The FP32 and INT8 engines run the same real-data classifier. INT8 cuts weight bytes by 73.47% while preserving every production label across 2,000 four-channel recordings. Native Neoverse-N2 run 31693588831 measured a 3.2164× paired-median end-to-end speedup, with a 3.1751×–3.2539× bootstrap 95% interval.</p><p><a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31693588831" target="_blank" rel="noreferrer">Inspect the native Arm receipt</a></p></div>
+      <div><h2>Real signals. Smaller and 3.2× faster on Arm.</h2><p>The FP32 and INT8 engines run the same real-data classifier. INT8 cuts weight bytes by 73.47% while preserving every production label across 2,000 four-channel recordings. Two Neoverse-N2 repeats over identical artifact hashes measured 3.2164× and 3.2819× paired-median end-to-end speedups; both 95% intervals excluded 3.17×.</p><p><a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31693809937" target="_blank" rel="noreferrer">Inspect the repeated native Arm receipt</a></p></div>
       <div class="weight-stat"><strong>73.47%</strong><span>weight-byte reduction</span></div>
     </section>
     <section class="proof-rail" aria-labelledby="proofHeading">
       <div class="proof-intro"><span class="kicker">Executed evidence</span><h2 id="proofHeading">Proof, not posture.</h2><p>Every number opens to raw, reproducible receipts. The unknown stays unknown.</p></div>
-      <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/field/results/open-grouped-cross-validation.json" target="_blank" rel="noreferrer"><span>Whole-test validation</span><strong>94.0%</strong><small>four-channel balanced accuracy · 85.5% worst fold</small></a>
+      <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/field/results/open-grouped-cross-validation.json" target="_blank" rel="noreferrer"><span>Whole-test validation</span><strong>94.0%</strong><small>85.5% worst fold · 19/20 tests, Wilson 76.4%–99.1%</small></a>
       <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/model/model.json" target="_blank" rel="noreferrer"><span>FP32 ↔ INT8 parity</span><strong>100%</strong><small>four-channel recording labels</small></a>
       <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/field/results/axial-bearing-boundary.json" target="_blank" rel="noreferrer"><span>Foreign bearing rig</span><strong>4 / 4</strong><small>review required · zero auto conclusions</small></a>
     </section>

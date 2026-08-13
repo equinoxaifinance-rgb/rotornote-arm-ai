@@ -74,11 +74,24 @@ def risk_coverage(expected, probabilities):
 def choose_threshold(expected, probabilities):
     predicted = probabilities.argmax(axis=1)
     confidence = probabilities.max(axis=1)
-    for threshold in np.arange(0.50, 1.0, 0.01):
+    thresholds = [float(round(value, 2)) for value in np.arange(0.50, 1.0, 0.01)] + [0.995, 0.997, 0.999, 0.9995, 0.9999]
+    trace = []
+    selected = None
+    for threshold in thresholds:
         accepted = confidence >= threshold
-        if accepted.any() and float((predicted[accepted] == expected[accepted]).mean()) >= 0.95:
-            return float(round(threshold, 2))
-    return 0.99
+        accuracy = float((predicted[accepted] == expected[accepted]).mean()) if accepted.any() else None
+        trace.append({"threshold": threshold, "coverage": float(accepted.mean()), "acceptedRecordings": int(accepted.sum()), "selectiveAccuracy": accuracy})
+        if selected is None and accuracy is not None and accuracy >= 0.95:
+            selected = threshold
+    return {"threshold": selected, "targetMet": selected is not None, "trace": trace}
+
+
+def wilson_interval(successes, total, z=1.959963984540054):
+    proportion = successes / total
+    denominator = 1 + z * z / total
+    center = (proportion + z * z / (2 * total)) / denominator
+    margin = z * np.sqrt(proportion * (1 - proportion) / total + z * z / (4 * total * total)) / denominator
+    return [float(center - margin), float(center + margin)]
 
 
 def nested_policy(recording_features, recording_labels, recording_groups):
@@ -101,36 +114,39 @@ def nested_policy(recording_features, recording_labels, recording_groups):
             inner_probabilities.append(fitted.predict_proba(recording_features[inner_mask]))
         calibration_expected = np.concatenate(inner_expected)
         calibration_probabilities = np.concatenate(inner_probabilities)
-        threshold = choose_threshold(calibration_expected, calibration_probabilities)
-
+        policy = choose_threshold(calibration_expected, calibration_probabilities)
+        threshold = policy["threshold"]
+        expected = recording_labels[outer_mask]
         fitted = classifier().fit(recording_features[~outer_mask], recording_labels[~outer_mask])
         probabilities = fitted.predict_proba(recording_features[outer_mask])
-        expected = recording_labels[outer_mask]
-        accepted = probabilities.max(axis=1) >= threshold
+        accepted = probabilities.max(axis=1) >= threshold if policy["targetMet"] else np.zeros(len(expected), dtype=bool)
         fold_rows.append({
             "outerFold": outer_index + 1,
             "heldTests": outer_tests,
             "thresholdChosenWithoutOuterFold": threshold,
+            "innerTargetMet": policy["targetMet"],
+            "innerCalibrationTrace": policy["trace"],
             "coverage": float(accepted.mean()),
             "acceptedRecordings": int(accepted.sum()),
             "selectiveAccuracy": float((probabilities.argmax(axis=1)[accepted] == expected[accepted]).mean()) if accepted.any() else None,
         })
         aggregate_expected.append(expected)
         aggregate_probabilities.append(probabilities)
-        aggregate_thresholds.extend([threshold] * len(expected))
+        aggregate_thresholds.extend([threshold if threshold is not None else 1.1] * len(expected))
 
     expected = np.concatenate(aggregate_expected)
     probabilities = np.concatenate(aggregate_probabilities)
     thresholds = np.asarray(aggregate_thresholds)
     accepted = probabilities.max(axis=1) >= thresholds
     return {
-        "method": "For each outer fold, inner grouped CV on the other 16 physical tests selected the lowest 0.01-grid confidence threshold reaching 95% accepted accuracy; that threshold was then applied once to the unseen outer fold.",
+        "method": "Calibration audit only: for each outer fold, inner grouped CV on the other 16 physical tests searched a predeclared grid spanning 0.50 through 0.9999 and recorded the complete trace. If the 95% target was not met inside, that outer fold accepted nothing. This audit does not justify a calibrated-probability claim.",
         "folds": fold_rows,
         "aggregate": {
             "coverage": float(accepted.mean()),
             "acceptedRecordings": int(accepted.sum()),
-            "selectiveAccuracy": float((probabilities.argmax(axis=1)[accepted] == expected[accepted]).mean()),
-            "thresholds": sorted(set(thresholds.tolist())),
+            "selectiveAccuracy": float((probabilities.argmax(axis=1)[accepted] == expected[accepted]).mean()) if accepted.any() else None,
+            "thresholds": sorted(set(row["thresholdChosenWithoutOuterFold"] for row in fold_rows if row["thresholdChosenWithoutOuterFold"] is not None)),
+            "calibrationTargetMetAllFolds": all(row["innerTargetMet"] for row in fold_rows),
         },
     }
 
@@ -196,6 +212,7 @@ def main():
         "singleChannelAblation": score(np.concatenate(all_channel_expected), np.concatenate(all_channel_probabilities)),
         "fourChannelRecording": score(expected, probabilities),
         "physicalTestAccuracy": sum(row["correct"] for row in group_results) / len(group_results),
+        "physicalTestAccuracyWilson95": wilson_interval(sum(row["correct"] for row in group_results), len(group_results)),
         "fourChannelRiskCoverage": risk_coverage(expected, probabilities),
         "nestedConfidencePolicy": nested_policy(recording_features, recording_labels, recording_groups),
     }

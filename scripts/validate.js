@@ -28,7 +28,7 @@ assert.ok(model.metadata.training.engineAgreement >= 0.995);
 assert.equal(model.metadata.training.recordingEngineAgreement, 1);
 assert.ok(model.metadata.training.fourChannelRecordingBalancedAccuracy >= 0.93);
 assert.ok(model.metadata.training.foldBalancedAccuracyRange[0] >= 0.85);
-assert.ok(model.metadata.decisionPolicy.nestedValidation.aggregate.selectiveAccuracy >= 0.95);
+assert.equal(model.metadata.decisionPolicy.nestedValidation.aggregate.calibrationTargetMetAllFolds, false);
 assert.ok(model.metadata.ood.threshold > 0);
 for (const label of model.metadata.labels) {
   const file = `real-${label}.csv`;

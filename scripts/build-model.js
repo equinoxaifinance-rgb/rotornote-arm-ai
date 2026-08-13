@@ -169,7 +169,7 @@ const metadata = {
   },
   decisionPolicy: {
     minimumConfidence: 0.99,
-    basis: "nested grouped calibration: each outer fold was evaluated with a threshold selected only on the other physical tests",
+    basis: "conservative engineering floor; confidence scores are not independently calibrated probabilities",
     groupedValidation: validation.aggregate.fourChannelRiskCoverage.find((row) => row.minimumConfidence === 0.99),
     nestedValidation: validation.aggregate.nestedConfidencePolicy,
   },
