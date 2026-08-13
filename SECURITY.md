@@ -13,11 +13,14 @@ Untrusted inputs are the URL, headers, and CSV body. Static routes and sample ID
 - Rates are limited to 256–5,000 Hz; amplitudes must be finite and within ±1,000.
 - Two-column timestamps must increase strictly; changing column counts are rejected.
 - Model artifacts are SHA-256 verified before either engine becomes available.
+- Every API decision is witnessed by the alternate engine and receives an analysis passport binding input, context, configuration, model and output hashes.
+- Machine-context headers use bounded values and strict allowlists where applicable.
 - Dependency failure yields a generic request ID and retry contract, not a filesystem path or stack trace.
 - CSP, frame denial, MIME sniffing denial, same-origin opener, and no-referrer headers ship on responses.
 - Uploads remain in process memory and are neither logged nor persisted.
 - The container uses a non-root user; `compose.yaml` adds a read-only filesystem and `no-new-privileges`.
 - The production server has zero third-party npm dependencies. `wabt` is build-only and locked.
+- A deterministic SPDX 2.3 SBOM and source/artifact build manifest ship with the repository.
 
 ## Availability
 
@@ -26,6 +29,8 @@ FFT and inference are CPU work. Size/sample caps bound one request but do not re
 ## Model limitations
 
 The training data is physics-inspired simulation, not a certified field dataset. A high score does not prove a component fault; mounting, sensor orientation, speed, load, aliasing, and unrelated impacts can change the pattern. The interface uses “resembles,” provides a controlled retest, and tells users to involve a qualified technician. RotorNote must not trigger automatic shutdowns or replace a safety program.
+
+Signal-quality and calibration-envelope abstention reduce one class of misuse; they do not establish field accuracy. `FIELD-VALIDATION.md` defines the independent evidence required before stronger claims.
 
 ## Supply chain and secrets
 

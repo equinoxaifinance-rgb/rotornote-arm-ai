@@ -1,0 +1,19 @@
+{
+  "schema": "rotornote.build-manifest.v1",
+  "reproducibility": "Generated deterministically from the listed source and artifact bytes.",
+  "files": {
+    "package-lock.json": "09dea8ebe3984316375454dcc827822ac68d3346528a40719617a7b18e8e0f12",
+    "kernel/dense.wat": "05510431c1e6da0bcc81c16a98a290ff35885f8f77a6b7262e9ef54a673c00f4",
+    "dist/dense.wasm": "997022af092e52046fed91efd573d458305d3d6e56eb94fc7735148fee193f59",
+    "model/model.json": "09cf4de8dab169fc2ca533caa8b479966f38f341cbaee17e8cf07a9dea57f985",
+    "model/rotornote-fp32.bin": "3dc4962759679cccbd8cefce069467d8e21bb78e16473211059219cba9d1db43",
+    "model/rotornote-int8.bin": "2b451396dc394fec1b2a4c981f76980e7ec2352dc7a9d95188cab11ae6e12631",
+    "src/analyze.js": "e6260ff1f720c1101f337e5294e81381afa049eae3943306e0c187611e9be196",
+    "src/csv.js": "565400f37cd6602baabf6c642a82259a984821247d9dc82081f9e3bfef0eca4e",
+    "src/evidence.js": "4765630dd0fd28da336a2936cfb351d2bc0392e54ab49f11ee8abf2db605dbf7",
+    "src/model.js": "d3e5064a894fb602b70517b4c0e853c8d6e6764ba11b1ea8484bdae16bbbb0c0",
+    "src/quality.js": "c9c0ced6c47c6e9f3b85e3d03cf774c728a7a3f0ddd70ac2d24c5fbb9d256463",
+    "src/server.js": "fd52bc45ef884f67e092c83a0f493a1161ff9709aff0650de2f7842d688c7848",
+    "src/signal.js": "66ca3b137af1cbc08840857ce25881093fc6d7b3f6485ea02f5cfb1ee0151fcc"
+  }
+}

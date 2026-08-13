@@ -15,6 +15,7 @@ test("happy path serves UI, health, sample, and optimized analysis", async () =>
     const page = await fetch(url);
     assert.equal(page.status, 200);
     assert.match(await page.text(), /Hear the machine/);
+    assert.match(await (await fetch(url)).text(), /Analysis passport/);
     assert.match(page.headers.get("content-security-policy"), /default-src 'self'/);
     const styles = await (await fetch(`${url}/styles.css?v=layout-regression`)).text();
     assert.match(styles, /\.empty-state\[hidden\],#reportContent\[hidden\]\{display:none!important\}/);
@@ -33,7 +34,39 @@ test("happy path serves UI, health, sample, and optimized analysis", async () =>
     const payload = await response.json();
     assert.equal(payload.result.primary, "bearing");
     assert.equal(payload.result.signal.windows, 7);
+    assert.equal(payload.result.decision.status, "screened");
+    assert.equal(payload.result.decision.engineAgreement, 1);
+    assert.match(payload.result.receipt.evidenceId, /^[a-f0-9]{20}$/);
+    const repeated = await fetch(`${url}/api/analyze?engine=optimized`, {
+      method: "POST",
+      headers: { "content-type": "text/csv", "x-sample-rate": "1024" },
+      body: sample,
+    });
+    assert.equal((await repeated.json()).result.receipt.evidenceId, payload.result.receipt.evidenceId);
     assert.ok(response.headers.get("x-request-id"));
+  });
+});
+
+test("API abstains on unusable sensor data and validates machine context", async () => {
+  await withServer(createHandler(), async (url) => {
+    const flatline = `amplitude\n${Array(2048).fill("0").join("\n")}`;
+    const review = await fetch(`${url}/api/analyze`, {
+      method: "POST",
+      headers: { "content-type": "text/csv", "x-machine-id": "pump-7" },
+      body: flatline,
+    });
+    assert.equal(review.status, 200);
+    const payload = await review.json();
+    assert.equal(payload.result.decision.status, "review_required");
+    assert.ok(payload.result.decision.reasons.includes("flatline"));
+
+    const invalidContext = await fetch(`${url}/api/analyze`, {
+      method: "POST",
+      headers: { "content-type": "text/csv", "x-machine-id": "../../secret" },
+      body: await (await fetch(`${url}/samples/steady-baseline.csv`)).text(),
+    });
+    assert.equal(invalidContext.status, 422);
+    assert.equal((await invalidContext.json()).error, "invalid_context");
   });
 });
 

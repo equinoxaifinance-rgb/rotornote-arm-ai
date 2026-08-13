@@ -92,6 +92,26 @@ const embeddedTraining = training.map(({ features, label }) => {
   return { input, hidden1, hidden2, label };
 });
 
+const featureCentroids = Array.from({ length: OUTPUTS }, () => new Float64Array(INPUTS));
+const featureCounts = new Uint32Array(OUTPUTS);
+for (const { input, label } of embeddedTraining) {
+  featureCounts[label] += 1;
+  for (let i = 0; i < INPUTS; i += 1) featureCentroids[label][i] += input[i];
+}
+for (let label = 0; label < OUTPUTS; label += 1) {
+  for (let i = 0; i < INPUTS; i += 1) featureCentroids[label][i] /= featureCounts[label];
+}
+const featureDistance = (input, centroid) => {
+  let total = 0;
+  for (let i = 0; i < INPUTS; i += 1) total += (input[i] - centroid[i]) ** 2;
+  return total / INPUTS;
+};
+const trainingDistances = embeddedTraining
+  .map(({ input, label }) => featureDistance(input, featureCentroids[label]))
+  .sort((left, right) => left - right);
+const oodQuantile = 0.995;
+const oodThreshold = trainingDistances[Math.floor((trainingDistances.length - 1) * oodQuantile)];
+
 const centroids = Array.from({ length: OUTPUTS }, () => new Float64Array(HIDDEN_2));
 const counts = new Uint32Array(OUTPUTS);
 for (const { hidden2, label } of embeddedTraining) {
@@ -156,14 +176,18 @@ function inferQuantized(features) {
 let floatCorrect = 0;
 let quantizedCorrect = 0;
 let agreement = 0;
+let validationInsideEnvelope = 0;
 for (const row of validation) {
   const floatPrediction = argmax(inferFloat(row.features));
   const quantizedPrediction = argmax(inferQuantized(row.features));
   if (floatPrediction === row.label) floatCorrect += 1;
   if (quantizedPrediction === row.label) quantizedCorrect += 1;
   if (floatPrediction === quantizedPrediction) agreement += 1;
+  const normalized = normalize(row.features, means, deviations);
+  const nearestDistance = Math.min(...featureCentroids.map((centroid) => featureDistance(normalized, centroid)));
+  if (nearestDistance <= oodThreshold) validationInsideEnvelope += 1;
 }
-if (floatCorrect / validation.length < 0.95 || quantizedCorrect / validation.length < 0.95 || agreement !== validation.length) {
+if (floatCorrect / validation.length < 0.95 || quantizedCorrect / validation.length < 0.95 || agreement !== validation.length || validationInsideEnvelope / validation.length < 0.94) {
   throw new Error(`Model validation gate failed: float=${floatCorrect}, int8=${quantizedCorrect}, agreement=${agreement}, total=${validation.length}`);
 }
 
@@ -221,6 +245,13 @@ const metadata = {
     engineAgreement: agreement / validation.length,
   },
   normalization: { means: Array.from(means), deviations: Array.from(deviations) },
+  ood: {
+    method: "mean squared normalized-feature distance to nearest training-class centroid",
+    trainingQuantile: oodQuantile,
+    threshold: oodThreshold,
+    validationCoverage: validationInsideEnvelope / validation.length,
+    centroids: featureCentroids.map((centroid) => Array.from(centroid)),
+  },
   activationScales,
   float: { file: "rotornote-fp32.bin", bytes: floatBuffer.length, sha256: sha256(floatBuffer), layers: floatLayout },
   int8: { file: "rotornote-int8.bin", bytes: int8Buffer.length, sha256: sha256(int8Buffer), layers: int8Layout },

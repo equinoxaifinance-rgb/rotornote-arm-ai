@@ -20,7 +20,7 @@ The memorable demo is **Shift change**: one recording visibly transitions from t
 
 ## How it works
 
-RotorNote validates and segments the recording into overlapping 2,048-sample windows. For each window it computes 48 time- and frequency-domain features, then runs a 48→256→128→5 supervised extreme-learning network. Window probabilities become the colored timeline; their aggregate becomes the primary screen. The report also includes confidence, signal statistics, the strongest spectral peak, and responsible-use guidance.
+RotorNote validates and segments the recording into overlapping 2,048-sample windows. For each window it computes 48 time- and frequency-domain features, then runs a 48→256→128→5 supervised extreme-learning network. Window probabilities become the colored timeline; their aggregate becomes the primary screen. The report also includes confidence, signal statistics, the strongest spectral peak, machine context, dual-engine agreement, fitted-envelope coverage, a fail-closed review state, and a reproducible analysis passport.
 
 The entire training set is original and deterministic. Physics-inspired signal generators model shaft harmonics, subharmonics, impulsive looseness, and damped high-frequency impacts. The model builder, quantizer, artifacts, hashes, samples, and validation split all ship in the repository.
 
@@ -44,6 +44,8 @@ The second challenge was responsible product language. Synthetic validation can 
 - Covered malformed input, method/media boundaries, tampered models, dependency failure, retry, recovery, and both engines.
 - Produced a responsive, keyboard-usable interface and three original 1600×900 gallery assets.
 - Packaged an unprivileged, health-checked container and a strict native Arm64 evidence workflow.
+- Added a tested sensor-gateway path, machine/acquisition context, signal-quality and out-of-distribution abstention, dual-engine witnessing, and deterministic evidence receipts.
+- Shipped an SPDX SBOM, byte-level build manifest, model card, and standards-aligned field-validation plan without claiming certification that has not occurred.
 
 ## What we learned
 
@@ -51,11 +53,11 @@ Optimization evidence is a product feature. Exposing the engine toggle made mode
 
 ## What's next
 
-The next technical milestone is field calibration with consented, labeled recordings across mounts, loads, speeds, and sensor orientations. That work should add out-of-distribution detection before expanding fault classes. On the platform side, worker-thread isolation and per-tenant encrypted storage could support teams—but only after authentication and retention controls. Native runner data will guide whether to tune batch size, fuse requantization into WebAssembly, or use Arm-specific dot-product instructions through a native addon.
+The next external milestone is the pre-registered field study in `FIELD-VALIDATION.md`: consented, independently labeled recordings across machines, mounts, loads, speeds and sensor orientations. RotorNote now has out-of-distribution abstention and acquisition context; the study must calibrate them against reality before expanding fault classes. On the platform side, worker-thread isolation and per-tenant encrypted storage could support teams—but only after authentication and retention controls. Native runner data will guide whether to tune batch size, fuse requantization into WebAssembly, or use Arm-specific dot-product instructions through a native addon.
 
 ## Built with
 
-Node.js 22, JavaScript, WebAssembly Text, WebAssembly SIMD, INT8 quantization, FFT signal features, HTML, CSS, Canvas, Docker, GitHub Actions, and `wabt`.
+Node.js 22, JavaScript, WebAssembly Text, WebAssembly SIMD, INT8 quantization, FFT signal features, calibrated abstention, HTML, CSS, Canvas, Docker, GitHub Actions, SPDX, and `wabt`.
 
 ## Setup
 

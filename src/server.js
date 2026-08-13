@@ -4,6 +4,7 @@ import http from "node:http";
 import { fileURLToPath } from "node:url";
 import { analyzeSignal } from "./analyze.js";
 import { InputError, MAX_UPLOAD_BYTES, parseCsv } from "./csv.js";
+import { createAnalysisReceipt } from "./evidence.js";
 import { loadModel } from "./model.js";
 
 const STATIC = new Map([
@@ -28,6 +29,20 @@ const securityHeaders = {
 function respond(response, status, body, contentType = "application/json; charset=utf-8", extra = {}) {
   response.writeHead(status, { ...securityHeaders, "content-type": contentType, "cache-control": "no-store", ...extra });
   response.end(typeof body === "string" || Buffer.isBuffer(body) ? body : JSON.stringify(body));
+}
+
+function parseContext(headers) {
+  const machineId = String(headers["x-machine-id"] || "unassigned");
+  const measurementPoint = String(headers["x-measurement-point"] || "unspecified");
+  const sensorAxis = String(headers["x-sensor-axis"] || "unknown");
+  const operatingRpm = headers["x-operating-rpm"] === undefined ? null : Number(headers["x-operating-rpm"]);
+  const loadPercent = headers["x-load-percent"] === undefined ? null : Number(headers["x-load-percent"]);
+  if (!/^[a-zA-Z0-9._-]{1,64}$/.test(machineId)) throw new InputError("Machine ID must use 1–64 letters, numbers, dots, dashes, or underscores", "invalid_context");
+  if (!/^[a-zA-Z0-9 ._/-]{1,64}$/.test(measurementPoint)) throw new InputError("Measurement point is invalid", "invalid_context");
+  if (!["unknown", "axial", "radial-horizontal", "radial-vertical"].includes(sensorAxis)) throw new InputError("Sensor axis is invalid", "invalid_context");
+  if (operatingRpm !== null && (!Number.isFinite(operatingRpm) || operatingRpm < 0 || operatingRpm > 120000)) throw new InputError("Operating RPM must be between 0 and 120000", "invalid_context");
+  if (loadPercent !== null && (!Number.isFinite(loadPercent) || loadPercent < 0 || loadPercent > 100)) throw new InputError("Load percent must be between 0 and 100", "invalid_context");
+  return { machineId, measurementPoint, sensorAxis, operatingRpm, loadPercent };
 }
 
 async function readBody(request) {
@@ -92,7 +107,10 @@ export function createHandler({ modelLoader = loadModel } = {}) {
         const body = await readBody(request);
         const { values, sampleRate } = parseCsv(body, request.headers["x-sample-rate"] || 1024);
         const model = await getModel();
-        return respond(response, 200, { requestId, result: analyzeSignal(model, values, sampleRate, engine) });
+        const context = parseContext(request.headers);
+        const result = analyzeSignal(model, values, sampleRate, engine, { verifyParity: true, context });
+        result.receipt = createAnalysisReceipt({ csv: body, sampleRate, engine, model, context, result });
+        return respond(response, 200, { requestId, result });
       }
       if (STATIC.has(url.pathname)) {
         if (request.method !== "GET" && request.method !== "HEAD") return respond(response, 405, { error: "method_not_allowed", requestId }, undefined, { allow: "GET, HEAD" });

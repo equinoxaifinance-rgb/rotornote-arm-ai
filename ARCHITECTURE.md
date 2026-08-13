@@ -20,6 +20,8 @@ CSV upload
 
 `src/server.js` exposes the static application, bundled samples, `GET /health`, and `POST /api/analyze`. `src/csv.js` is the untrusted-input boundary. `src/analyze.js` creates features, calls the selected engine for every window, aggregates probabilities, and returns only downsampled display data. The browser renders that response; it does not contain a second classifier.
 
+For API requests, the alternate inference engine witnesses every window. A decision is accepted only when FP32 and INT8 labels agree for every window, signal-quality checks pass, and at least 60% of windows remain inside the committed fitted envelope. Machine ID, measurement point, axis, RPM and load travel with the result. `src/evidence.js` then emits a deterministic hash passport for the input, configuration, model artifacts and decision output; it is intentionally described as a hash receipt rather than a signature.
+
 The model is loaded once and hash-verified. Concurrent first requests share one promise. If loading fails, the promise is cleared, the API returns `503` with `Retry-After: 1`, and a later request retries—covered by an integration test.
 
 ## Learned workload
@@ -49,7 +51,9 @@ Primary references for the dependency behavior:
 
 ## Artifact integrity and reproducibility
 
-`model/model.json` records the deterministic seed, normalization arrays, activation/weight scales, byte offsets, sizes, and SHA-256 hashes. Runtime refuses a changed FP32 or INT8 artifact. `npm run build` recreates:
+`model/model.json` records the deterministic seed, normalization arrays, activation/weight scales, byte offsets, sizes, and SHA-256 hashes. Runtime refuses a changed FP32 or INT8 artifact. The same metadata records class centroids in normalized feature space and a 99.5th-percentile training-distance threshold. `src/quality.js` independently checks flatline, repeated saturation, DC bias and sample dropout. These gates reduce unjustified confidence but cannot substitute for field calibration.
+
+`npm run build` recreates:
 
 - `dist/dense.wasm`;
 - both model binaries and metadata;

@@ -2,7 +2,8 @@ const elements = Object.fromEntries([
   "runtimeStatus", "samples", "fileInput", "dropzone", "analyzeButton", "sampleRate", "inputMessage",
   "formatHelp", "formatCopy", "report", "emptyState", "reportContent", "engineBadge", "timing", "severity",
   "verdictTitle", "primaryLabel", "confidence", "confidenceMeter", "duration", "waveform", "timeline", "action",
-  "details", "disclaimer",
+  "details", "disclaimer", "machineId", "measurementPoint", "sensorAxis", "operatingRpm", "loadPercent",
+  "decisionBadge", "assurance", "machineContext", "receiptId",
 ].map((id) => [id, document.getElementById(id)]));
 
 let selectedCsv = "";
@@ -100,11 +101,15 @@ function render(result) {
   elements.primaryLabel.textContent = result.primary;
   elements.confidence.textContent = `${Math.round(result.confidence * 100)}%`;
   elements.confidenceMeter.style.width = `${Math.max(result.confidence * 100, 2)}%`;
+  elements.decisionBadge.textContent = result.decision.status === "screened" ? "Screen accepted" : "Review required";
+  elements.decisionBadge.className = result.decision.status;
+  elements.assurance.textContent = `${Math.round(result.decision.engineAgreement * 100)}% engine agreement · ${Math.round(result.decision.distributionCoverage * 100)}% inside calibration envelope`;
   elements.duration.textContent = `${result.signal.durationSeconds}s · ${result.signal.samples.toLocaleString()} samples`;
   drawWaveform(result.signal.waveform);
   elements.timeline.replaceChildren(...result.timeline.map((point) => {
     const segment = document.createElement("span");
     segment.className = point.label;
+    if (!point.inDistribution) segment.classList.add("out-of-envelope");
     segment.title = `${point.second}s · ${point.label} · ${Math.round(point.confidence * 100)}%`;
     segment.setAttribute("aria-label", segment.title);
     return segment;
@@ -117,6 +122,9 @@ function render(result) {
     [`${result.timing.inferenceMs.toFixed(2)} ms`, "model inference"],
   ];
   elements.details.innerHTML = details.map(([value, label]) => `<div><strong>${value}</strong><span>${label}</span></div>`).join("");
+  elements.machineContext.textContent = `${result.context.machineId} · ${result.context.measurementPoint}`;
+  elements.receiptId.textContent = result.receipt.evidenceId;
+  elements.receiptId.title = result.receipt.statement;
   elements.disclaimer.textContent = result.note;
 }
 
@@ -130,7 +138,15 @@ async function analyze() {
   try {
     const response = await fetch(`/api/analyze?engine=${engine}`, {
       method: "POST",
-      headers: { "content-type": "text/csv", "x-sample-rate": elements.sampleRate.value },
+      headers: {
+        "content-type": "text/csv",
+        "x-sample-rate": elements.sampleRate.value,
+        "x-machine-id": elements.machineId.value || "unassigned",
+        "x-measurement-point": elements.measurementPoint.value || "unspecified",
+        "x-sensor-axis": elements.sensorAxis.value,
+        ...(elements.operatingRpm.value ? { "x-operating-rpm": elements.operatingRpm.value } : {}),
+        ...(elements.loadPercent.value ? { "x-load-percent": elements.loadPercent.value } : {}),
+      },
       body: selectedCsv,
     });
     const payload = await response.json();

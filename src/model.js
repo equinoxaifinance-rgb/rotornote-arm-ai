@@ -112,5 +112,26 @@ export async function loadModel({ modelUrl = MODEL_URL, wasmUrl = WASM_URL } = {
       if (engine === "optimized") return inferOptimized(features);
       throw new Error(`Unknown engine: ${engine}`);
     },
+    assessDistribution(features) {
+      const values = normalize(features, metadata);
+      let nearestDistance = Infinity;
+      let nearestLabel = metadata.labels[0];
+      for (let label = 0; label < metadata.ood.centroids.length; label += 1) {
+        let total = 0;
+        const centroid = metadata.ood.centroids[label];
+        for (let index = 0; index < values.length; index += 1) total += (values[index] - centroid[index]) ** 2;
+        const distance = total / values.length;
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestLabel = metadata.labels[label];
+        }
+      }
+      return {
+        inDistribution: nearestDistance <= metadata.ood.threshold,
+        distance: Number(nearestDistance.toFixed(6)),
+        threshold: Number(metadata.ood.threshold.toFixed(6)),
+        nearestLabel,
+      };
+    },
   };
 }

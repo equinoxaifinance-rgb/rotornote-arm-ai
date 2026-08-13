@@ -46,6 +46,16 @@
             <label><input type="radio" name="engine" value="baseline"><span>FP32 <small>baseline</small></span></label>
           </fieldset>
         </div>
+        <details class="measurement-context">
+          <summary>Add measurement context <span>optional · travels with receipt</span></summary>
+          <div class="context-grid">
+            <label>Machine ID<input id="machineId" value="demo-pump-7" maxlength="64" pattern="[A-Za-z0-9._-]+"></label>
+            <label>Measurement point<input id="measurementPoint" value="drive-end-bearing" maxlength="64"></label>
+            <label>Sensor axis<select id="sensorAxis"><option value="unknown">Unknown</option><option value="radial-horizontal" selected>Radial horizontal</option><option value="radial-vertical">Radial vertical</option><option value="axial">Axial</option></select></label>
+            <label>Operating RPM<input id="operatingRpm" type="number" min="0" max="120000" value="1800"></label>
+            <label>Load %<input id="loadPercent" type="number" min="0" max="100" value="74"></label>
+          </div>
+        </details>
         <button id="analyzeButton" class="primary" type="button" disabled><span>Screen recording</span><span aria-hidden="true">→</span></button>
         <p id="inputMessage" class="message" role="status"></p>
       </div>
@@ -64,6 +74,7 @@
           </div>
           <h2 id="verdictTitle"></h2>
           <div class="confidence"><div><span id="primaryLabel"></span><strong id="confidence"></strong></div><div class="meter"><i id="confidenceMeter"></i></div></div>
+          <div class="assurance-strip"><span id="decisionBadge"></span><span id="assurance"></span></div>
           <div class="chart-card">
             <div class="chart-label"><span>Vibration trace</span><span id="duration"></span></div>
             <canvas id="waveform" width="760" height="180" aria-label="Downsampled vibration waveform"></canvas>
@@ -80,6 +91,10 @@
             <summary>Signal and model details</summary>
             <div class="details-grid" id="details"></div>
           </details>
+          <div class="evidence-passport">
+            <div><span class="kicker">Analysis passport</span><strong id="machineContext"></strong></div>
+            <div><span>Evidence ID</span><code id="receiptId"></code></div>
+          </div>
           <p class="disclaimer" id="disclaimer"></p>
         </div>
       </div>

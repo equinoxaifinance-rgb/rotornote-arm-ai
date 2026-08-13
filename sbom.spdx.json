@@ -1,0 +1,54 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "RotorNote-1.1.0",
+  "documentNamespace": "https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/spdx/1.1.0",
+  "creationInfo": {
+    "created": "2026-08-13T00:00:00Z",
+    "creators": [
+      "Tool: RotorNote deterministic SBOM generator"
+    ]
+  },
+  "packages": [
+    {
+      "name": "rotornote",
+      "SPDXID": "SPDXRef-Package-RotorNote",
+      "versionInfo": "1.1.0",
+      "downloadLocation": "https://github.com/equinoxaifinance-rgb/rotornote-arm-ai",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "name": "wabt",
+      "SPDXID": "SPDXRef-Package-wabt",
+      "versionInfo": "1.0.37",
+      "downloadLocation": "https://registry.npmjs.org/wabt/-/wabt-1.0.37.tgz",
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "d81fd31f8a69c2d964528b0bb6e22298ab13567a8cf1aa17c581e7bbf58ec624aa6be086a195e61bea50c9f0d08c428801cec6a85949b2e08ab8af2b20f2f5b2"
+        }
+      ],
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "BUILD_TOOL"
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-Package-RotorNote"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-RotorNote",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-wabt"
+    }
+  ]
+}
