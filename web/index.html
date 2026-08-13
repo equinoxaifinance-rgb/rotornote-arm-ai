@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="RotorNote turns a vibration recording into an Arm-optimized machine health screen.">
+  <title>RotorNote — hear the machine change</title>
+  <link rel="stylesheet" href="/styles.css?v=20260813b">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="RotorNote home">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14"/><circle cx="20" cy="20" r="4"/><path d="M3 20h8m18 0h8M20 3v8m0 18v8"/></svg>
+      <span>RotorNote</span>
+    </a>
+    <div class="status"><span class="status-dot"></span><span id="runtimeStatus">Checking runtime</span></div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow"><span>Vibration screening</span><span>·</span><span>Arm cloud ready</span></div>
+      <h1>Hear the machine<br><em>before it stops.</em></h1>
+      <p>Drop one vibration trace. RotorNote separates healthy motion from imbalance, misalignment, looseness, and bearing-like impacts—then gives you a specific retest.</p>
+    </section>
+
+    <section class="workspace" aria-labelledby="workspace-title">
+      <div class="intake panel">
+        <div class="section-heading">
+          <div><span class="step">01</span><h2 id="workspace-title">Choose a recording</h2></div>
+          <button class="text-button" id="formatHelp" type="button" aria-expanded="false">CSV format</button>
+        </div>
+        <p id="formatCopy" class="format-copy" hidden>One <code>amplitude</code> column, or <code>timestamp,amplitude</code>. At least 2,048 rows; 1,024 Hz by default.</p>
+        <label class="dropzone" id="dropzone">
+          <input id="fileInput" type="file" accept=".csv,text/csv">
+          <span class="upload-mark" aria-hidden="true">↗</span>
+          <strong>Drop a sensor CSV</strong>
+          <span>or choose a file · max 2 MiB</span>
+        </label>
+        <div class="or"><span>or use a demo recording</span></div>
+        <div class="samples" id="samples" aria-label="Example recordings"></div>
+        <div class="controls">
+          <label>Sample rate <span><input id="sampleRate" inputmode="numeric" type="number" min="256" max="5000" value="1024"> Hz</span></label>
+          <fieldset>
+            <legend>Inference engine</legend>
+            <label><input type="radio" name="engine" value="optimized" checked><span>INT8 SIMD <small>Arm path</small></span></label>
+            <label><input type="radio" name="engine" value="baseline"><span>FP32 <small>baseline</small></span></label>
+          </fieldset>
+        </div>
+        <button id="analyzeButton" class="primary" type="button" disabled><span>Screen recording</span><span aria-hidden="true">→</span></button>
+        <p id="inputMessage" class="message" role="status"></p>
+      </div>
+
+      <div class="report panel" id="report" aria-live="polite" aria-busy="false">
+        <div class="empty-state" id="emptyState">
+          <div class="radar" aria-hidden="true"><i></i><i></i><i></i><span></span></div>
+          <p>Your machine note will appear here.</p>
+          <span>Try “Shift change” to see a fault emerge across the timeline.</span>
+        </div>
+        <div id="reportContent" hidden>
+          <div class="report-meta"><span id="engineBadge"></span><span id="timing"></span></div>
+          <div class="verdict">
+            <div><span class="step">02</span><span class="kicker">Screening result</span></div>
+            <span class="severity" id="severity"></span>
+          </div>
+          <h2 id="verdictTitle"></h2>
+          <div class="confidence"><div><span id="primaryLabel"></span><strong id="confidence"></strong></div><div class="meter"><i id="confidenceMeter"></i></div></div>
+          <div class="chart-card">
+            <div class="chart-label"><span>Vibration trace</span><span id="duration"></span></div>
+            <canvas id="waveform" width="760" height="180" aria-label="Downsampled vibration waveform"></canvas>
+          </div>
+          <div class="timeline-wrap">
+            <div class="chart-label"><span>Fault timeline</span><span>window by window</span></div>
+            <div class="timeline" id="timeline"></div>
+          </div>
+          <div class="next-step">
+            <span class="step">03</span>
+            <div><span class="kicker">Field retest</span><p id="action"></p></div>
+          </div>
+          <details>
+            <summary>Signal and model details</summary>
+            <div class="details-grid" id="details"></div>
+          </details>
+          <p class="disclaimer" id="disclaimer"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="underhood">
+      <span class="step">ARM</span>
+      <div><h2>Smaller weights. Vector work.</h2><p>The judge toggle runs the same learned network two ways: scalar FP32 JavaScript or an INT8 WebAssembly SIMD kernel. On Arm64, V8 maps SIMD operations to NEON. The repository records raw samples and never substitutes x64 timing for native evidence.</p></div>
+      <div class="weight-stat"><strong>74.4%</strong><span>weight-byte reduction</span></div>
+    </section>
+  </main>
+  <footer><span>RotorNote · an open-source screening aid</span><span>MIT licensed</span></footer>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

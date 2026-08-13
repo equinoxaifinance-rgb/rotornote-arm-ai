@@ -1,0 +1,7 @@
+.git
+.github
+.npm-cache
+node_modules
+benchmark/results
+receipts/runtime
+*.log

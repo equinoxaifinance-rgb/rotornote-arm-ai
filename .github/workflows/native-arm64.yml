@@ -1,0 +1,56 @@
+name: Native Arm64 evidence
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  native-arm64:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.18.0
+          cache: npm
+      - name: Gate on native architecture
+        run: |
+          set -euxo pipefail
+          test "$(uname -m)" = "aarch64"
+          uname -a | tee machine-uname.txt
+          lscpu | tee machine-lscpu.txt
+          node --version | tee machine-node.txt
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Rebuild deterministic artifacts
+        run: |
+          npm run build
+          git diff --exit-code -- dist model samples assets/gallery
+      - name: Test
+        run: npm test | tee test-output.txt
+      - name: Benchmark native Arm64
+        run: npm run benchmark -- --output benchmark/results/native-arm64.json --repetitions 25 --batch 1024 | tee benchmark-output.txt
+      - name: Record artifact hashes
+        run: |
+          find dist model assets/gallery -type f -print0 | sort -z | xargs -0 sha256sum | tee artifact-sha256.txt
+          sha256sum package-lock.json benchmark/results/native-arm64.json >> artifact-sha256.txt
+      - name: Upload raw evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: rotornote-native-arm64-evidence-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 90
+          path: |
+            benchmark/results/native-arm64.json
+            benchmark-output.txt
+            test-output.txt
+            machine-uname.txt
+            machine-lscpu.txt
+            machine-node.txt
+            artifact-sha256.txt
+            model/model.json

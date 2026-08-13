@@ -1,0 +1,27 @@
+{
+  "name": "rotornote",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Arm-optimized vibration screening for rotating equipment",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22 <23"
+  },
+  "scripts": {
+    "build": "npm run build:kernel && npm run build:model && npm run build:samples && npm run gallery",
+    "build:kernel": "node scripts/build-kernel.js",
+    "build:model": "node scripts/build-model.js",
+    "build:samples": "node scripts/build-samples.js",
+    "gallery": "node scripts/build-gallery.js",
+    "start": "node src/server.js",
+    "test": "node --test --test-reporter=spec",
+    "test:coverage": "node --experimental-test-coverage --test",
+    "benchmark": "node benchmark/run.js",
+    "validate": "node scripts/validate.js",
+    "secret-scan": "node scripts/secret-scan.js"
+  },
+  "devDependencies": {
+    "wabt": "1.0.37"
+  }
+}

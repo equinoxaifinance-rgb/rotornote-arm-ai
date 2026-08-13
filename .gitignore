@@ -1,0 +1,12 @@
+node_modules/
+.npm-cache/
+.pip-cache/
+.venv/
+.deps/
+benchmark/results/*.json
+!benchmark/results/local-x64.json
+!benchmark/results/.gitkeep
+receipts/runtime/
+.model-test-*/
+*.log
+.DS_Store
