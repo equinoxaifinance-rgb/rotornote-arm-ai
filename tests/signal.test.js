@@ -10,6 +10,14 @@ test("feature extraction is deterministic and finite", () => {
   assert.ok(features.every(Number.isFinite));
 });
 
+test("feature extraction supports documented power-of-two acquisition windows", () => {
+  const signal = Float32Array.from({ length: 2048 }, (_, index) => Math.sin(index / 19) + 0.1 * Math.sin(index / 7));
+  const features = extractFeatures(signal, 1024, 2250);
+  assert.equal(features.length, 48);
+  assert.ok(features.every(Number.isFinite));
+  assert.throws(() => extractFeatures(signal.subarray(0, 2000), 1024, 2250), /power-of-two/);
+});
+
 test("FFT rejects non-power-of-two input", () => {
   assert.throws(() => fftPower(new Float32Array(1000)), /power of two/);
 });

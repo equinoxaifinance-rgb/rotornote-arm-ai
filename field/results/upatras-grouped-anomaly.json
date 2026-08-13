@@ -1,0 +1,846 @@
+{
+  "format": "rotornote-upatras-grouped-anomaly-v1",
+  "executedAt": "2026-08-13T11:44:14.884615+00:00",
+  "modelSpecification": "standard scaling plus 48-to-128-to-64-to-2 ReLU multilayer perceptron; class-balanced sample weighting; fixed 120-epoch maximum schedule",
+  "source": {
+    "title": "UPATRAS Rotating Machinery Vibration Dataset for Incipient Fault Diagnosis under Varying Rotating Speeds",
+    "authors": [
+      "Dimitrios M. Bourdalos",
+      "John S. Sakellariou"
+    ],
+    "version": 1,
+    "doi": "10.17632/42v3s74gf9.1",
+    "recordUrl": "https://data.mendeley.com/datasets/42v3s74gf9/1",
+    "archiveUrl": "https://data.mendeley.com/public-api/zip/42v3s74gf9/download/1",
+    "archiveSha256": "d6a5ec295fa6757b13cc3754c9509f6297cf8a5b16b9c97a419d09fb2f2eb569",
+    "innerArchiveSha256": "ef67eab64164ee23ebb584375c734d817d110f722229d6f1db6c5afa74767bfb",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "acquisition": "39 independent measurement sequences; 2,925 single-axis vibration signals; 1,024 Hz; 75 rotating speeds from 35.0 to 49.8 Hz; healthy plus seven incipient fault states.",
+    "use": "Production variable-speed healthy-versus-anomaly neural head and whole-measurement-sequence grouped validation.",
+    "changes": "Two deterministic 2,048-sample windows per signal and RotorNote 48-feature vectors; binary labels preserve healthy versus observed anomaly without inventing unsupported fault equivalence."
+  },
+  "sourceFeatureSha256": "5a68fc21c72bd0e5fd7935a64e86763f5c17c28437506aa6305de05a2f37bc2d",
+  "modelExportSha256": "4ffbf3f9f371bbee30bfcf533e2aa67d03cd8556cc94d7f62788cf784aaceccd",
+  "folds": [
+    {
+      "fold": 1,
+      "heldGroups": [
+        3,
+        15,
+        25,
+        29,
+        30,
+        31,
+        32,
+        35,
+        36,
+        38
+      ],
+      "signalBalancedAccuracy": 1.0,
+      "signalConfusionMatrix": [
+        [
+          75,
+          0
+        ],
+        [
+          0,
+          675
+        ]
+      ],
+      "sequenceAccuracy": 1.0,
+      "sequences": [
+        {
+          "group": 3,
+          "state": "Bolt_A_100",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 15,
+          "state": "Bolt_B_100",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 25,
+          "state": "Coupler_wear",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 29,
+          "state": "Healthy",
+          "expected": "healthy",
+          "predicted": "healthy",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 30,
+          "state": "Unbalance_3g",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 31,
+          "state": "Unbalance_3g",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 32,
+          "state": "Unbalance_3g",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 35,
+          "state": "Unbalance_5g",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 36,
+          "state": "Unbalance_5g",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 38,
+          "state": "Unbalance_5g",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        }
+      ]
+    },
+    {
+      "fold": 2,
+      "heldGroups": [
+        2,
+        5,
+        6,
+        11,
+        16,
+        17,
+        20,
+        28,
+        34,
+        37
+      ],
+      "signalBalancedAccuracy": 1.0,
+      "signalConfusionMatrix": [
+        [
+          75,
+          0
+        ],
+        [
+          0,
+          675
+        ]
+      ],
+      "sequenceAccuracy": 1.0,
+      "sequences": [
+        {
+          "group": 2,
+          "state": "Bolt_A_100",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 5,
+          "state": "Bolt_A_100",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 6,
+          "state": "Bolt_A_50",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 11,
+          "state": "Bolt_B_100",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 16,
+          "state": "Bolt_B_50",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 17,
+          "state": "Bolt_B_50",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 20,
+          "state": "Bolt_B_50",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 28,
+          "state": "Healthy",
+          "expected": "healthy",
+          "predicted": "healthy",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 34,
+          "state": "Unbalance_3g",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 37,
+          "state": "Unbalance_5g",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        }
+      ]
+    },
+    {
+      "fold": 3,
+      "heldGroups": [
+        1,
+        8,
+        9,
+        12,
+        13,
+        18,
+        19,
+        21,
+        23,
+        26
+      ],
+      "signalBalancedAccuracy": 1.0,
+      "signalConfusionMatrix": [
+        [
+          75,
+          0
+        ],
+        [
+          0,
+          675
+        ]
+      ],
+      "sequenceAccuracy": 1.0,
+      "sequences": [
+        {
+          "group": 1,
+          "state": "Bolt_A_100",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 8,
+          "state": "Bolt_A_50",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 9,
+          "state": "Bolt_A_50",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 12,
+          "state": "Bolt_B_100",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 13,
+          "state": "Bolt_B_100",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 18,
+          "state": "Bolt_B_50",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 19,
+          "state": "Bolt_B_50",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 21,
+          "state": "Coupler_wear",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 23,
+          "state": "Coupler_wear",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 26,
+          "state": "Healthy",
+          "expected": "healthy",
+          "predicted": "healthy",
+          "correct": true,
+          "signals": 75
+        }
+      ]
+    },
+    {
+      "fold": 4,
+      "heldGroups": [
+        4,
+        7,
+        10,
+        14,
+        22,
+        24,
+        27,
+        33,
+        39
+      ],
+      "signalBalancedAccuracy": 1.0,
+      "signalConfusionMatrix": [
+        [
+          75,
+          0
+        ],
+        [
+          0,
+          600
+        ]
+      ],
+      "sequenceAccuracy": 1.0,
+      "sequences": [
+        {
+          "group": 4,
+          "state": "Bolt_A_100",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 7,
+          "state": "Bolt_A_50",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 10,
+          "state": "Bolt_A_50",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 14,
+          "state": "Bolt_B_100",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 22,
+          "state": "Coupler_wear",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 24,
+          "state": "Coupler_wear",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 27,
+          "state": "Healthy",
+          "expected": "healthy",
+          "predicted": "healthy",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 33,
+          "state": "Unbalance_3g",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        },
+        {
+          "group": 39,
+          "state": "Unbalance_5g",
+          "expected": "anomaly",
+          "predicted": "anomaly",
+          "correct": true,
+          "signals": 75
+        }
+      ]
+    }
+  ],
+  "aggregate": {
+    "signalBalancedAccuracy": 1.0,
+    "signalConfusionMatrix": [
+      [
+        300,
+        0
+      ],
+      [
+        0,
+        2625
+      ]
+    ],
+    "measurementSequenceAccuracy": 1.0,
+    "measurementSequenceAccuracyWilson95": [
+      0.9103331462924287,
+      1.0
+    ],
+    "riskCoverage": [
+      {
+        "minimumConfidence": 0.5,
+        "coverage": 1.0,
+        "acceptedSignals": 2925,
+        "selectiveAccuracy": 1.0,
+        "selectiveBalancedAccuracy": 1.0
+      },
+      {
+        "minimumConfidence": 0.7,
+        "coverage": 0.9996581196581197,
+        "acceptedSignals": 2924,
+        "selectiveAccuracy": 1.0,
+        "selectiveBalancedAccuracy": 1.0
+      },
+      {
+        "minimumConfidence": 0.8,
+        "coverage": 0.9996581196581197,
+        "acceptedSignals": 2924,
+        "selectiveAccuracy": 1.0,
+        "selectiveBalancedAccuracy": 1.0
+      },
+      {
+        "minimumConfidence": 0.9,
+        "coverage": 0.9993162393162394,
+        "acceptedSignals": 2923,
+        "selectiveAccuracy": 1.0,
+        "selectiveBalancedAccuracy": 1.0
+      },
+      {
+        "minimumConfidence": 0.95,
+        "coverage": 0.9982905982905983,
+        "acceptedSignals": 2920,
+        "selectiveAccuracy": 1.0,
+        "selectiveBalancedAccuracy": 1.0
+      },
+      {
+        "minimumConfidence": 0.99,
+        "coverage": 0.9726495726495726,
+        "acceptedSignals": 2845,
+        "selectiveAccuracy": 1.0,
+        "selectiveBalancedAccuracy": 1.0
+      },
+      {
+        "minimumConfidence": 0.995,
+        "coverage": 0.9357264957264957,
+        "acceptedSignals": 2737,
+        "selectiveAccuracy": 1.0,
+        "selectiveBalancedAccuracy": 1.0
+      },
+      {
+        "minimumConfidence": 0.999,
+        "coverage": 0.7582905982905983,
+        "acceptedSignals": 2218,
+        "selectiveAccuracy": 1.0,
+        "selectiveBalancedAccuracy": 1.0
+      }
+    ]
+  },
+  "measurementSequences": [
+    {
+      "group": 3,
+      "state": "Bolt_A_100",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 15,
+      "state": "Bolt_B_100",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 25,
+      "state": "Coupler_wear",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 29,
+      "state": "Healthy",
+      "expected": "healthy",
+      "predicted": "healthy",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 30,
+      "state": "Unbalance_3g",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 31,
+      "state": "Unbalance_3g",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 32,
+      "state": "Unbalance_3g",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 35,
+      "state": "Unbalance_5g",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 36,
+      "state": "Unbalance_5g",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 38,
+      "state": "Unbalance_5g",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 2,
+      "state": "Bolt_A_100",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 5,
+      "state": "Bolt_A_100",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 6,
+      "state": "Bolt_A_50",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 11,
+      "state": "Bolt_B_100",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 16,
+      "state": "Bolt_B_50",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 17,
+      "state": "Bolt_B_50",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 20,
+      "state": "Bolt_B_50",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 28,
+      "state": "Healthy",
+      "expected": "healthy",
+      "predicted": "healthy",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 34,
+      "state": "Unbalance_3g",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 37,
+      "state": "Unbalance_5g",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 1,
+      "state": "Bolt_A_100",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 8,
+      "state": "Bolt_A_50",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 9,
+      "state": "Bolt_A_50",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 12,
+      "state": "Bolt_B_100",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 13,
+      "state": "Bolt_B_100",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 18,
+      "state": "Bolt_B_50",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 19,
+      "state": "Bolt_B_50",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 21,
+      "state": "Coupler_wear",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 23,
+      "state": "Coupler_wear",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 26,
+      "state": "Healthy",
+      "expected": "healthy",
+      "predicted": "healthy",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 4,
+      "state": "Bolt_A_100",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 7,
+      "state": "Bolt_A_50",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 10,
+      "state": "Bolt_A_50",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 14,
+      "state": "Bolt_B_100",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 22,
+      "state": "Coupler_wear",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 24,
+      "state": "Coupler_wear",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 27,
+      "state": "Healthy",
+      "expected": "healthy",
+      "predicted": "healthy",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 33,
+      "state": "Unbalance_3g",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    },
+    {
+      "group": 39,
+      "state": "Unbalance_5g",
+      "expected": "anomaly",
+      "predicted": "anomaly",
+      "correct": true,
+      "signals": 75
+    }
+  ],
+  "independenceWarning": "The 39 measurement sequences are the highest-level experimental units. The 75 speed signals inside each sequence are repeated sweep measurements and are not 2,925 independent machines. This is development cross-validation, not a prospective field pilot.",
+  "scope": "One documented University of Patras laboratory rig, one uniaxial accelerometer, 35.0-49.8 Hz, healthy plus seven induced incipient fault states. Binary anomaly screening only; no fault-family diagnosis or field certification."
+}

@@ -19,6 +19,21 @@
     "use": "Production classifier training and whole-test held-out validation",
     "changes": "Deterministic 8,192-sample windows and RotorNote 48-feature vectors derived from selected raw recordings."
   },
+  "variableSpeedAnomalyTraining": {
+    "title": "UPATRAS Rotating Machinery Vibration Dataset for Incipient Fault Diagnosis under Varying Rotating Speeds",
+    "authors": ["Dimitrios M. Bourdalos", "John S. Sakellariou"],
+    "version": 1,
+    "doi": "10.17632/42v3s74gf9.1",
+    "recordUrl": "https://data.mendeley.com/datasets/42v3s74gf9/1",
+    "archiveUrl": "https://data.mendeley.com/public-api/zip/42v3s74gf9/download/1",
+    "archiveSha256": "d6a5ec295fa6757b13cc3754c9509f6297cf8a5b16b9c97a419d09fb2f2eb569",
+    "innerArchiveSha256": "ef67eab64164ee23ebb584375c734d817d110f722229d6f1db6c5afa74767bfb",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "acquisition": "39 independent measurement sequences; 2,925 single-axis vibration signals; 1,024 Hz; 75 rotating speeds from 35.0 to 49.8 Hz; healthy plus seven incipient fault states.",
+    "use": "Production variable-speed healthy-versus-anomaly neural head and whole-measurement-sequence grouped validation.",
+    "changes": "Two deterministic 2,048-sample windows per signal and RotorNote 48-feature vectors; binary labels preserve healthy versus observed anomaly without inventing unsupported fault equivalence."
+  },
   "bearingBoundaryEvaluation": {
     "title": "Vibration Data for Axial Ball Bearings and Spall Faults",
     "authors": ["Mohamed Ismail", "Jens Windelberg", "Andreas Bierig", "Iñaki Bravo-imaz", "Aitor Arnaiz"],

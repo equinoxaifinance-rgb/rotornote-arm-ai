@@ -11,7 +11,7 @@ export class InputError extends Error {
   }
 }
 
-export function parseCsv(text, requestedSampleRate = 1024) {
+export function parseCsv(text, requestedSampleRate = 1024, { minimumSamples = WINDOW_SIZE } = {}) {
   if (typeof text !== "string") throw new InputError("Body must be UTF-8 CSV text");
   if (Buffer.byteLength(text) > MAX_UPLOAD_BYTES) throw new InputError("CSV exceeds the 8 MiB limit", "payload_too_large");
   if (text.includes("\0")) throw new InputError("CSV contains a null byte");
@@ -49,7 +49,8 @@ export function parseCsv(text, requestedSampleRate = 1024) {
     amplitudes.forEach((value, index) => channels[index].push(value));
     if (channels[0].length > MAX_SAMPLES) throw new InputError(`CSV exceeds ${MAX_SAMPLES} samples`, "too_many_samples");
   }
-  if (!channels.length || channels[0].length < WINDOW_SIZE) throw new InputError(`At least ${WINDOW_SIZE} samples are required`, "too_few_samples");
+  if (!Number.isInteger(minimumSamples) || minimumSamples < 1024) throw new InputError("Minimum sample contract is invalid");
+  if (!channels.length || channels[0].length < minimumSamples) throw new InputError(`At least ${minimumSamples} samples are required`, "too_few_samples");
   const typedChannels = channels.map((values) => Float32Array.from(values));
   return { values: typedChannels[0], channels: typedChannels, sampleRate };
 }

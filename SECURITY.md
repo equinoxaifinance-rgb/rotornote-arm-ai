@@ -42,3 +42,7 @@ Dependency licenses:
 - `wabt` 1.0.37 build tool: Apache-2.0, as declared in its locked npm package metadata.
 
 Report a vulnerability privately to the repository owner before opening a public issue. Rotate and remove any accidentally committed credential immediately; history rewriting alone does not revoke it.
+
+## Second-model boundary
+
+The variable-speed anomaly head has independent FP32 and INT8 hashes and must load before readiness. Its endpoint requires a positive RPM, rejects multi-sensor misuse, checks the fitted training envelope, witnesses every answer through both engines, and cannot return a fault family or severity. Its second laboratory rig broadens the measured speed range but is not multi-machine field evidence.

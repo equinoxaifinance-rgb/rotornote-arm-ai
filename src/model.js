@@ -143,3 +143,7 @@ export async function loadModel({ modelUrl = MODEL_URL, wasmUrl = WASM_URL } = {
     },
   };
 }
+
+export async function loadInferenceModel(modelUrl, { wasmUrl = WASM_URL } = {}) {
+  return loadModel({ modelUrl, wasmUrl });
+}

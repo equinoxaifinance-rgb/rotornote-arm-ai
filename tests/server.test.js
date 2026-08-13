@@ -23,6 +23,7 @@ test("happy path serves UI, health, sample, and optimized analysis", async () =>
     const health = await (await fetch(`${url}/health`)).json();
     assert.equal(health.status, "ready");
     assert.equal(health.nativeArm64, process.arch === "arm64");
+    assert.match(health.anomalyModel, /upatras/);
 
     const sample = await (await fetch(`${url}/samples/real-imbalance.csv`)).text();
     const response = await fetch(`${url}/api/analyze?engine=optimized`, {
@@ -44,6 +45,44 @@ test("happy path serves UI, health, sample, and optimized analysis", async () =>
     });
     assert.equal((await repeated.json()).result.receipt.evidenceId, payload.result.receipt.evidenceId);
     assert.ok(response.headers.get("x-request-id"));
+  });
+});
+
+test("variable-speed anomaly path serves a real attributed signal through both engines", async () => {
+  await withServer(createHandler(), async (url) => {
+    const sample = await (await fetch(`${url}/samples/real-variable-speed-anomaly.csv`)).text();
+    for (const engine of ["baseline", "optimized"]) {
+      const response = await fetch(`${url}/api/anomaly?engine=${engine}`, {
+        method: "POST",
+        headers: { "content-type": "text/csv", "x-sample-rate": "1024", "x-operating-rpm": "2100" },
+        body: sample,
+      });
+      assert.equal(response.status, 200);
+      const payload = await response.json();
+      assert.equal(payload.result.status, "screened");
+      assert.equal(payload.result.primary, "anomaly");
+      assert.equal(payload.result.engineAgreement, true);
+      assert.equal(payload.result.signal.featureWindows, 2);
+      assert.match(payload.result.model.source, /UPATRAS/);
+    }
+  });
+});
+
+test("variable-speed anomaly path rejects missing RPM and multi-sensor input", async () => {
+  await withServer(createHandler(), async (url) => {
+    const sample = await (await fetch(`${url}/samples/real-variable-speed-anomaly.csv`)).text();
+    const missingRpm = await fetch(`${url}/api/anomaly`, { method: "POST", headers: { "content-type": "text/csv" }, body: sample });
+    assert.equal(missingRpm.status, 422);
+    assert.equal((await missingRpm.json()).error, "operating_rpm_required");
+    const rows = sample.trim().split(/\r?\n/).filter((row) => row && !row.startsWith("#") && row !== "sensor");
+    const doubled = `a,b,c,d\n${rows.map((value) => `${value},${value},${value},${value}`).join("\n")}\n`;
+    const multiple = await fetch(`${url}/api/anomaly`, {
+      method: "POST",
+      headers: { "content-type": "text/csv", "x-operating-rpm": "2100" },
+      body: doubled,
+    });
+    assert.equal(multiple.status, 422);
+    assert.equal((await multiple.json()).error, "single_sensor_required");
   });
 });
 

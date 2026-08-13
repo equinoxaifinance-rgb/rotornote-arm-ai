@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import { analyzeSignal } from "../src/analyze.js";
+import { analyzeVariableSpeedAnomaly } from "../src/anomaly.js";
 import { parseCsv } from "../src/csv.js";
-import { loadModel } from "../src/model.js";
+import { loadInferenceModel, loadModel } from "../src/model.js";
 
 const required = [
   "README.md", "ARCHITECTURE.md", "SECURITY.md", "BENCHMARKS.md", "SUBMISSION.md", "LICENSE",
@@ -14,6 +15,12 @@ const required = [
   "field/results/open-grouped-cross-validation.json", "field/results/axial-bearing-boundary.json",
   "field/training/mechanical-manifest.json", "field/training/mechanical-features.f32",
   "field/training/mechanical-labels.u8", "field/training/mechanical-groups.u8", "field/training/linear-export.json",
+  "scripts/prepare-upatras-features.mjs", "scripts/prepare-upatras-demo.mjs", "scripts/train-upatras-anomaly.py",
+  "scripts/build-anomaly-model.js", "benchmark/run-anomaly.js", "src/anomaly.js", "web/anomaly.css",
+  "field/results/upatras-grouped-anomaly.json", "field/training/upatras-manifest.json",
+  "field/training/upatras-features.f32", "field/training/upatras-labels.u8", "field/training/upatras-groups.u8",
+  "field/training/upatras-deep-export.json", "model/anomaly-model.json", "model/rotornote-anomaly-fp32.bin",
+  "model/rotornote-anomaly-int8.bin", "samples/real-variable-speed-anomaly.csv",
   "dist/dense.wasm", "model/model.json", "model/rotornote-fp32.bin", "model/rotornote-int8.bin",
   "samples/real-healthy.csv", "samples/real-imbalance.csv", "samples/real-misalignment.csv", "samples/real-looseness.csv",
   "assets/gallery/01-hero.svg", "assets/gallery/02-analysis.svg", "assets/gallery/03-arm-optimization.svg",
@@ -38,6 +45,20 @@ for (const label of model.metadata.labels) {
   const optimized = analyzeSignal(model, parsed.values, 25000, "optimized", options);
   assert.equal(baseline.primary, optimized.primary, `${file} engine disagreement`);
 }
+const anomalyModel = await loadInferenceModel(new URL("../model/anomaly-model.json", import.meta.url));
+assert.deepEqual(anomalyModel.metadata.architecture, [48, 128, 64, 2]);
+assert.equal(anomalyModel.metadata.training.dataKind, "real experimental vibration only");
+assert.equal(anomalyModel.metadata.training.signalBalancedAccuracy, 1);
+assert.equal(anomalyModel.metadata.training.measurementSequenceAccuracy, 1);
+assert.equal(anomalyModel.metadata.training.measurementSequences, 39);
+assert.ok(anomalyModel.metadata.training.measurementSequenceAccuracyWilson95[0] >= 0.9);
+assert.equal(anomalyModel.metadata.training.engineLabelAgreement, 1);
+assert.ok(anomalyModel.metadata.int8.bytes <= anomalyModel.metadata.float.bytes * 0.27);
+const anomalyCsv = parseCsv(await readFile(new URL("../samples/real-variable-speed-anomaly.csv", import.meta.url), "utf8"), 1024, { minimumSamples: 2048 });
+const anomalyResult = analyzeVariableSpeedAnomaly(anomalyModel, anomalyCsv.values, 1024, 2100);
+assert.equal(anomalyResult.primary, "anomaly");
+assert.equal(anomalyResult.status, "screened");
+assert.equal(anomalyResult.engineAgreement, true);
 const workflow = await readFile(new URL("../.github/workflows/native-arm64.yml", import.meta.url), "utf8");
 assert.match(workflow, /runs-on: ubuntu-24\.04-arm/);
 assert.match(workflow, /test "\$\(uname -m\)" = "aarch64"/);
@@ -59,4 +80,4 @@ for (const file of required.filter((path) => path.endsWith(".svg"))) {
   assert.match(svg, /viewBox="0 0 1600 900"/);
   assert.match(svg, /role="img" aria-label="[^"]+"/);
 }
-console.log(`validated ${required.length} required files, real-data model integrity, four dual-engine samples, external abstention, Arm gate, and gallery metadata`);
+console.log(`validated ${required.length} required files, both real-data model paths, dual-engine parity, external abstention, Arm gate, and gallery metadata`);

@@ -22,3 +22,19 @@ The model is a fixed linear discriminant specification with a 1e-8 numerical cov
 FP32 stores 192 weights plus four biases. INT8 uses dynamic symmetric input scaling and one symmetric scale per output row; biases remain FP32. Build-time parity is measured over all 2,000 real four-channel recording representations and gates the production decision path. The WASM kernel performs signed vector dot accumulation; JavaScript applies scales, bias, and softmax.
 
 The server runs as one unprivileged Node 22 process with no production npm dependencies. Uploads are bounded and processed in memory. A high-volume deployment should use authenticated gateways and multiple replicas or worker threads; RotorNote never writes to a PLC.
+
+## Variable-speed anomaly lane
+
+```text
+one 3,500-sample uniaxial signal + RPM
+  -> two deterministic 2,048-sample windows
+  -> mean 48-feature representation
+  -> standard scaling
+  -> FP32 48->128->64->2 ReLU MLP
+       <-> exact alternate-engine witness
+     dynamic-input/per-output-weight INT8 WASM SIMD
+  -> training-envelope + confidence + engine-agreement gates
+  -> healthy | anomaly | review_required
+```
+
+This second head deliberately answers a broader but shallower question. It was trained on 2,925 real UPATRAS speed signals across 39 complete physical measurement sequences. Four-fold validation holds out whole sequences, so neither another speed nor another window from a held sequence can leak into training. It never maps those states onto RotorNote's four fault-family labels and never estimates severity.

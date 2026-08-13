@@ -39,6 +39,7 @@ jobs:
         run: |
           set -o pipefail
           npm run benchmark -- --output benchmark/results/native-arm64.json --repetitions 51 --batch 2048 --warmups 16 | tee benchmark-output.txt
+          npm run benchmark:anomaly -- --output benchmark/results/anomaly-native-arm64.json --repetitions 51 --batch 1024 --warmups 16 | tee anomaly-benchmark-output.txt
       - name: Prove Arm dot-product ISA path
         run: |
           cc --version | tee arm-compiler.txt
@@ -56,7 +57,9 @@ jobs:
           retention-days: 90
           path: |
             benchmark/results/native-arm64.json
+            benchmark/results/anomaly-native-arm64.json
             benchmark-output.txt
+            anomaly-benchmark-output.txt
             test-output.txt
             machine-uname.txt
             machine-lscpu.txt
@@ -65,5 +68,8 @@ jobs:
             arm-compiler.txt
             arm-dotprod.json
             model/model.json
+            model/anomaly-model.json
       - name: Gate current native speed claim
-        run: node -e "const r=require('./benchmark/results/native-arm64.json'); if(!r.claims.nativeSpeedupSupported) throw new Error('Current native speedup confidence interval does not exclude 1.0')"
+        run: |
+          node -e "const r=require('./benchmark/results/native-arm64.json'); if(!r.claims.nativeSpeedupSupported) throw new Error('Current native speedup confidence interval does not exclude 1.0')"
+          node -e "const r=require('./benchmark/results/anomaly-native-arm64.json'); if(r.evidenceClass!=='native-arm64'||r.correctness.labelAgreement!==1||r.correctness.maximumProbabilityDelta>=0.08||r.summary.weightByteReduction<0.7) throw new Error('Deep anomaly Arm evidence gate failed')"

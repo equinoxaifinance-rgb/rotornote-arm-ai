@@ -1,0 +1,313 @@
+{
+  "format": "rotornote-upatras-features-v1",
+  "sourceDataset": {
+    "title": "UPATRAS Rotating Machinery Vibration Dataset for Incipient Fault Diagnosis under Varying Rotating Speeds",
+    "authors": [
+      "Dimitrios M. Bourdalos",
+      "John S. Sakellariou"
+    ],
+    "version": 1,
+    "doi": "10.17632/42v3s74gf9.1",
+    "recordUrl": "https://data.mendeley.com/datasets/42v3s74gf9/1",
+    "archiveUrl": "https://data.mendeley.com/public-api/zip/42v3s74gf9/download/1",
+    "archiveSha256": "d6a5ec295fa6757b13cc3754c9509f6297cf8a5b16b9c97a419d09fb2f2eb569",
+    "innerArchiveSha256": "ef67eab64164ee23ebb584375c734d817d110f722229d6f1db6c5afa74767bfb",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "acquisition": "39 independent measurement sequences; 2,925 single-axis vibration signals; 1,024 Hz; 75 rotating speeds from 35.0 to 49.8 Hz; healthy plus seven incipient fault states.",
+    "use": "Production variable-speed healthy-versus-anomaly neural head and whole-measurement-sequence grouped validation.",
+    "changes": "Two deterministic 2,048-sample windows per signal and RotorNote 48-feature vectors; binary labels preserve healthy versus observed anomaly without inventing unsupported fault equivalence."
+  },
+  "sourceInnerArchiveSha256": "ef67eab64164ee23ebb584375c734d817d110f722229d6f1db6c5afa74767bfb",
+  "sampleRateHz": 1024,
+  "sourceSamplesPerSignal": 3500,
+  "featureWindowsPerSignal": 2,
+  "featureWindowSamples": 2048,
+  "measurementSequences": 39,
+  "signals": 2925,
+  "featureRows": 5850,
+  "featureCount": 48,
+  "labels": [
+    "healthy",
+    "anomaly"
+  ],
+  "splitPolicy": "whole measurement sequences; no speed signal or window crosses a validation boundary",
+  "sourceFiles": [
+    {
+      "group": 1,
+      "state": "Bolt_A_100",
+      "family": "looseness",
+      "file": "bolt_a_100_meas_01.csv",
+      "sha256": "95debb8b813f95ed511761f194fd8d650eb5f0653b883d0594f1fd437067f220"
+    },
+    {
+      "group": 2,
+      "state": "Bolt_A_100",
+      "family": "looseness",
+      "file": "bolt_a_100_meas_02.csv",
+      "sha256": "bc8fda5d9a297ac85e15f8b6c7b7f8d79303301b4be296588aa1c0f085e5dd13"
+    },
+    {
+      "group": 3,
+      "state": "Bolt_A_100",
+      "family": "looseness",
+      "file": "bolt_a_100_meas_03.csv",
+      "sha256": "d267c10fbbcbbe83889a2e83f80629edae4ee943163b056a7eb4b1dad8442a4f"
+    },
+    {
+      "group": 4,
+      "state": "Bolt_A_100",
+      "family": "looseness",
+      "file": "bolt_a_100_meas_04.csv",
+      "sha256": "fb18f2703c06ffa1a0d7177dbe1d85760ba5d4b59c8e3c8e560d7938428fd06a"
+    },
+    {
+      "group": 5,
+      "state": "Bolt_A_100",
+      "family": "looseness",
+      "file": "bolt_a_100_meas_05.csv",
+      "sha256": "b76d7062e708db7d85edcb04dc4cf1460e56acae84d8f1e39969c608703b4c92"
+    },
+    {
+      "group": 6,
+      "state": "Bolt_A_50",
+      "family": "looseness",
+      "file": "bolt_a_50_meas_01.csv",
+      "sha256": "394feb2a22e8e57c5f5ee78e2b165855347db7346dd49ee02aed2a0b03a41472"
+    },
+    {
+      "group": 7,
+      "state": "Bolt_A_50",
+      "family": "looseness",
+      "file": "bolt_a_50_meas_02.csv",
+      "sha256": "e9f33749602f5216b743f53ed45d8042052bfad71f07d24042d6c3eec7f7a31a"
+    },
+    {
+      "group": 8,
+      "state": "Bolt_A_50",
+      "family": "looseness",
+      "file": "bolt_a_50_meas_03.csv",
+      "sha256": "7d9e9161f7c44c53c9431576b06f7214441680bb3f62ace466fe36fb46d6a135"
+    },
+    {
+      "group": 9,
+      "state": "Bolt_A_50",
+      "family": "looseness",
+      "file": "bolt_a_50_meas_04.csv",
+      "sha256": "681999c78a4c734f1af69c97f279eaf2115cf8bfea90027caea1da08e6753b5a"
+    },
+    {
+      "group": 10,
+      "state": "Bolt_A_50",
+      "family": "looseness",
+      "file": "bolt_a_50_meas_05.csv",
+      "sha256": "5fac3db150c25c36d2c6e96265b51aa1256475499119f9f847c2e8d5cc80e024"
+    },
+    {
+      "group": 11,
+      "state": "Bolt_B_100",
+      "family": "looseness",
+      "file": "bolt_b_100_meas_01.csv",
+      "sha256": "0a81ff2be205b14274019eadee35e26b96c0004a2cd33c5ad3d3b5c3d408004a"
+    },
+    {
+      "group": 12,
+      "state": "Bolt_B_100",
+      "family": "looseness",
+      "file": "bolt_b_100_meas_02.csv",
+      "sha256": "50e5e7557c6338fe5ebebe5a88edb729dd9b22dc62c1427c9bcb03c4deb72dd7"
+    },
+    {
+      "group": 13,
+      "state": "Bolt_B_100",
+      "family": "looseness",
+      "file": "bolt_b_100_meas_03.csv",
+      "sha256": "399bee6f500871bb4a9670d0a9a048f4725305e6fa229699180f132b6d119310"
+    },
+    {
+      "group": 14,
+      "state": "Bolt_B_100",
+      "family": "looseness",
+      "file": "bolt_b_100_meas_04.csv",
+      "sha256": "57d7245ab553e7fb682a758e17cce787dcfb0da4002c28d968456dfb6d7c2ce6"
+    },
+    {
+      "group": 15,
+      "state": "Bolt_B_100",
+      "family": "looseness",
+      "file": "bolt_b_100_meas_05.csv",
+      "sha256": "bc5241429b6026d8bf38de1101b6fe487e864bf18c2b82df0e91efed8f89ad2d"
+    },
+    {
+      "group": 16,
+      "state": "Bolt_B_50",
+      "family": "looseness",
+      "file": "bolt_b_50_meas_01.csv",
+      "sha256": "f3c7b4e7d1a4b8600ffc17663ca27a5fa855640f3082d16b3c4b801114ee4842"
+    },
+    {
+      "group": 17,
+      "state": "Bolt_B_50",
+      "family": "looseness",
+      "file": "bolt_b_50_meas_02.csv",
+      "sha256": "817c2ee614b42cefab98bc9d691b4b5c9eeb864c8449b1539f832234d0a107c9"
+    },
+    {
+      "group": 18,
+      "state": "Bolt_B_50",
+      "family": "looseness",
+      "file": "bolt_b_50_meas_03.csv",
+      "sha256": "1a912489e9b912f7e6d03b8f7d7efb93caeb611e4981aa4b0a09a346295ff2d9"
+    },
+    {
+      "group": 19,
+      "state": "Bolt_B_50",
+      "family": "looseness",
+      "file": "bolt_b_50_meas_04.csv",
+      "sha256": "b06e3f59f193d7853abcfeacc5224e3428f65d900ea6632dc7f0d8e45d8d6eec"
+    },
+    {
+      "group": 20,
+      "state": "Bolt_B_50",
+      "family": "looseness",
+      "file": "bolt_b_50_meas_05.csv",
+      "sha256": "fbb0dd0c97edef1e7b762a6983614a8087e203d823a864e66d9afae5b6b8f01f"
+    },
+    {
+      "group": 21,
+      "state": "Coupler_wear",
+      "family": "coupler_wear",
+      "file": "coupler_wear_meas_01.csv",
+      "sha256": "ee826f7e7464be262e72e0fedd46a6b7e6c690577dd369bd4cc04f654967d2dd"
+    },
+    {
+      "group": 22,
+      "state": "Coupler_wear",
+      "family": "coupler_wear",
+      "file": "coupler_wear_meas_02.csv",
+      "sha256": "e69ced1ce2e127493ad302c24b05f5eeb6c2471357cdf055473d80f250883d37"
+    },
+    {
+      "group": 23,
+      "state": "Coupler_wear",
+      "family": "coupler_wear",
+      "file": "coupler_wear_meas_03.csv",
+      "sha256": "6c02e8000d62cbc7bc87f3f78e4583a62070a49d717dce0f61ce4d50df9c3029"
+    },
+    {
+      "group": 24,
+      "state": "Coupler_wear",
+      "family": "coupler_wear",
+      "file": "coupler_wear_meas_04.csv",
+      "sha256": "bafe72434236ee991227f88252da33b21ddbc0b9a75d54f0d89653aa1177fd67"
+    },
+    {
+      "group": 25,
+      "state": "Coupler_wear",
+      "family": "coupler_wear",
+      "file": "coupler_wear_meas_05.csv",
+      "sha256": "9f7b9de471fd26c92e146959b3bdf62d8f506ccd1841715bc3ad43b65792104d"
+    },
+    {
+      "group": 26,
+      "state": "Healthy",
+      "family": "healthy",
+      "file": "healthy_meas_01.csv",
+      "sha256": "187f82663f881b6f79e0a9d71f99293a3c696263a217f3a56dcaf545280466fb"
+    },
+    {
+      "group": 27,
+      "state": "Healthy",
+      "family": "healthy",
+      "file": "healthy_meas_02.csv",
+      "sha256": "6c703c4259d78c16e4f9dad40f3db215ca3b7172e07ce6ff64c406512dbffb0b"
+    },
+    {
+      "group": 28,
+      "state": "Healthy",
+      "family": "healthy",
+      "file": "healthy_meas_03.csv",
+      "sha256": "1e0fee21711e229c5e8d87562aa5a95e8ecefc0c26c79c3faec35f6de1d62bb9"
+    },
+    {
+      "group": 29,
+      "state": "Healthy",
+      "family": "healthy",
+      "file": "healthy_meas_04.csv",
+      "sha256": "a2923d0c9bb7168bf1743bccca892da2581cc0ce7d3a5c9bbc9f4723c7701ca1"
+    },
+    {
+      "group": 30,
+      "state": "Unbalance_3g",
+      "family": "unbalance",
+      "file": "unbalance_3g_meas_01.csv",
+      "sha256": "c15964cb0a8b4e84c2cc7763b5fd67867d0c9bf156771a07c64fdb2f84486447"
+    },
+    {
+      "group": 31,
+      "state": "Unbalance_3g",
+      "family": "unbalance",
+      "file": "unbalance_3g_meas_02.csv",
+      "sha256": "a0d63ed79c23532fe512a990447a677b57674982ec0fd38cdbba50c9b33e01fa"
+    },
+    {
+      "group": 32,
+      "state": "Unbalance_3g",
+      "family": "unbalance",
+      "file": "unbalance_3g_meas_03.csv",
+      "sha256": "6583a355bd006d02376ebbffbdec054b95556befe8e77f7614d802dcc47684a1"
+    },
+    {
+      "group": 33,
+      "state": "Unbalance_3g",
+      "family": "unbalance",
+      "file": "unbalance_3g_meas_04.csv",
+      "sha256": "150e89cf01ea242b7208bdb02498517f687669d481551041973f09be3bcba223"
+    },
+    {
+      "group": 34,
+      "state": "Unbalance_3g",
+      "family": "unbalance",
+      "file": "unbalance_3g_meas_05.csv",
+      "sha256": "3d194d8f6989120721cd7be4dcbf2c9e8ddb158cb6924a735097390fbf8e3e62"
+    },
+    {
+      "group": 35,
+      "state": "Unbalance_5g",
+      "family": "unbalance",
+      "file": "unbalance_5g_meas_01.csv",
+      "sha256": "8605507d64c4d383ec960612ecadb2190838c9db50c8bad1d3ab91fe3d78e03c"
+    },
+    {
+      "group": 36,
+      "state": "Unbalance_5g",
+      "family": "unbalance",
+      "file": "unbalance_5g_meas_02.csv",
+      "sha256": "066f15fe25da4288e33e5e995efca75268c3121045dbd4682bdb8f30aa4dc380"
+    },
+    {
+      "group": 37,
+      "state": "Unbalance_5g",
+      "family": "unbalance",
+      "file": "unbalance_5g_meas_03.csv",
+      "sha256": "4e6f21ade0d64d71aa8e2d4f1c9dad4c5262dddc91ed0b7881efefb465360f8e"
+    },
+    {
+      "group": 38,
+      "state": "Unbalance_5g",
+      "family": "unbalance",
+      "file": "unbalance_5g_meas_04.csv",
+      "sha256": "48fd5150f6785e4d667417c6383e7720206e0248cb8c57e8946f20315d4eeea7"
+    },
+    {
+      "group": 39,
+      "state": "Unbalance_5g",
+      "family": "unbalance",
+      "file": "unbalance_5g_meas_05.csv",
+      "sha256": "5d71aee6f5bd2377ca30b336e16181423b0bf2e00a2f7145d4961a64a9af0ff1"
+    }
+  ],
+  "featuresSha256": "5a68fc21c72bd0e5fd7935a64e86763f5c17c28437506aa6305de05a2f37bc2d",
+  "labelsSha256": "a93caab3c2891516990f47b073e6bdcc0893040a7d90086d9a21d3db45a2bc15",
+  "groupsSha256": "d96f18017b6967aab4bfc57c078dfda2e58468973af6dd334e5200e7bdf6cf3e"
+}

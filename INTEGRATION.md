@@ -35,3 +35,7 @@ Remote endpoints require HTTPS; localhost may use HTTP. The gateway has bounded 
 `POST /api/analyze?engine=optimized` accepts `text/csv`. Field clients should send `X-Sample-Rate`, `X-Machine-Id`, `X-Measurement-Point`, `X-Sensor-Axis`, `X-Operating-RPM`, and `X-Load-Percent`. Repeat captures must preserve sensor, units, calibration, mount, point, axis, rate, speed, load, and operating state.
 
 The response contains the decision, channel quality, supported-class distribution, envelope coverage, FP32/INT8 agreement, acquisition context, and a deterministic evidence passport. Store that passport beside the work order; do not treat it as a cryptographic signature or maintenance authorization.
+
+## Variable-speed anomaly route
+
+`POST /api/anomaly?engine=optimized` accepts one uniaxial `text/csv` channel with 2,048-131,072 samples. Send `X-Sample-Rate` and a positive `X-Operating-RPM`. The response is limited to `healthy`, `anomaly`, or `review_required`, includes FP32/INT8 agreement and fitted-envelope status, and does not identify a fault family or severity. Multi-sensor payloads and missing RPM fail closed with structured 422 responses.

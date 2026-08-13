@@ -4,6 +4,7 @@ const elements = Object.fromEntries([
   "verdictTitle", "primaryLabel", "confidence", "confidenceMeter", "duration", "waveform", "timeline", "action",
   "details", "disclaimer", "machineId", "measurementPoint", "sensorAxis", "operatingRpm", "loadPercent",
   "decisionBadge", "assurance", "machineContext", "receiptId", "downloadEvidence", "copyMaintenanceNote",
+  "anomalyDemo", "anomalyResult",
 ].map((id) => [id, document.getElementById(id)]));
 
 let selectedCsv = "";
@@ -213,3 +214,25 @@ elements.analyzeButton.addEventListener("click", analyze);
 window.addEventListener("resize", () => drawWaveform(lastWaveform));
 
 await Promise.all([checkHealth(), loadSamples()]);
+
+elements.anomalyDemo.addEventListener("click", async () => {
+  elements.anomalyDemo.disabled = true;
+  elements.anomalyResult.textContent = "Running the real INT8 neural head…";
+  try {
+    const sample = await fetch("/samples/real-variable-speed-anomaly.csv");
+    const csv = await sample.text();
+    const response = await fetch("/api/anomaly?engine=optimized", {
+      method: "POST",
+      headers: { "content-type": "text/csv", "x-sample-rate": "1024", "x-operating-rpm": "2100" },
+      body: csv,
+    });
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.message || payload.error || "Anomaly screen failed");
+    const result = payload.result;
+    elements.anomalyResult.textContent = `${result.primary.replaceAll("_", " ")} · ${Math.round(result.confidence * 100)}% score · ${result.engineAgreement ? "FP32/INT8 agree" : "engine review"}`;
+  } catch (error) {
+    elements.anomalyResult.textContent = error.message;
+  } finally {
+    elements.anomalyDemo.disabled = false;
+  }
+});

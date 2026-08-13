@@ -1,0 +1,22 @@
+.anomaly-lane {
+  display: grid;
+  grid-template-columns: .7fr 1.4fr 1fr;
+  gap: 30px;
+  align-items: center;
+  margin: 18px 0;
+  padding: 30px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.anomaly-lane > div:first-child { display: flex; align-items: center; gap: 10px; }
+.anomaly-lane h2 { font: italic 28px Georgia, serif; margin: 0 0 7px; }
+.anomaly-lane p { color: var(--muted); font-size: 11px; line-height: 1.55; margin: 0; }
+.anomaly-demo button { width: 100%; display: flex; justify-content: space-between; border: 0; background: var(--ink); color: white; padding: 14px 16px; font-weight: 700; cursor: pointer; }
+.anomaly-demo button:hover { background: var(--forest); }
+.anomaly-demo button:disabled { opacity: .55; }
+.anomaly-demo p { margin-top: 9px; font: 700 9px ui-monospace, monospace; text-transform: uppercase; }
+.underhood a { color: var(--acid); }
+
+@media (max-width: 840px) { .anomaly-lane { grid-template-columns: 1fr; } }

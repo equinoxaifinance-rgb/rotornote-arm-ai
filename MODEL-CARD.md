@@ -6,7 +6,7 @@ RotorNote is a first-pass vibration screening and evidence tool for four signatu
 
 ## Model and evidence
 
-The production classifier is standard scaling plus linear discriminant analysis with a fixed 1e-8 numerical covariance ridge. It is still one transparent 48→4 linear layer. Each input is the mean of 48 order-aware time/frequency features over four synchronized accelerometers and five windows per channel. Its source is the CC BY 4.0 dataset DOI `10.17632/zx8pfhdtnb.3`; training/evaluation uses 100 evenly spaced recordings per physical test.
+The production classifier is standard scaling plus linear discriminant analysis with a fixed 1e-8 numerical covariance ridge. It is intentionally one transparent 48→4 linear layer, not a neural network, and the project does not claim otherwise. Each input is the mean of 48 order-aware time/frequency features over four synchronized accelerometers and five windows per channel. Its source is the CC BY 4.0 dataset DOI `10.17632/zx8pfhdtnb.3`; training/evaluation uses 100 evenly spaced recordings per physical test.
 
 Five grouped outer folds each hold out one complete physical test per class. Four-channel recording balanced accuracy is 94.0%; the individual fold scores are 85.75%, 85.5%, 98.75%, 100%, and 100%, and 19 of 20 physical tests are correctly identified. The 19/20 proportion has a 76.4%–99.1% Wilson 95% interval. A single-channel ablation reaches only 67.96% and is therefore forced to `review_required`. A nested audit searched confidence thresholds through 0.9999 but could not establish 95% selective accuracy inside every split; its full traces are retained in the grouped receipt. Therefore 0.99 is a conservative abstention rule, not an independently calibrated probability threshold. Because recordings within a physical test are repeated measures, 2,000 recording decisions are not 2,000 independent machines.
 
@@ -27,3 +27,9 @@ The separate CC BY bearing boundary probe (DOI `10.17632/chwhh9n3bf.2`) produced
 ## Known limitations
 
 Evidence covers one laboratory rig near 1,238 RPM with experimentally induced conditions. It does not cover natural faults, severity estimation, compound faults, sensor interchangeability, changing mounts, broad speed/load ranges, cross-machine transfer, or field prevalence. Probabilities are classifier scores, not calibrated real-world failure risk. Certification and field reliance require the independent protocol in `FIELD-VALIDATION.md`.
+
+## Variable-speed anomaly head
+
+RotorNote separately ships a 48->128->64->2 ReLU MLP for `healthy | anomaly`. It uses real experimental UPATRAS data (DOI `10.17632/42v3s74gf9.1`): 2,925 signals from 39 complete measurement sequences at 75 speeds. Four-fold validation is grouped by complete sequence, with 100% observed signal balanced accuracy and 39/39 sequence accuracy (Wilson 95%: 91.0%-100%). This is evidence on that rig, not field certification.
+
+The head uses a 0.90 conservative score floor, fitted-envelope rejection, and mandatory FP32/INT8 agreement. INT8 reduces learned bytes by 74.01%, preserves every production label across the 2,925-signal bank, and has 0.00586 maximum probability drift. It cannot name a fault family, estimate severity, or replace the four-sensor head.

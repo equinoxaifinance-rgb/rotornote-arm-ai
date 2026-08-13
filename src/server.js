@@ -3,15 +3,17 @@ import { readFile } from "node:fs/promises";
 import http from "node:http";
 import { fileURLToPath } from "node:url";
 import { analyzeChannels } from "./analyze.js";
+import { analyzeVariableSpeedAnomaly } from "./anomaly.js";
 import { InputError, MAX_UPLOAD_BYTES, parseCsv } from "./csv.js";
 import { createAnalysisReceipt } from "./evidence.js";
-import { loadModel } from "./model.js";
+import { loadInferenceModel, loadModel } from "./model.js";
 
 const STATIC = new Map([
   ["/", [new URL("../web/index.html", import.meta.url), "text/html; charset=utf-8"]],
   ["/app.js", [new URL("../web/app.js", import.meta.url), "text/javascript; charset=utf-8"]],
   ["/styles.css", [new URL("../web/styles.css", import.meta.url), "text/css; charset=utf-8"]],
   ["/actions.css", [new URL("../web/actions.css", import.meta.url), "text/css; charset=utf-8"]],
+  ["/anomaly.css", [new URL("../web/anomaly.css", import.meta.url), "text/css; charset=utf-8"]],
 ]);
 const SAMPLES = new Map([
   ["real-healthy", { file: "real-healthy.csv", title: "Healthy rig", detail: "1 s · attributed physical test", sampleRate: 25000, operatingRpm: 1238 }],
@@ -19,6 +21,7 @@ const SAMPLES = new Map([
   ["real-misalignment", { file: "real-misalignment.csv", title: "Shaft misalignment", detail: "1 s · attributed physical test", sampleRate: 25000, operatingRpm: 1238 }],
   ["real-looseness", { file: "real-looseness.csv", title: "Mechanical looseness", detail: "1 s · attributed physical test", sampleRate: 25000, operatingRpm: 1238 }],
 ]);
+const VARIABLE_SAMPLE = { file: "real-variable-speed-anomaly.csv", sampleRate: 1024, operatingRpm: 2100 };
 
 const securityHeaders = {
   "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
@@ -60,14 +63,25 @@ async function readBody(request) {
   return Buffer.concat(chunks).toString("utf8");
 }
 
-export function createHandler({ modelLoader = loadModel } = {}) {
+export function createHandler({
+  modelLoader = loadModel,
+  anomalyModelLoader = () => loadInferenceModel(new URL("../model/anomaly-model.json", import.meta.url)),
+} = {}) {
   let modelPromise;
+  let anomalyModelPromise;
   const getModel = () => {
     if (!modelPromise) modelPromise = modelLoader().catch((error) => {
       modelPromise = undefined;
       throw error;
     });
     return modelPromise;
+  };
+  const getAnomalyModel = () => {
+    if (!anomalyModelPromise) anomalyModelPromise = anomalyModelLoader().catch((error) => {
+      anomalyModelPromise = undefined;
+      throw error;
+    });
+    return anomalyModelPromise;
   };
 
   return async (request, response) => {
@@ -77,13 +91,14 @@ export function createHandler({ modelLoader = loadModel } = {}) {
       const url = new URL(request.url, "http://localhost");
       if (request.method === "GET" && url.pathname === "/health") {
         try {
-          const model = await getModel();
+          const [model, anomalyModel] = await Promise.all([getModel(), getAnomalyModel()]);
           return respond(response, 200, {
             status: "ready",
             architecture: process.arch,
             nativeArm64: process.arch === "arm64",
             engines: ["baseline-fp32-js", "optimized-int8-wasm-simd"],
             model: model.metadata.format,
+            anomalyModel: anomalyModel.metadata.format,
           });
         } catch {
           return respond(response, 503, { status: "dependency_unavailable", requestId }, undefined, { "retry-after": "1" });
@@ -94,6 +109,10 @@ export function createHandler({ modelLoader = loadModel } = {}) {
       }
       if (request.method === "GET" && url.pathname.startsWith("/samples/")) {
         const id = url.pathname.slice("/samples/".length).replace(/\.csv$/, "");
+        if (id === "real-variable-speed-anomaly") {
+          const csv = await readFile(new URL(`../samples/${VARIABLE_SAMPLE.file}`, import.meta.url));
+          return respond(response, 200, csv, "text/csv; charset=utf-8");
+        }
         const sample = SAMPLES.get(id);
         if (!sample) return respond(response, 404, { error: "sample_not_found", requestId });
         const csv = await readFile(new URL(`../samples/${sample.file}`, import.meta.url));
@@ -112,6 +131,20 @@ export function createHandler({ modelLoader = loadModel } = {}) {
         const context = parseContext(request.headers);
         const result = analyzeChannels(model, channels, sampleRate, engine, { verifyParity: true, context });
         result.receipt = createAnalysisReceipt({ csv: body, sampleRate, engine, model, context, result });
+        return respond(response, 200, { requestId, result });
+      }
+      if (request.method === "POST" && url.pathname === "/api/anomaly") {
+        const contentType = request.headers["content-type"] || "";
+        if (!contentType.toLowerCase().startsWith("text/csv")) return respond(response, 415, { error: "content_type_must_be_text_csv", requestId });
+        const engine = url.searchParams.get("engine") || "optimized";
+        if (!new Set(["baseline", "optimized"]).has(engine)) return respond(response, 400, { error: "unknown_engine", requestId });
+        const body = await readBody(request);
+        const { channels, sampleRate } = parseCsv(body, request.headers["x-sample-rate"] || 1024, { minimumSamples: 2048 });
+        if (channels.length !== 1) return respond(response, 422, { error: "single_sensor_required", message: "Variable-speed anomaly screening accepts one uniaxial sensor", requestId });
+        const context = parseContext(request.headers);
+        if (context.operatingRpm === null || context.operatingRpm <= 0) return respond(response, 422, { error: "operating_rpm_required", message: "A positive operating RPM is required", requestId });
+        const model = await getAnomalyModel();
+        const result = analyzeVariableSpeedAnomaly(model, channels[0], sampleRate, context.operatingRpm, engine);
         return respond(response, 200, { requestId, result });
       }
       if (STATIC.has(url.pathname)) {

@@ -49,7 +49,9 @@ export function fftPower(input) {
 }
 
 export function extractFeatures(window, sampleRate = 1024, operatingRpm = null) {
-  if (window.length !== WINDOW_SIZE) throw new Error(`Expected ${WINDOW_SIZE} samples`);
+  if (window.length < 1024 || (window.length & (window.length - 1)) !== 0) {
+    throw new Error("Feature windows must contain at least 1024 power-of-two samples");
+  }
   let sum = 0;
   let sumAbs = 0;
   let sumSquares = 0;
