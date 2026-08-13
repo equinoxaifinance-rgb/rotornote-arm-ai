@@ -3,12 +3,13 @@ const elements = Object.fromEntries([
   "formatHelp", "formatCopy", "report", "emptyState", "reportContent", "engineBadge", "timing", "severity",
   "verdictTitle", "primaryLabel", "confidence", "confidenceMeter", "duration", "waveform", "timeline", "action",
   "details", "disclaimer", "machineId", "measurementPoint", "sensorAxis", "operatingRpm", "loadPercent",
-  "decisionBadge", "assurance", "machineContext", "receiptId",
+  "decisionBadge", "assurance", "machineContext", "receiptId", "downloadEvidence", "copyMaintenanceNote",
 ].map((id) => [id, document.getElementById(id)]));
 
 let selectedCsv = "";
 let selectedName = "";
 let lastWaveform = null;
+let lastResult = null;
 
 function message(text, error = false) {
   elements.inputMessage.textContent = text;
@@ -42,6 +43,8 @@ async function loadSamples() {
       const sampleResponse = await fetch(`/samples/${sample.id}.csv`);
       selectedCsv = await sampleResponse.text();
       selectedName = sample.title;
+      elements.sampleRate.value = sample.sampleRate;
+      elements.operatingRpm.value = sample.operatingRpm;
       elements.analyzeButton.disabled = false;
       message(`${sample.title} ready`);
     });
@@ -51,7 +54,7 @@ async function loadSamples() {
 
 function setFile(file) {
   if (!file) return;
-  if (file.size > 2 * 1024 * 1024) return message("That file is larger than 2 MiB.", true);
+  if (file.size > 8 * 1024 * 1024) return message("That file is larger than 8 MiB.", true);
   const reader = new FileReader();
   reader.addEventListener("load", () => {
     selectedCsv = String(reader.result);
@@ -91,6 +94,7 @@ function drawWaveform(values) {
 }
 
 function render(result) {
+  lastResult = result;
   elements.emptyState.hidden = true;
   elements.reportContent.hidden = false;
   elements.engineBadge.textContent = result.engine === "optimized" ? "INT8 · WASM SIMD" : "FP32 · JS baseline";
@@ -103,7 +107,10 @@ function render(result) {
   elements.confidenceMeter.style.width = `${Math.max(result.confidence * 100, 2)}%`;
   elements.decisionBadge.textContent = result.decision.status === "screened" ? "Screen accepted" : "Review required";
   elements.decisionBadge.className = result.decision.status;
-  elements.assurance.textContent = `${Math.round(result.decision.engineAgreement * 100)}% engine agreement · ${Math.round(result.decision.distributionCoverage * 100)}% inside calibration envelope`;
+  const assurance = `${Math.round(result.decision.engineAgreement * 100)}% engine agreement · ${Math.round(result.decision.distributionCoverage * 100)}% inside calibration envelope`;
+  elements.assurance.textContent = result.decision.status === "screened"
+    ? assurance
+    : `${result.decision.reasons.join(" · ").replaceAll("_", " ")} · ${assurance}`;
   elements.duration.textContent = `${result.signal.durationSeconds}s · ${result.signal.samples.toLocaleString()} samples`;
   drawWaveform(result.signal.waveform);
   elements.timeline.replaceChildren(...result.timeline.map((point) => {
@@ -127,6 +134,37 @@ function render(result) {
   elements.receiptId.title = result.receipt.statement;
   elements.disclaimer.textContent = result.note;
 }
+
+function maintenanceNote(result) {
+  const status = result.decision.status === "screened" ? `screened as ${result.primary}` : `review required (${result.decision.reasons.join(", ")})`;
+  return [
+    `RotorNote screening note — ${result.context.machineId}`,
+    `Point: ${result.context.measurementPoint}; axis: ${result.context.sensorAxis}; sample rate: ${result.signal.sampleRate} Hz`,
+    `Result: ${status}; confidence: ${Math.round(result.confidence * 100)}%; evidence: ${result.receipt.evidenceId}`,
+    `Next action: ${result.guidance.action}`,
+    "Screening aid only; confirm through like-for-like retest and qualified vibration review before maintenance action.",
+  ].join("\n");
+}
+
+elements.downloadEvidence.addEventListener("click", () => {
+  if (!lastResult) return;
+  const blob = new Blob([`${JSON.stringify(lastResult, null, 2)}\n`], { type: "application/json" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `rotornote-${lastResult.receipt.evidenceId}.json`;
+  link.click();
+  URL.revokeObjectURL(link.href);
+});
+
+elements.copyMaintenanceNote.addEventListener("click", async () => {
+  if (!lastResult) return;
+  try {
+    await navigator.clipboard.writeText(maintenanceNote(lastResult));
+    message("Maintenance note copied");
+  } catch {
+    message("Clipboard permission was unavailable; download the evidence JSON instead.", true);
+  }
+});
 
 async function analyze() {
   if (!selectedCsv) return;

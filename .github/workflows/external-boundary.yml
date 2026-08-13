@@ -1,0 +1,44 @@
+name: External CC BY boundary probe
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/**"
+      - "model/**"
+      - "scripts/prepare-axial-boundary.py"
+      - "scripts/evaluate-axial-boundary.js"
+      - "field/open-data-sources.json"
+      - ".github/workflows/external-boundary.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  boundary:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: npm ci
+      - run: pip install -r requirements-field.txt
+      - name: Download official CC BY archive
+        run: |
+          mkdir -p .field-work/open-real/axial-bearing
+          curl --fail --location --retry 3 --output /tmp/axial.zip https://data.mendeley.com/public-api/zip/chwhh9n3bf/download/2
+          unzip -q /tmp/axial.zip -d .field-work/open-real/axial-bearing
+      - run: npm run build:kernel
+      - run: npm run build:model
+      - run: npm run validate:field
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rotornote-external-boundary-evidence
+          path: field/results/axial-bearing-boundary.json

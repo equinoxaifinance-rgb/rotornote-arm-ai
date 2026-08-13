@@ -1,56 +1,26 @@
 # Benchmarks and evidence gates
 
-RotorNote compares executable implementations of the same learned workload:
+RotorNote compares two executable implementations of the same 48→4 real-data classifier:
 
-- **baseline:** Float32 weights and scalar JavaScript dense loops;
-- **optimized:** symmetric INT8 weights/activations and a WebAssembly SIMD dense kernel.
+- FP32 weights with scalar JavaScript dot products;
+- row-wise INT8 weights with dynamic INT8 inputs and WebAssembly SIMD dot products.
 
-The feature vectors, network shape, test order, and outputs are held constant. The harness validates predicted-label agreement and records the maximum probability delta before reporting timing.
-
-## Reproduce locally
+The benchmark uses feature vectors extracted from the four attributed physical demo recordings. CSV parsing and FFT extraction are excluded because they are identical across engines.
 
 ```bash
-npm ci --ignore-scripts --no-audit --no-fund
-npm run build
-npm test
-npm run benchmark -- --output benchmark/results/local-x64.json --repetitions 51 --batch 2048 --warmups 16
+npm run benchmark -- --output benchmark/results/local-x64-real.json --repetitions 51 --batch 2048 --warmups 16
 ```
 
-The native protocol uses sixteen warmup batches. Fifty-one paired samples alternate engine order to reduce drift bias. Timing uses `process.hrtime.bigint()`. The JSON contains every raw duration and checksum, median and p95 latency, median throughput, a deterministic 10,000-resample 95% bootstrap interval for the paired median speedup, model/kernel hashes, Node version, CPU description, architecture, batch size, and evidence class.
+The JSON records raw alternating-order samples, checksums, medians, p95, paired speed ratios, a deterministic 10,000-resample confidence interval, machine identity, and artifact hashes.
 
-The benchmark isolates model inference. FFT and CSV parsing are deliberately excluded because they are identical across engines; the product API separately returns end-to-end and inference timing for practical observation.
+## Current evidence
 
-## Native Arm64 gate
+The model artifact reduction is deterministic: FP32 is 784 bytes and INT8 is 208 bytes, a 73.4694% reduction. Across all 40,000 real training/evaluation feature rows, build-time parity is 99.7825% by window and 100% after four-channel recording aggregation; p99 probability drift is 0.02774 and the disclosed maximum isolated drift is 0.42964.
 
-Run **Native Arm64 evidence** in GitHub Actions. The workflow:
+The latest local x64 benchmark is not Arm evidence. Its separate medians slightly favored INT8, but the paired 95% interval crossed 1.0; therefore **no x64 speedup claim is supported**. The current smaller real-data model must run through `.github/workflows/native-arm64.yml` before any native throughput claim is attached to it.
 
-1. selects `ubuntu-24.04-arm`;
-2. fails unless `uname -m` is exactly `aarch64`;
-3. captures `uname`, `lscpu`, Node, tests, raw benchmark JSON, console summaries, and artifact hashes;
-4. rebuilds generated files and fails on a diff;
-5. compiles and runs an Armv8.2 NEON `vdotq_s32` microkernel against an exact scalar INT8 witness;
-6. uploads one 90-day evidence artifact.
+Historical native receipts under `receipts/native-arm64/` belong to superseded model artifacts. They preserve engineering history and the Arm dot-product proof, but their end-to-end ratios are not current product evidence.
 
-Exact command:
+## Native Arm gate
 
-```bash
-npm run benchmark -- --output benchmark/results/native-arm64.json --repetitions 51 --batch 2048 --warmups 16
-```
-
-## Current evidence state
-
-| Claim/state | Status | Receipt |
-|---|---|---|
-| Generated FP32/INT8 artifacts and byte reduction | implemented and locally verified | `model/model.json`, local hashes |
-| Unit/integration/hostile/failure/retry tests on x64 | locally tested | `receipts/LOCAL-VALIDATION.md` |
-| Deterministic benchmark harness on x64 | locally run; not Arm evidence | `benchmark/results/local-x64.json` |
-| Native Arm64 tests, full benchmark and Arm dot-product proof | **VERIFIED** | [run 31681199791](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31681199791), `receipts/native-arm64/run-31681199791/` |
-| Experimental cross-domain fail-closed probe | **VERIFIED** | `field/results/cwru-cross-domain.json` |
-| Grouped real-data bearing/healthy validation | **LOCALLY EXECUTED; CI PENDING CURRENT COMMIT** | `field/results/cwru-grouped-validation.json` |
-| Live Arm cloud deployment | **PENDING GATE** | requires a deployed URL and health receipt |
-
-The verified GitHub artifact SHA-256 is `614a480387f264073f349ea9395e1bbf2d9453f7bddf61d91c0a0367a03de500`. On commit `a8bce54`, the four-vCPU native Arm64 runner recorded 190.8924 ms FP32 and 152.8758 ms INT8/WASM-SIMD medians per 2,048-inference batch: **1.2487×**. Fifty-one alternating-order paired samples produced a **1.2442–1.2519** bootstrap 95% interval for the paired median, with 74.3669% fewer weight bytes and 100% label agreement. The production claim leads with the byte reduction; this measured compute gain is real but modest. The separate Armv8.2 NEON `vdotq_s32` proof exactly matched scalar INT8 and measured **17.4637×** for its core dot product. Raw samples and the 21/21 native test receipt are preserved in the receipt directory.
-
-## Interpreting results
-
-Model byte reduction is deterministic: compare the recorded `bytes` fields. Speed is environment-dependent; inspect raw samples and the paired confidence interval rather than treating one median ratio as certainty. The native release gate now requires the 95% interval's lower endpoint to exceed 1.0. Energy is not measured, so RotorNote makes no energy claim.
+The workflow requires `aarch64`, rebuilds generated bytes, runs the full test/validation suite, captures raw benchmark data, and executes the NEON `vdotq_s32` witness against an exact scalar result. A native speed claim is green only when the current commit's paired confidence interval excludes 1. Energy remains unmeasured, so RotorNote makes no energy claim.

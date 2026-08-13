@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import http from "node:http";
 import { fileURLToPath } from "node:url";
-import { analyzeSignal } from "./analyze.js";
+import { analyzeChannels } from "./analyze.js";
 import { InputError, MAX_UPLOAD_BYTES, parseCsv } from "./csv.js";
 import { createAnalysisReceipt } from "./evidence.js";
 import { loadModel } from "./model.js";
@@ -11,11 +11,13 @@ const STATIC = new Map([
   ["/", [new URL("../web/index.html", import.meta.url), "text/html; charset=utf-8"]],
   ["/app.js", [new URL("../web/app.js", import.meta.url), "text/javascript; charset=utf-8"]],
   ["/styles.css", [new URL("../web/styles.css", import.meta.url), "text/css; charset=utf-8"]],
+  ["/actions.css", [new URL("../web/actions.css", import.meta.url), "text/css; charset=utf-8"]],
 ]);
 const SAMPLES = new Map([
-  ["steady-baseline", { file: "steady-baseline.csv", title: "Steady baseline", detail: "8 s · learned healthy envelope" }],
-  ["bearing-pulse", { file: "bearing-pulse.csv", title: "Bearing pulse", detail: "8 s · periodic high-frequency impacts" }],
-  ["shift-change", { file: "shift-change.csv", title: "Shift change", detail: "9 s · healthy-to-imbalance transition" }],
+  ["real-healthy", { file: "real-healthy.csv", title: "Healthy rig", detail: "1 s · attributed physical test", sampleRate: 25000, operatingRpm: 1238 }],
+  ["real-imbalance", { file: "real-imbalance.csv", title: "Rotor imbalance", detail: "1 s · attributed physical test", sampleRate: 25000, operatingRpm: 1238 }],
+  ["real-misalignment", { file: "real-misalignment.csv", title: "Shaft misalignment", detail: "1 s · attributed physical test", sampleRate: 25000, operatingRpm: 1238 }],
+  ["real-looseness", { file: "real-looseness.csv", title: "Mechanical looseness", detail: "1 s · attributed physical test", sampleRate: 25000, operatingRpm: 1238 }],
 ]);
 
 const securityHeaders = {
@@ -47,12 +49,12 @@ function parseContext(headers) {
 
 async function readBody(request) {
   const declared = Number(request.headers["content-length"] || 0);
-  if (declared > MAX_UPLOAD_BYTES) throw new InputError("CSV exceeds the 2 MiB limit", "payload_too_large");
+  if (declared > MAX_UPLOAD_BYTES) throw new InputError("CSV exceeds the 8 MiB limit", "payload_too_large");
   const chunks = [];
   let bytes = 0;
   for await (const chunk of request) {
     bytes += chunk.length;
-    if (bytes > MAX_UPLOAD_BYTES) throw new InputError("CSV exceeds the 2 MiB limit", "payload_too_large");
+    if (bytes > MAX_UPLOAD_BYTES) throw new InputError("CSV exceeds the 8 MiB limit", "payload_too_large");
     chunks.push(chunk);
   }
   return Buffer.concat(chunks).toString("utf8");
@@ -105,10 +107,10 @@ export function createHandler({ modelLoader = loadModel } = {}) {
         const engine = url.searchParams.get("engine") || "optimized";
         if (!new Set(["baseline", "optimized"]).has(engine)) return respond(response, 400, { error: "unknown_engine", requestId });
         const body = await readBody(request);
-        const { values, sampleRate } = parseCsv(body, request.headers["x-sample-rate"] || 1024);
+        const { channels, sampleRate } = parseCsv(body, request.headers["x-sample-rate"] || 1024);
         const model = await getModel();
         const context = parseContext(request.headers);
-        const result = analyzeSignal(model, values, sampleRate, engine, { verifyParity: true, context });
+        const result = analyzeChannels(model, channels, sampleRate, engine, { verifyParity: true, context });
         result.receipt = createAnalysisReceipt({ csv: body, sampleRate, engine, model, context, result });
         return respond(response, 200, { requestId, result });
       }

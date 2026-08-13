@@ -6,50 +6,54 @@ import { loadModel } from "../src/model.js";
 
 const required = [
   "README.md", "ARCHITECTURE.md", "SECURITY.md", "BENCHMARKS.md", "SUBMISSION.md", "LICENSE",
-  "INTEGRATION.md", "MODEL-CARD.md", "FIELD-VALIDATION.md", "sbom.spdx.json", "dist/build-manifest.json",
+  "INTEGRATION.md", "MODEL-CARD.md", "FIELD-VALIDATION.md", "DATA-LICENSES.md", "sbom.spdx.json", "dist/build-manifest.json",
   "package.json", "package-lock.json", "Dockerfile", "compose.yaml", ".github/workflows/native-arm64.yml",
-  ".github/workflows/external-field-probe.yml", "requirements-field.txt", "native/arm-dotprod-bench.c",
-  "scripts/prepare-cwru-field.py", "scripts/evaluate-cwru-field.js", "field/results/cwru-cross-domain.json",
-  "field/results/cwru-grouped-validation.json",
+  ".github/workflows/external-boundary.yml", "requirements-field.txt", "native/arm-dotprod-bench.c",
+  "scripts/prepare-open-training.py", "scripts/build-open-features.js", "scripts/train-real-crossval.py",
+  "scripts/prepare-axial-boundary.py", "scripts/evaluate-axial-boundary.js", "field/open-data-sources.json",
+  "field/results/open-grouped-cross-validation.json", "field/results/axial-bearing-boundary.json",
+  "field/training/mechanical-manifest.json", "field/training/mechanical-features.f32",
+  "field/training/mechanical-labels.u8", "field/training/mechanical-groups.u8", "field/training/linear-export.json",
   "dist/dense.wasm", "model/model.json", "model/rotornote-fp32.bin", "model/rotornote-int8.bin",
+  "samples/real-healthy.csv", "samples/real-imbalance.csv", "samples/real-misalignment.csv", "samples/real-looseness.csv",
   "assets/gallery/01-hero.svg", "assets/gallery/02-analysis.svg", "assets/gallery/03-arm-optimization.svg",
 ];
 await Promise.all(required.map((path) => access(new URL(`../${path}`, import.meta.url))));
 
 const model = await loadModel();
-assert.deepEqual(model.metadata.architecture, [48, 256, 128, 5]);
-assert.equal(model.metadata.format, "rotornote-random-feature-ridge-v2");
-assert.equal(model.metadata.training.engineAgreement, 1);
-assert.ok(model.metadata.training.floatAccuracy >= 0.95 && model.metadata.training.floatAccuracy < 1);
-assert.ok(model.metadata.training.stressFloatAccuracy >= 0.85 && model.metadata.training.stressFloatAccuracy < model.metadata.training.floatAccuracy);
-assert.ok(model.metadata.ood.validationCoverage >= 0.94);
+assert.deepEqual(model.metadata.architecture, [48, 4]);
+assert.equal(model.metadata.format, "rotornote-real-logistic-v4");
+assert.equal(model.metadata.training.dataKind, "real experimental vibration only");
+assert.ok(model.metadata.training.engineAgreement >= 0.995);
+assert.equal(model.metadata.training.recordingEngineAgreement, 1);
+assert.ok(model.metadata.training.fourChannelRecordingBalancedAccuracy >= 0.75);
 assert.ok(model.metadata.ood.threshold > 0);
-for (const file of ["steady-baseline.csv", "bearing-pulse.csv", "shift-change.csv"]) {
-  const parsed = parseCsv(await readFile(new URL(`../samples/${file}`, import.meta.url), "utf8"));
-  const baseline = analyzeSignal(model, parsed.values, parsed.sampleRate, "baseline");
-  const optimized = analyzeSignal(model, parsed.values, parsed.sampleRate, "optimized");
+for (const label of model.metadata.labels) {
+  const file = `real-${label}.csv`;
+  const parsed = parseCsv(await readFile(new URL(`../samples/${file}`, import.meta.url), "utf8"), 25000);
+  const options = { verifyParity: true, context: { operatingRpm: 1238 } };
+  const baseline = analyzeSignal(model, parsed.values, 25000, "baseline", options);
+  const optimized = analyzeSignal(model, parsed.values, 25000, "optimized", options);
   assert.equal(baseline.primary, optimized.primary, `${file} engine disagreement`);
 }
 const workflow = await readFile(new URL("../.github/workflows/native-arm64.yml", import.meta.url), "utf8");
 assert.match(workflow, /runs-on: ubuntu-24\.04-arm/);
 assert.match(workflow, /test "\$\(uname -m\)" = "aarch64"/);
 assert.match(await readFile(new URL("../native/arm-dotprod-bench.c", import.meta.url), "utf8"), /vdotq_s32/);
-assert.match(workflow, /--repetitions 51 --batch 2048 --warmups 16/);
-const fieldReceipt = JSON.parse(await readFile(new URL("../field/results/cwru-cross-domain.json", import.meta.url), "utf8"));
-assert.equal(fieldReceipt.summary.abstentionRate, 1);
-assert.equal(fieldReceipt.summary.automaticConclusions, 0);
-const groupedFieldReceipt = JSON.parse(await readFile(new URL("../field/results/cwru-grouped-validation.json", import.meta.url), "utf8"));
-assert.equal(groupedFieldReceipt.sourceRecords, 16);
-assert.ok(groupedFieldReceipt.leaveOneLoadOut.metrics.balancedAccuracy >= 0.8);
-assert.ok(groupedFieldReceipt.leaveOneMechanismAndLoadOut.metrics.balancedAccuracy >= 0.8);
+const boundary = JSON.parse(await readFile(new URL("../field/results/axial-bearing-boundary.json", import.meta.url), "utf8"));
+assert.equal(boundary.summary.abstentionRate, 1);
+assert.equal(boundary.summary.automaticConclusions, 0);
+const grouped = JSON.parse(await readFile(new URL("../field/results/open-grouped-cross-validation.json", import.meta.url), "utf8"));
+assert.equal(grouped.physicalTests.length, 20);
+assert.ok(grouped.aggregate.fourChannelRecording.balancedAccuracy >= 0.75);
 const sbom = JSON.parse(await readFile(new URL("../sbom.spdx.json", import.meta.url), "utf8"));
 assert.equal(sbom.spdxVersion, "SPDX-2.3");
 assert.equal(sbom.packages.filter(({ primaryPackagePurpose }) => primaryPackagePurpose !== "BUILD_TOOL").length, 1);
 const manifest = JSON.parse(await readFile(new URL("../dist/build-manifest.json", import.meta.url), "utf8"));
-assert.equal(Object.keys(manifest.files).length, 22);
+assert.ok(Object.keys(manifest.files).length >= 30);
 for (const file of required.filter((path) => path.endsWith(".svg"))) {
   const svg = await readFile(new URL(`../${file}`, import.meta.url), "utf8");
   assert.match(svg, /viewBox="0 0 1600 900"/);
   assert.match(svg, /role="img" aria-label="[^"]+"/);
 }
-console.log(`validated ${required.length} required files, model integrity, 3 dual-engine samples, Arm gate, and gallery metadata`);
+console.log(`validated ${required.length} required files, real-data model integrity, four dual-engine samples, external abstention, Arm gate, and gallery metadata`);

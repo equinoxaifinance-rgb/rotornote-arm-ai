@@ -15,7 +15,7 @@ const hero = shell(`${logo}
 <text x="86" y="368" ${font} font-size="116" font-weight="800" letter-spacing="-8" fill="#17211d">Hear the machine</text>
 <text x="86" y="480" font-family="Georgia,serif" font-size="116" font-style="italic" letter-spacing="-5" fill="#204d3b">before it stops.</text>
 <text x="94" y="556" ${font} font-size="25" fill="#66716c">One vibration trace becomes a fault timeline and a specific field retest.</text>
-<g transform="translate(94 642)"><rect width="540" height="104" rx="2" fill="#204d3b"/><text x="30" y="42" ${mono} font-size="13" fill="#d8ff62">01  CHOOSE A RECORDING</text><text x="30" y="77" ${font} font-size="20" font-weight="700" fill="white">shift-change.csv</text><text x="502" y="65" ${font} font-size="30" fill="#d8ff62">→</text></g>
+<g transform="translate(94 642)"><rect width="540" height="104" rx="2" fill="#204d3b"/><text x="30" y="42" ${mono} font-size="13" fill="#d8ff62">01  CHOOSE A RECORDING</text><text x="30" y="77" ${font} font-size="20" font-weight="700" fill="white">real-imbalance.csv</text><text x="502" y="65" ${font} font-size="30" fill="#d8ff62">→</text></g>
 <g transform="translate(970 584)"><circle cx="190" cy="90" r="145" fill="none" stroke="#c9cbc2" stroke-width="2"/><circle cx="190" cy="90" r="94" fill="none" stroke="#c9cbc2"/><circle cx="190" cy="90" r="42" fill="none" stroke="#c9cbc2"/><path d="M20 90h340M190-70v320" stroke="#c9cbc2"/><circle cx="260" cy="30" r="10" fill="#ff6b35"/><circle cx="260" cy="30" r="23" fill="#ff6b35" opacity=".15"/></g>`, "RotorNote hero: Hear the machine before it stops");
 
 const analysis = shell(`${logo}
@@ -30,10 +30,10 @@ const arm = shell(`${logo}
 <rect x="72" y="150" width="1456" height="640" rx="5" fill="#204d3b"/>
 <rect x="124" y="206" width="62" height="38" rx="2" fill="#17211d"/><text x="139" y="231" ${mono} font-size="14" font-weight="700" fill="#d8ff62">ARM</text>
 <text x="124" y="335" font-family="Georgia,serif" font-style="italic" font-size="75" fill="white">Smaller weights.</text><text x="124" y="414" font-family="Georgia,serif" font-style="italic" font-size="75" fill="white">Vector work.</text>
-<text x="126" y="480" ${font} font-size="22" fill="#bdd0c6">The same learned network, measured two honest ways.</text>
-<g transform="translate(124 560)"><text y="0" ${mono} font-size="13" fill="#bdd0c6">BASELINE</text><text y="34" ${font} font-size="22" font-weight="700" fill="white">FP32 · scalar JavaScript</text><rect y="58" width="540" height="30" fill="#e6e6de"/><text x="560" y="80" ${mono} font-size="14" fill="white">184,340 B</text></g>
-<g transform="translate(842 560)"><text y="0" ${mono} font-size="13" fill="#bdd0c6">OPTIMIZED</text><text y="34" ${font} font-size="22" font-weight="700" fill="white">INT8 · WebAssembly SIMD</text><rect y="58" width="139" height="30" fill="#d8ff62"/><text x="159" y="80" ${mono} font-size="14" fill="white">47,252 B</text></g>
-<line x1="790" y1="220" x2="790" y2="490" stroke="#517261"/><text x="1170" y="323" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="116" fill="#d8ff62">74.4%</text><text x="1170" y="368" text-anchor="middle" ${mono} font-size="14" letter-spacing="2" fill="#bdd0c6">FEWER WEIGHT BYTES</text><text x="1170" y="430" text-anchor="middle" ${font} font-size="17" fill="white">Native speedup remains a CI evidence gate.</text>`, "RotorNote Arm optimization comparison");
+<text x="126" y="480" ${font} font-size="22" fill="#bdd0c6">The same real-data classifier, measured two honest ways.</text>
+<g transform="translate(124 560)"><text y="0" ${mono} font-size="13" fill="#bdd0c6">BASELINE</text><text y="34" ${font} font-size="22" font-weight="700" fill="white">FP32 · scalar JavaScript</text><rect y="58" width="540" height="30" fill="#e6e6de"/><text x="560" y="80" ${mono} font-size="14" fill="white">784 B</text></g>
+<g transform="translate(842 560)"><text y="0" ${mono} font-size="13" fill="#bdd0c6">OPTIMIZED</text><text y="34" ${font} font-size="22" font-weight="700" fill="white">INT8 · WebAssembly SIMD</text><rect y="58" width="143" height="30" fill="#d8ff62"/><text x="163" y="80" ${mono} font-size="14" fill="white">208 B</text></g>
+<line x1="790" y1="220" x2="790" y2="490" stroke="#517261"/><text x="1170" y="323" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="116" fill="#d8ff62">73.47%</text><text x="1170" y="368" text-anchor="middle" ${mono} font-size="14" letter-spacing="2" fill="#bdd0c6">FEWER WEIGHT BYTES</text><text x="1170" y="430" text-anchor="middle" ${font} font-size="17" fill="white">Recording-level parity: 100%.</text>`, "RotorNote Arm optimization comparison");
 
 await Promise.all([
   writeFile(new URL("01-hero.svg", directory), hero),

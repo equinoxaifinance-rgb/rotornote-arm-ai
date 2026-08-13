@@ -1,21 +1,22 @@
 # Machine integration
 
-RotorNote's tested boundary is a vibration recording, not a machine-control bus. A field installation keeps acquisition and control separate:
+RotorNote works alongside an accelerometer/DAQ gateway and a maintenance system:
 
 ```text
-machine bearing housing
-  -> mounted accelerometer
-  -> calibrated acquisition device / Arm64 gateway
-  -> RotorNote HTTPS API
-  -> screen + abstention + evidence receipt
-  -> qualified human review and controlled retest
+machine → calibrated sensors → gateway CSV → RotorNote → evidence/note → CMMS + qualified review
 ```
 
-RotorNote never writes to a PLC and must not trigger a shutdown. The initial deployment role is advisory screening.
+It never writes to a PLC or triggers shutdown.
+
+## CSV contract
+
+- One channel: `amplitude` or `timestamp,amplitude`
+- Four synchronized channels: `ch1,ch2,ch3,ch4` or `timestamp,ch1,ch2,ch3,ch4`
+- 8,192–131,072 rows per channel, 256–100,000 Hz, finite amplitudes within ±1,000, maximum body 8 MiB
+
+Four channels are the validated aggregation path. One channel remains useful for triage but has lower grouped evidence.
 
 ## Reference gateway
-
-The included gateway converts an existing sensor CSV into a contextualized API request:
 
 ```bash
 npm run gateway -- \
@@ -24,31 +25,13 @@ npm run gateway -- \
   --machine pump-7 \
   --point drive-end-bearing \
   --axis radial-horizontal \
-  --rate 1024 \
-  --rpm 1800 \
+  --rate 25000 \
+  --rpm 1238 \
   --load 74
 ```
 
-Remote endpoints must use HTTPS; plaintext HTTP is permitted only for localhost testing. The gateway has bounded timeouts and retry behavior. Its full path is covered by a test that starts the real service, sends the bundled shift-change recording, and verifies machine context, dual-engine agreement, and the returned evidence ID.
+Remote endpoints require HTTPS; localhost may use HTTP. The gateway has bounded timeout and retry behavior and is exercised against the real service in tests.
 
-## Direct API contract
+`POST /api/analyze?engine=optimized` accepts `text/csv`. Field clients should send `X-Sample-Rate`, `X-Machine-Id`, `X-Measurement-Point`, `X-Sensor-Axis`, `X-Operating-RPM`, and `X-Load-Percent`. Repeat captures must preserve sensor, units, calibration, mount, point, axis, rate, speed, load, and operating state.
 
-`POST /api/analyze?engine=optimized` with `Content-Type: text/csv` and these headers:
-
-| Header | Required | Bounds |
-|---|---|---|
-| `X-Sample-Rate` | Yes in field use | 256–5,000 Hz |
-| `X-Machine-Id` | Yes in field use | 1–64 safe identifier characters |
-| `X-Measurement-Point` | Recommended | 1–64 characters |
-| `X-Sensor-Axis` | Recommended | axial, radial-horizontal, radial-vertical, or unknown |
-| `X-Operating-RPM` | Recommended | 0–120,000 |
-| `X-Load-Percent` | Recommended | 0–100 |
-
-The response carries the captured context, signal-quality assessment, calibration-envelope coverage, FP32/INT8 label agreement, and an analysis passport hashing the input, configuration, model artifacts, and deterministic decision output.
-
-## Acquisition requirements
-
-Before treating a capture as comparable, record the sensor, calibration date, units, mount, axis, measurement point, sample rate, machine speed, load, and operating state. Use the same configuration for the retest. RotorNote accepts raw amplitude units but does not convert or infer units; a field program must define them explicitly at acquisition.
-
-The software currently accepts batches of 2,048–131,072 samples. Continuous installations should let the acquisition gateway create bounded recordings and send them on an interval. High-volume deployment also needs authentication, device identity, rate limiting, encrypted storage policy if retention is added, and tenant isolation.
-
+The response contains the decision, channel quality, supported-class distribution, envelope coverage, FP32/INT8 agreement, acquisition context, and a deterministic evidence passport. Store that passport beside the work order; do not treat it as a cryptographic signature or maintenance authorization.

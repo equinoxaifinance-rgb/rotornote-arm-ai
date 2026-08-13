@@ -1,55 +1,27 @@
-# Field validation and conformity path
+# Field validation path
 
 ## Current status
 
-RotorNote is **certification-ready evidence infrastructure, not a certified diagnostic product**. No standards body, laboratory, machinery manufacturer, or vibration analyst has certified its field performance. The repository deliberately prevents that inference.
+RotorNote is a working laboratory-data screening product with evidence infrastructure. It is **not certified and not field validated**. No standards body, laboratory, manufacturer, or vibration analyst has certified its performance.
 
-There is no universal single certificate for an AI vibration-screening application. Relevant standards govern the condition-monitoring program, vibration acquisition and analysis, machine-specific evaluation, personnel competence, software security, and AI risk management.
+## Executed evidence
 
-## Executed external-data boundary probe
+The production dataset is the CC BY 4.0 [Mechanical faults in rotating machinery dataset](https://data.mendeley.com/datasets/zx8pfhdtnb/3), DOI `10.17632/zx8pfhdtnb.3`. Grouped cross-validation holds out whole physical tests and records 76.3% four-channel balanced accuracy plus 16/20 physical-test accuracy. At the product's 0.90 confidence floor, 37.1% of out-of-fold recordings are accepted at 97.71% accuracy and 96.46% selective balanced accuracy. The full confusion matrix, risk/coverage table, and fold membership are committed in `field/results/open-grouped-cross-validation.json`.
 
-`npm run validate:field` downloads 16 hash-pinned records directly from the [Case Western Reserve University Bearing Data Center](https://engineering.case.edu/bearingdatacenter/download-data-file), whose [apparatus page](https://engineering.case.edu/bearingdatacenter/apparatus-and-procedures) documents the motor, accelerometers, seeded faults, and acquisition rates. The set covers normal operation plus 0.007-inch inner-race, ball, and outer-race bearing faults at four motor loads. It resamples only the drive-end channel from 12 kHz to RotorNote's 1,024 Hz contract. Raw records are not redistributed.
+The external safety dataset is the CC BY 4.0 [Vibration Data for Axial Ball Bearings and Spall Faults](https://data.mendeley.com/datasets/chwhh9n3bf/2), DOI `10.17632/chwhh9n3bf.2`. Four hash-pinned 25.6 kHz records from a separate rig all produced `review_required`; the receipt is `field/results/axial-bearing-boundary.json`. That proves the current gate refused this small foreign set, not that it will detect every out-of-domain signal.
 
-The safety receipt at `field/results/cwru-cross-domain.json` records 100% abstention and zero automatic conclusions from the existing synthetic five-pattern model. That proves its fitted envelope does **not** generalize to this external sensor domain and that the product fails closed.
+## What makes it a product now
 
-The separate `field/results/cwru-grouped-validation.json` receipt asks a narrower, real-data question: can RotorNote's same 48-feature extractor separate healthy from seeded bearing-fault recordings on this rig? A ridge head is fitted inside each fold, never from the held records. Leave-one-load-out scored 16/16 records; the harder protocol removes both the test fault mechanism and test motor load from training and also scored every record-level case correctly. The 95% Wilson lower bounds remain 75.75% for sensitivity and 51.01–75.75% for specificity because there are only four or twelve independent records per class/protocol. Those intervals, rather than the headline 100%, are the decision-relevant evidence. The result does not validate imbalance, misalignment, looseness, natural faults, cross-machine generalization, or certification.
+RotorNote accepts the exact one- or four-channel CSV artifact a gateway can produce, returns a bounded decision, exports a machine-readable evidence receipt, and produces a maintenance note suitable for an existing CMMS. It replaces manual first-pass file inspection; it does not replace calibrated acquisition, diagnosis, or maintenance authority.
 
-## Standards map
+## Required prospective pilot
 
-| Reference | What it covers | RotorNote evidence now | Remaining external work |
-|---|---|---|---|
-| [ISO 17359:2018](https://www.iso.org/standard/71194.html) | General procedures for a machine condition-monitoring program | Intended role, retest, escalation, context capture | Asset-specific program, responsibilities, alarms and maintenance process |
-| [ISO 13373-1:2002](https://www.iso.org/standard/21831.html) | Vibration measurement and data collection practice | Sample-rate/context contract and repeatable measurement point | Calibrated sensors, installation procedure and traceable acquisition records |
-| [ISO 13373-2:2016](https://www.iso.org/standard/68128.html) | Time/frequency processing, presentation and vibration-signature analysis | Waveform, FFT-derived features, spectrum, timeline and operating-condition retest | Independent expert review against the purchased standard and selected machine class |
-| [ISO 20816-1:2016](https://www.iso.org/standard/63180.html) | General vibration measurement/evaluation and operational limits | No false claim of universal limits | Select the applicable machine-specific ISO 20816 part and configure validated limits |
-| [ISO 18436-2:2014](https://www.iso.org/standard/50447.html) | Qualification/certification of vibration-analysis personnel | Explicit qualified-human escalation | Engage appropriately certified personnel; this standard certifies people, not RotorNote |
-| [NIST AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1) | Voluntary trustworthy-AI risk management | Model card, limits, abstention, integrity, measurement plan | Operational governance, monitoring, incident process and stakeholder review |
-| [NIST SP 800-218](https://doi.org/10.6028/NIST.SP.800-218) | Secure Software Development Framework | Locked dependency, SBOM, hashes, tests, secret scan, non-root container | Organizational release, vulnerability-response and provenance controls |
+1. Scope one asset family, sensor, mount, axis, sample rate, speed/load range, and decision owner.
+2. Establish reference truth independently through inspection and qualified analysis—not RotorNote output.
+3. Split by physical machine and maintenance event; never split windows from the same event.
+4. Freeze the hashed software/model/acquisition configuration before opening the test set.
+5. Report per-class sensitivity/specificity, macro F1, calibration error, abstention, false alerts per asset-day, and confidence intervals.
+6. Run shadow mode with zero automatic control actions and investigate every false negative.
+7. Revalidate after material model, feature, sensor, mount, or acquisition changes.
 
-An alignment table is not certification or a declaration of conformity.
-
-## Pre-registered field study
-
-1. **Scope one asset family.** Select one motor/pump/fan class, defined speed/load range, sensor type, mount and acquisition chain.
-2. **Establish reference truth independently.** Labels must come from inspection, maintenance findings, controlled seeded faults where safe, and review by qualified vibration personnel—not from RotorNote output.
-3. **Prevent leakage.** Split by physical machine and maintenance event, never by windows from the same recording. Freeze the test set before fitting.
-4. **Capture operating strata.** Include healthy machines, each supported condition, different loads/speeds, mounts, environmental noise, sensor faults and unrelated external vibration.
-5. **Pre-register primary measures.** Report per-class sensitivity/specificity, macro F1, calibration error, abstention rate, false-alerts per asset-day, time-to-detection and engine parity with confidence intervals.
-6. **Acceptance gate.** For an advisory pilot, proposed—not certified—minimums are ≥0.90 lower-confidence-bound sensitivity for the selected critical condition, ≥0.95 specificity, 100% FP32/INT8 label agreement, zero automatic control actions, and documented review of every false negative. A qualified owner must revise these thresholds for the actual risk.
-7. **Prospective shadow mode.** Run without influencing maintenance decisions, compare alerts to independent practice, investigate drift and sensor failures, then repeat after any model or acquisition change.
-8. **Controlled release.** Only the exact hashed model, software and acquisition configuration that passed the study may inherit its evidence. Material changes trigger revalidation.
-
-## Evidence package for an assessor
-
-- Versioned intended-use statement and risk classification
-- Sensor calibration and installation records
-- Dataset provenance, consent/ownership and machine/event split manifest
-- Frozen evaluation protocol and statistical analysis
-- Raw predictions, abstentions and reference labels
-- Confusion matrices and confidence intervals by operating stratum
-- Model, source, container, SBOM and build-manifest hashes
-- Security/threat assessment and incident-response owner
-- Change-control and revalidation policy
-- Signed review by the responsible organization and qualified domain personnel
-
-Until that package contains real independent field evidence, the accurate claim remains **field-validation ready**, never “certified.”
+Relevant frameworks include [ISO 17359](https://www.iso.org/standard/71194.html), ISO 13373 measurement/analysis practice, ISO 18436-2 personnel competence, [NIST AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1), and [NIST SSDF](https://doi.org/10.6028/NIST.SP.800-218). Mapping work to a standard is not certification.

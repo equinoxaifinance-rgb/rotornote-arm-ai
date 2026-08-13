@@ -1,23 +1,29 @@
 # RotorNote
 
-**Hear the machine before it stops.** RotorNote turns a vibration CSV into a window-by-window machine-health screen and a concrete field retest. It is a self-contained Cloud AI entry for the Arm Create: AI Optimization Challenge.
+**Hear the machine before it stops.** RotorNote turns one- or four-channel vibration CSV into an Arm-optimized condition screen, a concrete retest, and a tamper-evident analysis passport. It is an advisory companion to an acquisition gateway, CMMS workflow, and qualified vibration analyst—not a shutdown controller or diagnosis.
 
 ![RotorNote hero](assets/gallery/01-hero.svg)
 
-## The complete loop
+## What is real
 
-1. Drop a one-column `amplitude` CSV (or `timestamp,amplitude`) and set its sample rate.
-2. Choose the scalar FP32 baseline or the INT8 WebAssembly SIMD engine.
-3. Review the learned condition, confidence, waveform, spectrum, and fault timeline.
-4. Follow the condition-specific retest prompt and capture a like-for-like reading.
+- Production training uses **40,000 feature windows from physical experiments**, not generated fault signals.
+- The source is the CC BY 4.0 [Mechanical faults in rotating machinery dataset](https://data.mendeley.com/datasets/zx8pfhdtnb/3): 20 independently reset tests, four accelerometers, 25 kHz, and four conditions.
+- Five-fold grouped evaluation holds out one complete physical test per class in every fold. No recording or window from a held test enters its scaler or classifier fit.
+- Executed grouped results: **76.3% four-channel recording balanced accuracy** and **16/20 physical tests correctly identified**. A 0.90 confidence policy answers on 37.1% of out-of-fold recordings at **97.71% accepted accuracy / 96.46% selective balanced accuracy** and routes the rest to review. These are repeated laboratory measurements on one rig—not field sensitivity or certification.
+- A separate CC BY 4.0 [axial-bearing dataset](https://data.mendeley.com/datasets/chwhh9n3bf/2) attacks the boundary. RotorNote issued **zero automatic conclusions on 4/4 foreign-rig records**, including healthy and seeded-spall captures.
 
-Each API analysis now witnesses the selected engine with the alternate engine, checks signal quality, measures how much of the recording remains inside the fitted calibration envelope, and abstains with `review_required` when those gates fail. A tamper-evident analysis passport binds the input bytes, machine context, configuration, model hashes, and deterministic decision output.
+The exact receipts are [`field/results/open-grouped-cross-validation.json`](field/results/open-grouped-cross-validation.json) and [`field/results/axial-bearing-boundary.json`](field/results/axial-bearing-boundary.json). Licenses and transformations are in [`DATA-LICENSES.md`](DATA-LICENSES.md).
 
-The bundled **Shift change** recording is the fastest judge path: it starts inside the learned healthy envelope and ends with an imbalance-like pattern. No API key, login, network model download, or external service is required.
+## Complete loop
 
-## Run locally
+1. Send one sensor channel for a quick screen, or four synchronized channels for the validated aggregation path.
+2. Include sample rate and operating RPM; order-aware features depend on both.
+3. RotorNote runs FP32 and INT8 engines, checks signal quality, calibration-envelope coverage, and a 0.90 confidence floor, then abstains on disagreement or uncertainty.
+4. Export evidence JSON or copy a maintenance note into the existing work-order system.
 
-Prerequisite: Node.js 22.x and npm.
+## Run
+
+Requires Node.js 22.x.
 
 ```bash
 npm ci --ignore-scripts --no-audit --no-fund
@@ -26,87 +32,27 @@ npm test
 npm start
 ```
 
-Open <http://127.0.0.1:8787>, select **Shift change**, and click **Screen recording**. The generated artifacts are committed; `npm run build` deterministically recreates the SIMD kernel, model, samples, and gallery.
-
-Useful commands:
+Open <http://127.0.0.1:8787>, choose a real demo recording, and screen it. No API key, account, or remote inference service is required.
 
 ```bash
-npm run test:coverage
-npm run benchmark -- --output benchmark/results/local-x64.json
-npm run validate
-npm run secret-scan
+npm run gateway -- --url http://127.0.0.1:8787 --file samples/real-imbalance.csv --machine pump-7 --point drive-end-bearing --axis radial-horizontal --rate 25000 --rpm 1238 --load 74
 ```
 
-## Connect a machine gateway
+## Arm optimization
 
-RotorNote includes a tested, dependency-free gateway for an accelerometer/DAQ or Arm64 collector that already exports CSV:
+The real classifier is a transparent 48→4 multinomial logistic model. FP32 weights and bias occupy 784 bytes; row-wise INT8 weights plus FP32 bias occupy 208 bytes—a **73.47% reduction**. Dynamic per-inference activation scaling and per-output weight scales achieved **99.7825% window label agreement, 100% recording-level agreement, and 0.02774 p99 probability drift** over all 40,000 real windows. The maximum isolated probability delta (0.42964) remains disclosed.
 
-```bash
-npm run gateway -- --url http://127.0.0.1:8787 --file samples/shift-change.csv --machine pump-7 --point drive-end-bearing --axis radial-horizontal --rate 1024 --rpm 1800 --load 74
-```
+The WebAssembly SIMD kernel and native Arm dot-product proof remain reproducible, but earlier speed receipts belonged to the superseded larger model. New native throughput is yellow until the current model runs on the Arm workflow; x64 timing is never relabeled as Arm evidence.
 
-Remote targets must use HTTPS. Read [`INTEGRATION.md`](INTEGRATION.md) for the sensor-to-API contract, [`MODEL-CARD.md`](MODEL-CARD.md) for intended use and limits, and [`FIELD-VALIDATION.md`](FIELD-VALIDATION.md) for the standards-aligned path from contest prototype to a field-validated product.
+## API boundary
 
-## Arm optimization: memory first, throughput second
+`POST /api/analyze?engine=optimized` with `Content-Type: text/csv`.
 
-Both paths run the same 48→256→128→5 learned network and the same signal features.
+- One channel: `amplitude` or `timestamp,amplitude`
+- Four channels: `ch1,ch2,ch3,ch4` or `timestamp,ch1,ch2,ch3,ch4`
+- 8,192–131,072 rows per channel; 256–100,000 Hz; 8 MiB maximum; finite amplitudes within ±1,000
+- Field use should set `X-Machine-Id`, `X-Measurement-Point`, `X-Sensor-Axis`, `X-Operating-RPM`, and `X-Load-Percent`
 
-| Path | Weights | Compute |
-|---|---:|---|
-| Baseline | FP32, 184,340-byte artifact | scalar JavaScript dense loops |
-| Optimized | symmetric INT8, 47,252-byte artifact | WebAssembly SIMD `v128` loads and dot products |
+Read [`INTEGRATION.md`](INTEGRATION.md), [`MODEL-CARD.md`](MODEL-CARD.md), and [`FIELD-VALIDATION.md`](FIELD-VALIDATION.md) before any operational pilot.
 
-The primary production win is a **74.37% reduction in committed weight bytes**, lowering model storage and memory traffic. Compute throughput is a smaller, separately measured benefit: on exact public commit `a8bce54`, [native Arm64 workflow run 31681199791](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31681199791) recorded `aarch64`, 21/21 passing tests, 100% label agreement, and a **1.2487× full-runtime median ratio** across 51 paired samples. The paired-median bootstrap 95% interval was **1.2442–1.2519**. A separate Armv8.2 NEON `vdotq_s32` proof exactly matched scalar INT8 and measured **17.4637×** for the core 256-element dot product; it demonstrates an architecture-specific kernel ceiling, not the end-to-end product ratio. The downloaded artifact hash matched GitHub's digest and is preserved under [`receipts/native-arm64/run-31681199791`](receipts/native-arm64/run-31681199791).
-
-**Evidence status:** local x64 validation is available in [`receipts/LOCAL-VALIDATION.md`](receipts/LOCAL-VALIDATION.md); native Arm64 is verified by the linked workflow and downloaded artifact; the [final-commit native run](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31681932724) and [external CWRU safety probe](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31681932730) also passed. x64 timing is never presented as native Arm evidence.
-
-## Model and data
-
-RotorNote uses a deterministic random-feature network with a genuinely ridge-fitted multiclass head for five patterns: healthy, imbalance, misalignment, looseness, and bearing-like impacts. Runtime features combine 32 normalized spectral bands, eight time-domain measures, and eight spectral-shape measures across 2,048-sample windows with 50% overlap.
-
-The committed metadata records seed, architecture, ridge regularization, calibration scales, artifact hashes, ordinary held-out results, and an unseen-seed stress result with heavier noise, gain/bias shift, speed modulation, nuisance harmonics, and mixed faults. Those results validate controlled synthetic consistency only; they are **not field accuracy**. RotorNote is a screening aid, not a safety controller or diagnosis.
-
-`npm run validate:field` now runs two distinct real-data checks over 16 hash-pinned experimental records from the official Case Western Reserve University Bearing Data Center. First, it confirms that the existing five-pattern synthetic model refuses this foreign sensor domain instead of issuing automatic conclusions. Second, it fits a separate bearing-versus-healthy research head over RotorNote's same 48 production features and evaluates it by whole-record groups: leave-one-motor-load-out and the harder leave-one-fault-mechanism-plus-load-out protocol. Both scored 100% record-level balanced accuracy in this small rig-specific set, but the disclosed Wilson lower bounds are only 75.75% for fault sensitivity and 51.01% or 75.75% for specificity, depending on protocol. This is real experimental validation for **bearing versus healthy on one documented rig**—not validation of the other three fault labels, natural faults, other machines, certification, or field deployment.
-
-The model also commits a 99.5th-percentile training envelope in normalized feature space. This is an abstention mechanism, not evidence of real-world calibration: recordings outside that simulated envelope are sent to review instead of receiving an unqualified conclusion.
-
-## API
-
-```bash
-curl -fsS http://127.0.0.1:8787/health
-curl -fsS -X POST \
-  -H 'content-type: text/csv' \
-  -H 'x-sample-rate: 1024' \
-  --data-binary @samples/bearing-pulse.csv \
-  'http://127.0.0.1:8787/api/analyze?engine=optimized'
-```
-
-Limits: UTF-8 CSV, 2 MiB, 2,048–131,072 samples, 256–5,000 Hz, finite amplitude within ±1,000. Errors are structured JSON with a request ID. Uploads are processed in memory and not retained.
-
-## Deploy
-
-The judge path needs no secrets:
-
-```bash
-docker compose up --build
-curl -fsS http://127.0.0.1:8787/health
-```
-
-The image builds on `node:22-alpine`, runs as the unprivileged `node` user, exposes port 8787, and includes a health check. Set `HOST=0.0.0.0` and `PORT` as required on any Arm cloud VM/container service. Deployment has not been claimed in this repository without a live URL receipt.
-
-## Repository map
-
-- `src/` — CSV boundary, signal features, inference runtime, analysis, HTTP server
-- `kernel/` and `dist/` — readable WAT source and generated SIMD WebAssembly
-- `model/` — hashed FP32/INT8 artifacts and transparent metadata
-- `web/` — responsive, keyboard-usable interface with reduced-motion support
-- `tests/` — unit, integration, hostile-input, integrity, dependency-failure, retry/recovery tests
-- `integrations/` — tested HTTPS edge gateway with machine and acquisition context
-- `benchmark/` — deterministic, alternating-order benchmark with raw samples
-- `FIELD-VALIDATION.md` — exact evidence and independent work required before any certification claim
-- `sbom.spdx.json` and `dist/build-manifest.json` — deterministic supply-chain and byte-level provenance artifacts
-- `assets/gallery/` — three original, deterministic 1600×900 SVG gallery assets
-
-Read [ARCHITECTURE.md](ARCHITECTURE.md), [SECURITY.md](SECURITY.md), [MODEL-CARD.md](MODEL-CARD.md), [FIELD-VALIDATION.md](FIELD-VALIDATION.md), [BENCHMARKS.md](BENCHMARKS.md), and [SUBMISSION.md](SUBMISSION.md) for the technical, validation, and submission details.
-
-MIT licensed. The only npm dependency is the Apache-2.0-licensed `wabt` build tool; production runtime has zero third-party npm dependencies.
+MIT licensed. Production runtime has zero third-party npm dependencies.

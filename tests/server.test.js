@@ -24,22 +24,22 @@ test("happy path serves UI, health, sample, and optimized analysis", async () =>
     assert.equal(health.status, "ready");
     assert.equal(health.nativeArm64, process.arch === "arm64");
 
-    const sample = await (await fetch(`${url}/samples/bearing-pulse.csv`)).text();
+    const sample = await (await fetch(`${url}/samples/real-imbalance.csv`)).text();
     const response = await fetch(`${url}/api/analyze?engine=optimized`, {
       method: "POST",
-      headers: { "content-type": "text/csv", "x-sample-rate": "1024" },
+      headers: { "content-type": "text/csv", "x-sample-rate": "25000", "x-operating-rpm": "1238" },
       body: sample,
     });
     assert.equal(response.status, 200);
     const payload = await response.json();
-    assert.equal(payload.result.primary, "bearing");
-    assert.equal(payload.result.signal.windows, 7);
+    assert.equal(payload.result.primary, "imbalance");
+    assert.equal(payload.result.signal.windows, 5);
     assert.equal(payload.result.decision.status, "screened");
     assert.equal(payload.result.decision.engineAgreement, 1);
     assert.match(payload.result.receipt.evidenceId, /^[a-f0-9]{20}$/);
     const repeated = await fetch(`${url}/api/analyze?engine=optimized`, {
       method: "POST",
-      headers: { "content-type": "text/csv", "x-sample-rate": "1024" },
+      headers: { "content-type": "text/csv", "x-sample-rate": "25000", "x-operating-rpm": "1238" },
       body: sample,
     });
     assert.equal((await repeated.json()).result.receipt.evidenceId, payload.result.receipt.evidenceId);
@@ -49,7 +49,7 @@ test("happy path serves UI, health, sample, and optimized analysis", async () =>
 
 test("API abstains on unusable sensor data and validates machine context", async () => {
   await withServer(createHandler(), async (url) => {
-    const flatline = `amplitude\n${Array(2048).fill("0").join("\n")}`;
+    const flatline = `amplitude\n${Array(8192).fill("0").join("\n")}`;
     const review = await fetch(`${url}/api/analyze`, {
       method: "POST",
       headers: { "content-type": "text/csv", "x-machine-id": "pump-7" },
@@ -63,10 +63,34 @@ test("API abstains on unusable sensor data and validates machine context", async
     const invalidContext = await fetch(`${url}/api/analyze`, {
       method: "POST",
       headers: { "content-type": "text/csv", "x-machine-id": "../../secret" },
-      body: await (await fetch(`${url}/samples/steady-baseline.csv`)).text(),
+      body: await (await fetch(`${url}/samples/real-healthy.csv`)).text(),
     });
     assert.equal(invalidContext.status, 422);
     assert.equal((await invalidContext.json()).error, "invalid_context");
+  });
+});
+
+test("API executes the four-sensor aggregation path", async () => {
+  await withServer(createHandler(), async (url) => {
+    const one = (await readFile(new URL("../samples/real-imbalance.csv", import.meta.url), "utf8")).trim().split(/\r?\n/);
+    const rows = one.slice(1).map((line) => {
+      const [timestamp, amplitude] = line.split(",");
+      return `${timestamp},${amplitude},${amplitude},${amplitude},${amplitude}`;
+    });
+    const csv = `timestamp,ch1,ch2,ch3,ch4\n${rows.join("\n")}\n`;
+    const response = await fetch(`${url}/api/analyze?engine=optimized`, {
+      method: "POST",
+      headers: { "content-type": "text/csv", "x-sample-rate": "25000", "x-operating-rpm": "1238" },
+      body: csv,
+    });
+    assert.equal(response.status, 200);
+    const payload = await response.json();
+    assert.equal(payload.result.signal.channels, 4);
+    assert.equal(payload.result.signal.aggregation, "mean class probability across four synchronized sensor channels");
+    assert.equal(payload.result.channelResults.length, 4);
+    assert.ok(payload.result.timeline.every((window) => window.distribution.imbalance > 0));
+    assert.equal(payload.result.primary, "imbalance");
+    assert.equal(payload.result.decision.engineAgreement, 1);
   });
 });
 

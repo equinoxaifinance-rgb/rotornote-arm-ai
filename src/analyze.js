@@ -23,11 +23,6 @@ const GUIDANCE = {
     action: "Inspect mounts, baseplate, and fasteners before a controlled retest.",
     severity: "inspect",
   },
-  bearing: {
-    title: "High-frequency impacts resemble bearing distress",
-    action: "Schedule a qualified inspection; compare temperature and a second vibration point before acting.",
-    severity: "inspect",
-  },
 };
 
 function downsample(values, points = 180) {
@@ -57,7 +52,7 @@ export function analyzeSignal(model, values, sampleRate, engine = "optimized", {
   let inDistributionCount = 0;
 
   for (let index = 0; index < windows.length; index += 1) {
-    const features = extractFeatures(windows[index], sampleRate);
+    const features = extractFeatures(windows[index], sampleRate, context.operatingRpm);
     const inferenceStarted = performance.now();
     const probabilities = model.infer(features, engine);
     inferenceMs += performance.now() - inferenceStarted;
@@ -95,8 +90,10 @@ export function analyzeSignal(model, values, sampleRate, engine = "optimized", {
   const engineAgreement = verifyParity ? agreementCount / predictions.length : null;
   const reasons = [];
   if (quality.status !== "good") reasons.push(...quality.flags.map((flag) => flag.code));
+  if (!Number.isFinite(context.operatingRpm) || context.operatingRpm <= 0) reasons.push("missing_operating_rpm");
   if (distributionCoverage < 0.6) reasons.push("outside_calibration_envelope");
   if (verifyParity && engineAgreement < 1) reasons.push("engine_disagreement");
+  if (averages[primaryIndex] < model.metadata.decisionPolicy.minimumConfidence) reasons.push("low_model_confidence");
   const decisionStatus = reasons.length ? "review_required" : "screened";
   const totalMs = performance.now() - started;
 
@@ -111,14 +108,17 @@ export function analyzeSignal(model, values, sampleRate, engine = "optimized", {
       candidate: GUIDANCE[primary].title,
     },
     distribution: Object.fromEntries(model.metadata.labels.map((label, index) => [label, Number(averages[index].toFixed(4))])),
-    timeline: predictions.map(({ probabilities: _, ...prediction }) => prediction),
+    timeline: predictions.map(({ probabilities, ...prediction }) => ({
+      ...prediction,
+      distribution: Object.fromEntries(model.metadata.labels.map((label, labelIndex) => [label, Number(probabilities[labelIndex].toFixed(4))])),
+    })),
     decision: {
       status: decisionStatus,
       reasons,
       distributionCoverage: Number(distributionCoverage.toFixed(4)),
       engineAgreement: engineAgreement === null ? null : Number(engineAgreement.toFixed(4)),
       quality,
-      policy: "Abstain when signal quality fails, most windows leave the fitted envelope, or FP32 and INT8 labels disagree.",
+      policy: `Abstain when confidence is below ${model.metadata.decisionPolicy.minimumConfidence}, signal quality fails, most windows leave the fitted envelope, or FP32 and INT8 labels disagree.`,
     },
     context,
     signal: {
@@ -139,3 +139,64 @@ export function analyzeSignal(model, values, sampleRate, engine = "optimized", {
   };
 }
 
+export function analyzeChannels(model, channels, sampleRate, engine = "optimized", options = {}) {
+  if (!Array.isArray(channels) || ![1, 4].includes(channels.length)) throw new Error("RotorNote accepts one or four synchronized sensor channels");
+  if (channels.length === 1) return analyzeSignal(model, channels[0], sampleRate, engine, options);
+
+  const results = channels.map((values) => analyzeSignal(model, values, sampleRate, engine, options));
+  const distribution = Object.fromEntries(model.metadata.labels.map((label) => [label,
+    Number((results.reduce((sum, result) => sum + result.distribution[label], 0) / results.length).toFixed(4)),
+  ]));
+  const primary = Object.entries(distribution).reduce((best, current) => current[1] > best[1] ? current : best)[0];
+  const reasons = [...new Set(results.flatMap((result) => result.decision.reasons).filter((reason) => reason !== "low_model_confidence"))];
+  if (distribution[primary] < model.metadata.decisionPolicy.minimumConfidence) reasons.push("low_model_confidence");
+  const screened = reasons.length === 0;
+  const result = results[0];
+  result.primary = primary;
+  result.confidence = distribution[primary];
+  result.distribution = distribution;
+  result.guidance = screened ? GUIDANCE[primary] : {
+    title: "Review required before using this screen",
+    action: "Repeat the four-channel capture with verified synchronized mounts, then route persistent uncertainty to a qualified vibration analyst.",
+    severity: "review",
+    candidate: GUIDANCE[primary].title,
+  };
+  result.decision = {
+    ...result.decision,
+    status: screened ? "screened" : "review_required",
+    reasons,
+    distributionCoverage: Number((results.reduce((sum, item) => sum + item.decision.distributionCoverage, 0) / results.length).toFixed(4)),
+    engineAgreement: Number(Math.min(...results.map((item) => item.decision.engineAgreement ?? 1)).toFixed(4)),
+    channelQuality: results.map((item, index) => ({ channel: index + 1, ...item.decision.quality })),
+    policy: "Four synchronized sensors are aggregated only after each channel passes quality, calibration-envelope, and engine-parity checks.",
+  };
+  result.signal.channels = channels.length;
+  result.signal.aggregation = "mean class probability across four synchronized sensor channels";
+  result.signal.displayChannel = 1;
+  result.timeline = results[0].timeline.map((_, windowIndex) => {
+    const windowDistribution = Object.fromEntries(model.metadata.labels.map((label) => [label,
+      Number((results.reduce((sum, item) => sum + item.timeline[windowIndex].distribution[label], 0) / results.length).toFixed(4)),
+    ]));
+    const label = Object.entries(windowDistribution).reduce((best, current) => current[1] > best[1] ? current : best)[0];
+    return {
+      second: results[0].timeline[windowIndex].second,
+      label,
+      confidence: windowDistribution[label],
+      distribution: windowDistribution,
+      inDistribution: results.every((item) => item.timeline[windowIndex].inDistribution),
+      distance: Math.max(...results.map((item) => item.timeline[windowIndex].distance)),
+      witnessLabel: results.every((item) => item.timeline[windowIndex].witnessLabel === item.timeline[windowIndex].label) ? label : "engine_disagreement",
+    };
+  });
+  result.channelResults = results.map((item, index) => ({
+    channel: index + 1,
+    primary: item.primary,
+    confidence: item.confidence,
+    status: item.decision.status,
+    distributionCoverage: item.decision.distributionCoverage,
+  }));
+  result.note = screened
+    ? "Four-channel screening aid only — confirm findings with a qualified vibration analyst and like-for-like measurements."
+    : "No operational conclusion: repeat the synchronized capture or route it to a qualified vibration analyst.";
+  return result;
+}

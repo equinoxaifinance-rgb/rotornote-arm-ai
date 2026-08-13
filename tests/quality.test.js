@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFile } from "node:fs/promises";
+import { parseCsv } from "../src/csv.js";
 import { assessSignalQuality } from "../src/quality.js";
-import { simulateSignal } from "../src/signal.js";
 
-test("quality gate accepts a modeled vibration trace", () => {
-  const result = assessSignalQuality(simulateSignal("imbalance", 4096, 1024, 22), 1024);
+test("quality gate accepts a real vibration trace", async () => {
+  const parsed = parseCsv(await readFile(new URL("../samples/real-imbalance.csv", import.meta.url), "utf8"), 25000);
+  const result = assessSignalQuality(parsed.values, 25000);
   assert.equal(result.status, "good");
   assert.deepEqual(result.flags, []);
 });
@@ -19,4 +21,3 @@ test("quality gate detects flatline, clipping, bias, and dropout", () => {
   const result = assessSignalQuality(saturated, 1024);
   assert.ok(result.flags.some(({ code }) => code === "possible_clipping"));
 });
-

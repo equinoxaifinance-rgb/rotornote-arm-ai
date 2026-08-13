@@ -1,0 +1,40 @@
+{
+  "productionTraining": {
+    "title": "Mechanical faults in rotating machinery dataset (normal, unbalance, misalignment, looseness)",
+    "authors": [
+      "Lucas Costa Brito",
+      "Gian Antonio Susto",
+      "Jorge Nei Brito",
+      "Marcus Antonio Viana Duarte"
+    ],
+    "version": 3,
+    "doi": "10.17632/zx8pfhdtnb.3",
+    "recordUrl": "https://data.mendeley.com/datasets/zx8pfhdtnb/3",
+    "archiveUrl": "https://data.mendeley.com/public-api/zip/zx8pfhdtnb/download/3",
+    "archiveSha256": "2a1bf682b15ad09281546c9d680e71b9968d6b83fce8a0f53b10b8ced1b72df9",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "acquisition": "20 independently reset physical tests, 5 per condition; 4 accelerometers; 25 kHz; approximately 1238 RPM",
+    "operatingRpm": 1238,
+    "use": "Production classifier training and whole-test held-out validation",
+    "changes": "Deterministic 8,192-sample windows and RotorNote 48-feature vectors derived from selected raw recordings."
+  },
+  "bearingBoundaryEvaluation": {
+    "title": "Vibration Data for Axial Ball Bearings and Spall Faults",
+    "authors": ["Mohamed Ismail", "Jens Windelberg", "Andreas Bierig", "Iñaki Bravo-imaz", "Aitor Arnaiz"],
+    "version": 2,
+    "doi": "10.17632/chwhh9n3bf.2",
+    "recordUrl": "https://data.mendeley.com/datasets/chwhh9n3bf/2",
+    "archiveUrl": "https://data.mendeley.com/public-api/zip/chwhh9n3bf/download/2",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "acquisition": "Single axial-vibration channel; 25.6 kHz; 30 seconds; 500 RPM; healthy and artificially seeded inner/outer race spalls.",
+    "use": "External bearing-distress boundary evaluation only; never production training.",
+    "cases": [
+      {"id":"n5k-healthy","file":"N5k_500_0.0.mat","localFile":"n5k-healthy.mat","condition":"healthy","rpm":500,"sha256":"07029c4dcb571188ee545176381312ebab7027a148069944d837b202997a47cf"},
+      {"id":"n5k-inner","file":"N5k_500_1.0_inner.mat","localFile":"n5k-inner.mat","condition":"bearing_spall","rpm":500,"sha256":"55fc7635978a7754676c8beb182fac437a8a3fba412f70e0ad267cc0589972d0"},
+      {"id":"n8k-healthy","file":"N8.8k_500_0.0.mat","localFile":"n8k-healthy.mat","condition":"healthy","rpm":500,"sha256":"9ebf149b894d9e683fa625e4e5c73def79926fa9f9558d67f330ff334a5a19e4"},
+      {"id":"n8k-outer","file":"N8.8k_500_1.4_outer.mat","localFile":"n8k-outer.mat","condition":"bearing_spall","rpm":500,"sha256":"34242aae6213397b807a50b43446ae5982703a283aac5cc9825542843f66a479"}
+    ]
+  }
+}

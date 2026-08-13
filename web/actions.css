@@ -1,0 +1,26 @@
+.result-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.result-actions button {
+  border: 1px solid #d4d4ca;
+  background: #f7f6ef;
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.result-actions button:hover,
+.result-actions button:focus-visible {
+  border-color: #204d3b;
+  background: #eef5de;
+}
+
+@media (max-width: 480px) {
+  .result-actions { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,858 @@
+{
+  "format": "rotornote-open-grouped-cross-validation-v1",
+  "executedAt": "2026-08-13T09:53:24.106525+00:00",
+  "modelSpecification": "standard scaling plus multinomial logistic regression; C=1.0; fixed before this cross-validation",
+  "source": {
+    "title": "Mechanical faults in rotating machinery dataset (normal, unbalance, misalignment, looseness)",
+    "authors": [
+      "Lucas Costa Brito",
+      "Gian Antonio Susto",
+      "Jorge Nei Brito",
+      "Marcus Antonio Viana Duarte"
+    ],
+    "version": 3,
+    "doi": "10.17632/zx8pfhdtnb.3",
+    "recordUrl": "https://data.mendeley.com/datasets/zx8pfhdtnb/3",
+    "archiveUrl": "https://data.mendeley.com/public-api/zip/zx8pfhdtnb/download/3",
+    "archiveSha256": "2a1bf682b15ad09281546c9d680e71b9968d6b83fce8a0f53b10b8ced1b72df9",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "acquisition": "20 independently reset physical tests, 5 per condition; 4 accelerometers; 25 kHz; approximately 1238 RPM",
+    "operatingRpm": 1238,
+    "use": "Production classifier training and whole-test held-out validation",
+    "changes": "Deterministic 8,192-sample windows and RotorNote 48-feature vectors derived from selected raw recordings."
+  },
+  "sourceFeatureSha256": "32705b20f884e2e6914910b6294034de32ffab7a2f37d092885fa4ba9e99a6e0",
+  "modelExportSha256": "0af084b58321698f5bfa520bcda3cac861c1d191230b51b5e3dcc0213c13a5d8",
+  "folds": [
+    {
+      "fold": 1,
+      "heldTests": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "windowLevel": {
+        "rows": 8000,
+        "balancedAccuracy": 0.777625,
+        "confusionMatrix": [
+          [
+            930,
+            3,
+            308,
+            759
+          ],
+          [
+            0,
+            1996,
+            0,
+            4
+          ],
+          [
+            670,
+            0,
+            1330,
+            0
+          ],
+          [
+            0,
+            28,
+            7,
+            1965
+          ]
+        ]
+      },
+      "singleChannelRecording": {
+        "rows": 1600,
+        "balancedAccuracy": 0.7781250000000001,
+        "confusionMatrix": [
+          [
+            181,
+            0,
+            56,
+            163
+          ],
+          [
+            0,
+            400,
+            0,
+            0
+          ],
+          [
+            135,
+            0,
+            265,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            399
+          ]
+        ]
+      },
+      "fourChannelRecording": {
+        "rows": 400,
+        "balancedAccuracy": 0.8674999999999999,
+        "confusionMatrix": [
+          [
+            57,
+            0,
+            1,
+            42
+          ],
+          [
+            0,
+            100,
+            0,
+            0
+          ],
+          [
+            10,
+            0,
+            90,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            100
+          ]
+        ]
+      }
+    },
+    {
+      "fold": 2,
+      "heldTests": [
+        3,
+        10,
+        7,
+        8
+      ],
+      "windowLevel": {
+        "rows": 8000,
+        "balancedAccuracy": 0.551875,
+        "confusionMatrix": [
+          [
+            1921,
+            0,
+            79,
+            0
+          ],
+          [
+            860,
+            1138,
+            1,
+            1
+          ],
+          [
+            1653,
+            1,
+            346,
+            0
+          ],
+          [
+            986,
+            4,
+            0,
+            1010
+          ]
+        ]
+      },
+      "singleChannelRecording": {
+        "rows": 1600,
+        "balancedAccuracy": 0.553125,
+        "confusionMatrix": [
+          [
+            399,
+            0,
+            1,
+            0
+          ],
+          [
+            166,
+            234,
+            0,
+            0
+          ],
+          [
+            345,
+            0,
+            55,
+            0
+          ],
+          [
+            202,
+            1,
+            0,
+            197
+          ]
+        ]
+      },
+      "fourChannelRecording": {
+        "rows": 400,
+        "balancedAccuracy": 0.5775,
+        "confusionMatrix": [
+          [
+            100,
+            0,
+            0,
+            0
+          ],
+          [
+            22,
+            78,
+            0,
+            0
+          ],
+          [
+            99,
+            0,
+            1,
+            0
+          ],
+          [
+            48,
+            0,
+            0,
+            52
+          ]
+        ]
+      }
+    },
+    {
+      "fold": 3,
+      "heldTests": [
+        6,
+        11,
+        15,
+        12
+      ],
+      "windowLevel": {
+        "rows": 8000,
+        "balancedAccuracy": 0.77925,
+        "confusionMatrix": [
+          [
+            1298,
+            16,
+            686,
+            0
+          ],
+          [
+            0,
+            1606,
+            0,
+            394
+          ],
+          [
+            492,
+            0,
+            1508,
+            0
+          ],
+          [
+            0,
+            164,
+            14,
+            1822
+          ]
+        ]
+      },
+      "singleChannelRecording": {
+        "rows": 1600,
+        "balancedAccuracy": 0.77875,
+        "confusionMatrix": [
+          [
+            254,
+            0,
+            146,
+            0
+          ],
+          [
+            0,
+            315,
+            0,
+            85
+          ],
+          [
+            93,
+            0,
+            307,
+            0
+          ],
+          [
+            0,
+            29,
+            1,
+            370
+          ]
+        ]
+      },
+      "fourChannelRecording": {
+        "rows": 400,
+        "balancedAccuracy": 0.99,
+        "confusionMatrix": [
+          [
+            96,
+            0,
+            4,
+            0
+          ],
+          [
+            0,
+            100,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            100,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            100
+          ]
+        ]
+      }
+    },
+    {
+      "fold": 4,
+      "heldTests": [
+        9,
+        13,
+        18,
+        14
+      ],
+      "windowLevel": {
+        "rows": 8000,
+        "balancedAccuracy": 0.590875,
+        "confusionMatrix": [
+          [
+            498,
+            4,
+            1279,
+            219
+          ],
+          [
+            0,
+            2000,
+            0,
+            0
+          ],
+          [
+            1133,
+            0,
+            863,
+            4
+          ],
+          [
+            0,
+            614,
+            20,
+            1366
+          ]
+        ]
+      },
+      "singleChannelRecording": {
+        "rows": 1600,
+        "balancedAccuracy": 0.5725,
+        "confusionMatrix": [
+          [
+            69,
+            0,
+            282,
+            49
+          ],
+          [
+            0,
+            400,
+            0,
+            0
+          ],
+          [
+            227,
+            0,
+            173,
+            0
+          ],
+          [
+            0,
+            125,
+            1,
+            274
+          ]
+        ]
+      },
+      "fourChannelRecording": {
+        "rows": 400,
+        "balancedAccuracy": 0.525,
+        "confusionMatrix": [
+          [
+            2,
+            0,
+            98,
+            0
+          ],
+          [
+            0,
+            100,
+            0,
+            0
+          ],
+          [
+            79,
+            0,
+            21,
+            0
+          ],
+          [
+            0,
+            13,
+            0,
+            87
+          ]
+        ]
+      }
+    },
+    {
+      "fold": 5,
+      "heldTests": [
+        17,
+        16,
+        20,
+        19
+      ],
+      "windowLevel": {
+        "rows": 8000,
+        "balancedAccuracy": 0.853375,
+        "confusionMatrix": [
+          [
+            937,
+            14,
+            1049,
+            0
+          ],
+          [
+            0,
+            1980,
+            0,
+            20
+          ],
+          [
+            0,
+            0,
+            1999,
+            1
+          ],
+          [
+            0,
+            77,
+            12,
+            1911
+          ]
+        ]
+      },
+      "singleChannelRecording": {
+        "rows": 1600,
+        "balancedAccuracy": 0.8731249999999999,
+        "confusionMatrix": [
+          [
+            203,
+            0,
+            197,
+            0
+          ],
+          [
+            0,
+            400,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            400,
+            0
+          ],
+          [
+            0,
+            6,
+            0,
+            394
+          ]
+        ]
+      },
+      "fourChannelRecording": {
+        "rows": 400,
+        "balancedAccuracy": 0.855,
+        "confusionMatrix": [
+          [
+            42,
+            0,
+            58,
+            0
+          ],
+          [
+            0,
+            100,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            100,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            100
+          ]
+        ]
+      }
+    }
+  ],
+  "aggregate": {
+    "windowLevel": {
+      "rows": 40000,
+      "balancedAccuracy": 0.7106,
+      "confusionMatrix": [
+        [
+          5584,
+          37,
+          3401,
+          978
+        ],
+        [
+          860,
+          8720,
+          1,
+          419
+        ],
+        [
+          3948,
+          1,
+          6046,
+          5
+        ],
+        [
+          986,
+          887,
+          53,
+          8074
+        ]
+      ]
+    },
+    "singleChannelRecording": {
+      "rows": 8000,
+      "balancedAccuracy": 0.711125,
+      "confusionMatrix": [
+        [
+          1106,
+          0,
+          682,
+          212
+        ],
+        [
+          166,
+          1749,
+          0,
+          85
+        ],
+        [
+          800,
+          0,
+          1200,
+          0
+        ],
+        [
+          202,
+          162,
+          2,
+          1634
+        ]
+      ]
+    },
+    "fourChannelRecording": {
+      "rows": 2000,
+      "balancedAccuracy": 0.763,
+      "confusionMatrix": [
+        [
+          297,
+          0,
+          161,
+          42
+        ],
+        [
+          22,
+          478,
+          0,
+          0
+        ],
+        [
+          188,
+          0,
+          312,
+          0
+        ],
+        [
+          48,
+          13,
+          0,
+          439
+        ]
+      ]
+    },
+    "physicalTestAccuracy": 0.8,
+    "fourChannelRiskCoverage": [
+      {
+        "minimumConfidence": 0.5,
+        "coverage": 0.971,
+        "acceptedRecordings": 1942,
+        "selectiveAccuracy": 0.7677651905252317,
+        "selectiveBalancedAccuracy": 0.7636590463624331,
+        "acceptedByClass": [
+          452,
+          499,
+          496,
+          495
+        ],
+        "classConditionalAccuracy": [
+          0.5929203539823009,
+          0.9559118236472945,
+          0.6270161290322581,
+          0.8787878787878788
+        ]
+      },
+      {
+        "minimumConfidence": 0.7,
+        "coverage": 0.631,
+        "acceptedRecordings": 1262,
+        "selectiveAccuracy": 0.8866877971473851,
+        "selectiveBalancedAccuracy": 0.8739155874551412,
+        "acceptedByClass": [
+          145,
+          397,
+          312,
+          408
+        ],
+        "classConditionalAccuracy": [
+          0.8689655172413793,
+          1.0,
+          0.7051282051282052,
+          0.9215686274509803
+        ]
+      },
+      {
+        "minimumConfidence": 0.8,
+        "coverage": 0.4845,
+        "acceptedRecordings": 969,
+        "selectiveAccuracy": 0.9370485036119711,
+        "selectiveBalancedAccuracy": 0.9207439118153403,
+        "acceptedByClass": [
+          99,
+          341,
+          196,
+          333
+        ],
+        "classConditionalAccuracy": [
+          0.9797979797979798,
+          1.0,
+          0.7091836734693877,
+          0.993993993993994
+        ]
+      },
+      {
+        "minimumConfidence": 0.9,
+        "coverage": 0.371,
+        "acceptedRecordings": 742,
+        "selectiveAccuracy": 0.977088948787062,
+        "selectiveBalancedAccuracy": 0.9645833333333333,
+        "acceptedByClass": [
+          70,
+          303,
+          120,
+          249
+        ],
+        "classConditionalAccuracy": [
+          1.0,
+          1.0,
+          0.8583333333333333,
+          1.0
+        ]
+      },
+      {
+        "minimumConfidence": 0.95,
+        "coverage": 0.3005,
+        "acceptedRecordings": 601,
+        "selectiveAccuracy": 0.9900166389351082,
+        "selectiveBalancedAccuracy": 0.9858490566037736,
+        "acceptedByClass": [
+          30,
+          290,
+          106,
+          175
+        ],
+        "classConditionalAccuracy": [
+          1.0,
+          1.0,
+          0.9433962264150944,
+          1.0
+        ]
+      }
+    ]
+  },
+  "physicalTests": [
+    {
+      "test": 1,
+      "expected": "healthy",
+      "predicted": "healthy",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 2,
+      "expected": "misalignment",
+      "predicted": "misalignment",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 4,
+      "expected": "imbalance",
+      "predicted": "imbalance",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 5,
+      "expected": "looseness",
+      "predicted": "looseness",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 3,
+      "expected": "healthy",
+      "predicted": "healthy",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 10,
+      "expected": "misalignment",
+      "predicted": "healthy",
+      "correct": false,
+      "recordings": 100
+    },
+    {
+      "test": 7,
+      "expected": "imbalance",
+      "predicted": "imbalance",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 8,
+      "expected": "looseness",
+      "predicted": "looseness",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 6,
+      "expected": "healthy",
+      "predicted": "healthy",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 11,
+      "expected": "misalignment",
+      "predicted": "misalignment",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 15,
+      "expected": "imbalance",
+      "predicted": "imbalance",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 12,
+      "expected": "looseness",
+      "predicted": "looseness",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 9,
+      "expected": "healthy",
+      "predicted": "misalignment",
+      "correct": false,
+      "recordings": 100
+    },
+    {
+      "test": 13,
+      "expected": "misalignment",
+      "predicted": "healthy",
+      "correct": false,
+      "recordings": 100
+    },
+    {
+      "test": 18,
+      "expected": "imbalance",
+      "predicted": "imbalance",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 14,
+      "expected": "looseness",
+      "predicted": "looseness",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 17,
+      "expected": "healthy",
+      "predicted": "misalignment",
+      "correct": false,
+      "recordings": 100
+    },
+    {
+      "test": 16,
+      "expected": "misalignment",
+      "predicted": "misalignment",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 20,
+      "expected": "imbalance",
+      "predicted": "imbalance",
+      "correct": true,
+      "recordings": 100
+    },
+    {
+      "test": 19,
+      "expected": "looseness",
+      "predicted": "looseness",
+      "correct": true,
+      "recordings": 100
+    }
+  ],
+  "independenceWarning": "The 20 physical tests are the highest-level experimental units. Recordings and windows inside a test are repeated measures; row counts must not be interpreted as independent machines.",
+  "scope": "One documented laboratory rig at approximately 1238 RPM. Not cross-machine validation, natural-fault validation, or certification."
+}

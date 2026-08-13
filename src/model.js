@@ -93,11 +93,14 @@ export async function loadModel({ modelUrl = MODEL_URL, wasmUrl = WASM_URL } = {
     const outputAddresses = [4096, 12288, 20480];
     for (let index = 0; index < int8Layers.length; index += 1) {
       const layer = int8Layers[index];
-      quantizeInto(values, layer.activationScale, inputAddresses[index]);
+      let maximum = 0;
+      for (const value of values) maximum = Math.max(maximum, Math.abs(value));
+      const inputScale = maximum === 0 ? 1 : maximum / 127;
+      quantizeInto(values, inputScale, inputAddresses[index]);
       dense(inputAddresses[index], int8WeightAddresses[index], outputAddresses[index], layer.inputs, layer.outputs);
       const integers = new Int32Array(memory.buffer, outputAddresses[index], layer.outputs);
       values = Float32Array.from(integers, (value, row) =>
-        value * layer.activationScale * layer.weightScale + layer.biasView[row]);
+        value * inputScale * layer.weightScales[row] + layer.biasView[row]);
       if (index < int8Layers.length - 1) values = relu(values);
     }
     return softmax(values);

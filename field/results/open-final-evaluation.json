@@ -1,0 +1,114 @@
+{
+  "format": "rotornote-frozen-final-evaluation-v1",
+  "executedAt": "2026-08-13T09:24:41.392464+00:00",
+  "modelSelection": "logistic regression selected on tests 16,17,19,20 before final-set access; C=1.0; standard scaling",
+  "source": {
+    "title": "Mechanical faults in rotating machinery dataset (normal, unbalance, misalignment, looseness)",
+    "authors": [
+      "Lucas Costa Brito",
+      "Gian Antonio Susto",
+      "Jorge Nei Brito",
+      "Marcus Antonio Viana Duarte"
+    ],
+    "version": 3,
+    "doi": "10.17632/zx8pfhdtnb.3",
+    "recordUrl": "https://data.mendeley.com/datasets/zx8pfhdtnb/3",
+    "archiveUrl": "https://data.mendeley.com/public-api/zip/zx8pfhdtnb/download/3",
+    "archiveSha256": "2a1bf682b15ad09281546c9d680e71b9968d6b83fce8a0f53b10b8ced1b72df9",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "acquisition": "20 independently reset physical tests, 5 per condition; 4 accelerometers; 25 kHz; approximately 1238 RPM",
+    "operatingRpm": 1238,
+    "use": "Production classifier training and whole-test held-out validation",
+    "changes": "Deterministic 2,048-sample windows and RotorNote 48-feature vectors derived from selected raw recordings."
+  },
+  "sourceFeatureSha256": "f015d9f7baa6471c0e7e575ffb37ec9d32cbc75c373306e2ea4044af782be3e4",
+  "modelExportSha256": "08056548d27d608f1b2f9c77a0d8cdc2c5c72c94766d89ab04a811e28da461fa",
+  "trainingTests": [
+    3,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "finalTests": [
+    1,
+    2,
+    4,
+    5
+  ],
+  "finalSetAccessCount": 1,
+  "sampleLevel": {
+    "rows": 1600,
+    "balancedAccuracy": 0.785625,
+    "confusionMatrix": [
+      [
+        200,
+        0,
+        72,
+        128
+      ],
+      [
+        0,
+        400,
+        0,
+        0
+      ],
+      [
+        129,
+        0,
+        271,
+        0
+      ],
+      [
+        0,
+        12,
+        2,
+        386
+      ]
+    ]
+  },
+  "recordingLevelFourChannel": {
+    "recordings": 400,
+    "balancedAccuracy": 0.87,
+    "confusionMatrix": [
+      [
+        64,
+        0,
+        10,
+        26
+      ],
+      [
+        0,
+        100,
+        0,
+        0
+      ],
+      [
+        16,
+        0,
+        84,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        100
+      ]
+    ]
+  },
+  "independenceWarning": "The final set contains one physical test per condition. Rows and recordings within a test are repeated measures, not independent machines; no field sensitivity or specificity claim is supported.",
+  "scope": "One documented laboratory rig at approximately 1238 RPM. Not cross-machine validation, natural-fault validation, or certification."
+}

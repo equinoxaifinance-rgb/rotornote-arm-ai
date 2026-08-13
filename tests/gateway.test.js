@@ -7,7 +7,7 @@ test("gateway requires identity and refuses plaintext remote transport", async (
   assert.throws(() => parseArguments(["--url", "http://localhost:8787"]), /Required/);
   await assert.rejects(runGateway({
     url: "http://example.com",
-    file: new URL("../samples/steady-baseline.csv", import.meta.url),
+    file: new URL("../samples/real-healthy.csv", import.meta.url),
     machine: "pump-7",
     rate: 1024,
     engine: "optimized",
@@ -19,10 +19,10 @@ test("gateway requires identity and refuses plaintext remote transport", async (
 
 test("gateway parses a complete command and retries a transient server failure", async () => {
   const options = parseArguments([
-    "--url", "https://rotornote.example", "--file", "samples/steady-baseline.csv", "--machine", "fan-2",
-    "--rate", "2048", "--retries", "1",
+    "--url", "https://rotornote.example", "--file", "samples/real-healthy.csv", "--machine", "fan-2",
+    "--rate", "25000", "--retries", "1",
   ]);
-  assert.equal(options.rate, 2048);
+  assert.equal(options.rate, 25000);
   assert.equal(options.engine, "optimized");
   let attempts = 0;
   const payload = await runGateway(options, { fetchImpl: async () => {
@@ -41,18 +41,18 @@ test("gateway sends machine context through the real API", async () => {
   try {
     const payload = await runGateway({
       url: `http://127.0.0.1:${server.address().port}`,
-      file: new URL("../samples/shift-change.csv", import.meta.url),
+      file: new URL("../samples/real-imbalance.csv", import.meta.url),
       machine: "pump-7",
       point: "drive-end-bearing",
       axis: "radial-horizontal",
-      rate: 1024,
-      rpm: 1800,
+      rate: 25000,
+      rpm: 1238,
       load: 74,
       engine: "optimized",
       retries: 0,
     });
     assert.equal(payload.result.context.machineId, "pump-7");
-    assert.equal(payload.result.context.operatingRpm, 1800);
+    assert.equal(payload.result.context.operatingRpm, 1238);
     assert.equal(payload.result.decision.engineAgreement, 1);
     assert.match(payload.result.receipt.evidenceId, /^[a-f0-9]{20}$/);
   } finally {

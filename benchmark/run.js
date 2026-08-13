@@ -4,7 +4,8 @@ import os from "node:os";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadModel } from "../src/model.js";
-import { extractFeatures, LABELS, simulateSignal } from "../src/signal.js";
+import { extractFeatures, segmentSignal } from "../src/signal.js";
+import { parseCsv } from "../src/csv.js";
 
 function argument(name, fallback) {
   const index = process.argv.indexOf(name);
@@ -19,8 +20,13 @@ if (!Number.isInteger(repetitions) || repetitions < 15 || !Number.isInteger(batc
 }
 
 const model = await loadModel();
-const featureBank = Array.from({ length: 64 }, (_, index) =>
-  extractFeatures(simulateSignal(LABELS[index % LABELS.length], 2048, 1024, 9000 + index)));
+const sampleFiles = ["real-healthy.csv", "real-imbalance.csv", "real-misalignment.csv", "real-looseness.csv"];
+const realFeatures = [];
+for (const file of sampleFiles) {
+  const parsed = parseCsv(await readFile(new URL(`../samples/${file}`, import.meta.url), "utf8"), 25000);
+  for (const window of segmentSignal(parsed.values)) realFeatures.push(extractFeatures(window, 25000, 1238));
+}
+const featureBank = Array.from({ length: 64 }, (_, index) => realFeatures[index % realFeatures.length]);
 const hash = async (path) => createHash("sha256").update(await readFile(path)).digest("hex");
 const measure = (engine) => {
   const started = process.hrtime.bigint();

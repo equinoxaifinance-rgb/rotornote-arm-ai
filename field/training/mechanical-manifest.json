@@ -1,0 +1,57 @@
+{
+  "format": "rotornote-real-features-v1",
+  "sourceDataset": {
+    "title": "Mechanical faults in rotating machinery dataset (normal, unbalance, misalignment, looseness)",
+    "authors": [
+      "Lucas Costa Brito",
+      "Gian Antonio Susto",
+      "Jorge Nei Brito",
+      "Marcus Antonio Viana Duarte"
+    ],
+    "version": 3,
+    "doi": "10.17632/zx8pfhdtnb.3",
+    "recordUrl": "https://data.mendeley.com/datasets/zx8pfhdtnb/3",
+    "archiveUrl": "https://data.mendeley.com/public-api/zip/zx8pfhdtnb/download/3",
+    "archiveSha256": "2a1bf682b15ad09281546c9d680e71b9968d6b83fce8a0f53b10b8ced1b72df9",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "acquisition": "20 independently reset physical tests, 5 per condition; 4 accelerometers; 25 kHz; approximately 1238 RPM",
+    "operatingRpm": 1238,
+    "use": "Production classifier training and whole-test held-out validation",
+    "changes": "Deterministic 8,192-sample windows and RotorNote 48-feature vectors derived from selected raw recordings."
+  },
+  "sourceArchiveSha256": "2a1bf682b15ad09281546c9d680e71b9968d6b83fce8a0f53b10b8ced1b72df9",
+  "sampleRateHz": 25000,
+  "operatingRpm": 1238,
+  "windowSize": 8192,
+  "featureCount": 48,
+  "labels": [
+    "healthy",
+    "imbalance",
+    "misalignment",
+    "looseness"
+  ],
+  "rows": 40000,
+  "trainingRows": 32000,
+  "validationRows": 8000,
+  "validationTests": [
+    16,
+    17,
+    19,
+    20
+  ],
+  "splitPolicy": "whole physical tests; no recording or window crosses train/validation",
+  "windowSelection": "100 evenly spaced recordings per test; four sensor channels; five evenly spaced windows spanning each full one-second recording",
+  "channelsPerFile": 4,
+  "windowsPerChannel": 5,
+  "featureExtractor": "src/signal.js extractFeatures",
+  "featuresSha256": "32705b20f884e2e6914910b6294034de32ffab7a2f37d092885fa4ba9e99a6e0",
+  "labelsSha256": "0f790c360fe858e9dd51990b33fccaa792ce4b84983f9b2b21e504d31f9006b8",
+  "groupsSha256": "e8982136b222dca57ae923c7c7c222d1002902f46e0fe771d59aa1cd1b249be2",
+  "sampleSha256": {
+    "healthy": "32c57388838b7f42694531dca7307e0ab39d70782d58e906dbb75864e74b6d1a",
+    "imbalance": "a9aaf75f9916f6fb82b9eac86ceda992dd2631dcb941f6fc4435bcbcea9aac1b",
+    "misalignment": "589a100446baabbeca481da787cf2be9a5079e1c36e53c450f64da2fddaddea2",
+    "looseness": "f9270cb0ccdb243854a0f93c437ef511ba643975cf1cf176f61e5ef90fe43e8e"
+  }
+}

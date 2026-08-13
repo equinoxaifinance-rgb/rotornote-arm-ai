@@ -1,0 +1,10 @@
+.git/
+.github/
+.field-work/
+.npm-cache/
+.pip-cache/
+.venv/
+node_modules/
+receipts/
+benchmark/results/
+*.log

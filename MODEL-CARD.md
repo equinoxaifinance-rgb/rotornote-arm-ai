@@ -2,32 +2,28 @@
 
 ## Intended use
 
-RotorNote screens vibration recordings from rotating equipment for resemblance to five modeled patterns: healthy, imbalance, misalignment, looseness, and bearing-like impacts. Its output is intended to prioritize a controlled retest or qualified human review.
+RotorNote is a first-pass vibration screening and evidence tool for four signatures on rotating equipment: healthy, imbalance, misalignment, and mechanical looseness. It works alongside sensor acquisition, maintenance records, and qualified vibration analysis. It does not diagnose bearing faults, authorize operation, predict remaining life, or control machinery.
 
-It is not a diagnosis, protection relay, safety controller, remaining-useful-life predictor, or authorization to continue or stop operation.
+## Model and evidence
 
-## Model and data
+The production classifier is standard scaling plus multinomial logistic regression (C=1.0) over 48 order-aware time/frequency features from 8,192-sample windows. Its source is the CC BY 4.0 dataset DOI `10.17632/zx8pfhdtnb.3`. Training/evaluation uses 100 evenly spaced recordings per physical test, four accelerometers, and five windows spanning each one-second recording.
 
-The classifier is a deterministic random-feature network with architecture 48→256→128→5. Two seeded ReLU projections create the representation; the multiclass head is fitted by a ridge-regularized least-squares solve, not by class prototypes or hand-authored weights. A scalar temperature selected on the held-out ordinary split minimizes multiclass negative log loss, so displayed probabilities are calibrated by an executed procedure rather than an arbitrary visual multiplier. The repository generates 900 training examples, 225 disjoint ordinary validation examples, and 300 harder stress examples from original physics-inspired simulations. It commits the generator, seed, split sizes, fitting and calibration methods, regularization, normalization, quantization scales, artifacts, and hashes.
+Five grouped folds each hold out one complete physical test per class. Aggregate results are 71.06% window, 71.11% single-channel recording, and 76.30% four-channel recording balanced accuracy; 16 of 20 physical tests are correctly identified. Healthy versus misalignment is the dominant error. A 0.90 confidence threshold, fixed from these same out-of-fold predictions, covers 37.1% of recordings at 97.71% selective accuracy and 96.46% selective balanced accuracy. That risk/coverage result is useful policy-development evidence, not an independently calibrated field estimate. Because recordings within a physical test are repeated measures, 2,000 recording decisions are not 2,000 independent machines.
 
-Ordinary validation includes variable severity, gain, noise, bias, speed drift, nuisance harmonics, and weak secondary faults. The separately reported stress split increases those shifts and mixtures using unseen seeds. These results demonstrate pipeline consistency and controlled synthetic robustness; they do not estimate accuracy on real equipment.
+After cross-validation, the fixed specification is refit on all 20 tests for production. A historical one-time four-test final evaluation remains preserved separately and must not be combined with or substituted for grouped cross-validation.
 
-An optional CWRU cross-domain probe downloads four official experimental records at run time, verifies their hashes, resamples the drive-end channel, and confirms that the uncalibrated model abstains rather than issuing an automatic conclusion. The receipt is a safety-boundary test—not field accuracy or training evidence.
+## Safeguards
 
-## Runtime safeguards
+- Model binaries are SHA-256 verified before readiness.
+- The alternate engine witnesses every analyzed window.
+- Signal-quality checks cover flatline, saturation, DC bias, and dropout.
+- A 99.5th-percentile real-training feature envelope routes foreign signals to `review_required`.
+- Scores below 0.90 route to `review_required`; the response never silently promotes the top class.
+- Four-channel results average class probability only after each synchronized channel is separately checked.
+- An analysis passport binds input, acquisition settings, model artifacts, and deterministic output.
 
-- Both FP32 and INT8 engines run the same learned network and feature path.
-- Runtime verifies both model-artifact hashes before becoming ready.
-- The API witnesses every submitted window with the alternate engine and requires 100% label agreement.
-- A calibrated normalized-feature distance rejects recordings when most windows fall outside the fitted envelope.
-- Independent signal-quality checks detect flatline, repeated saturation, large DC bias, and sensor dropout.
-- Failed gates produce `review_required`; they never silently promote the highest score into an operational conclusion.
-- Every API response includes an analysis passport binding input, settings, model hashes, and deterministic output hashes.
+The separate CC BY bearing boundary probe (DOI `10.17632/chwhh9n3bf.2`) produced 100% abstention across four foreign-rig records. This demonstrates fail-closed behavior only, not bearing detection accuracy.
 
 ## Known limitations
 
-Mounting, sensor bandwidth and orientation, units, sample rate, load, speed, structural resonance, background machinery, and acquisition filtering can dominate a vibration signature. The model has no real-world fault prevalence calibration, machine-specific baselines, uncertainty guarantee, or field sensitivity/specificity estimate. Secondary-fault blending makes the synthetic test harder, but the output remains a dominant-pattern screen rather than compound-fault diagnosis.
-
-## Required validation before field reliance
-
-Use the protocol in `FIELD-VALIDATION.md`. In particular, isolate evaluation machines from training, use independently established reference labels, pre-register acceptance thresholds, publish the confusion matrix and abstention rate, and maintain a human escalation path.
+Evidence covers one laboratory rig near 1,238 RPM with experimentally induced conditions. It does not cover natural faults, severity estimation, compound faults, sensor interchangeability, changing mounts, broad speed/load ranges, cross-machine transfer, or field prevalence. Probabilities are classifier scores, not calibrated real-world failure risk. Certification and field reliance require the independent protocol in `FIELD-VALIDATION.md`.

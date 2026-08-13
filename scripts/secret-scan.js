@@ -4,8 +4,8 @@ import { fileURLToPath } from "node:url";
 
 const root = new URL("../", import.meta.url);
 const rootPath = fileURLToPath(root);
-const ignored = new Set([".git", ".npm-cache", ".pip-cache", ".venv", "node_modules", "receipts/runtime"]);
-const binaryExtensions = new Set([".bin", ".wasm", ".png", ".jpg", ".jpeg", ".webp"]);
+const ignored = new Set([".git", ".field-work", ".npm-cache", ".pip-cache", ".venv", "node_modules", "receipts/runtime"]);
+const binaryExtensions = new Set([".bin", ".wasm", ".f32", ".u8", ".mat", ".zip", ".gz", ".png", ".jpg", ".jpeg", ".webp"]);
 const patterns = [
   ["private key", /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/],
   ["AWS access key", /AKIA[0-9A-Z]{16}/],

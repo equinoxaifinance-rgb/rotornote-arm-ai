@@ -6,6 +6,7 @@
   <meta name="description" content="RotorNote turns a vibration recording into an Arm-optimized machine health screen.">
   <title>RotorNote — hear the machine change</title>
   <link rel="stylesheet" href="/styles.css?v=20260813b">
+  <link rel="stylesheet" href="/actions.css?v=20260813a">
 </head>
 <body>
   <header class="topbar">
@@ -20,7 +21,7 @@
     <section class="hero">
       <div class="eyebrow"><span>Vibration screening</span><span>·</span><span>Arm cloud ready</span></div>
       <h1>Hear the machine<br><em>before it stops.</em></h1>
-      <p>Drop one vibration trace. RotorNote separates healthy motion from imbalance, misalignment, looseness, and bearing-like impacts—then gives you a specific retest.</p>
+      <p>Drop one vibration trace. RotorNote screens for healthy motion, imbalance, misalignment, and mechanical looseness—then gives you a specific retest.</p>
     </section>
 
     <section class="workspace" aria-labelledby="workspace-title">
@@ -29,17 +30,17 @@
           <div><span class="step">01</span><h2 id="workspace-title">Choose a recording</h2></div>
           <button class="text-button" id="formatHelp" type="button" aria-expanded="false">CSV format</button>
         </div>
-        <p id="formatCopy" class="format-copy" hidden>One <code>amplitude</code> column, or <code>timestamp,amplitude</code>. At least 2,048 rows; 1,024 Hz by default.</p>
+        <p id="formatCopy" class="format-copy" hidden>One channel: <code>amplitude</code> or <code>timestamp,amplitude</code>. Full rig: four synchronized sensor columns, with an optional timestamp first. At least 8,192 rows; enter sample rate and operating RPM.</p>
         <label class="dropzone" id="dropzone">
           <input id="fileInput" type="file" accept=".csv,text/csv">
           <span class="upload-mark" aria-hidden="true">↗</span>
           <strong>Drop a sensor CSV</strong>
-          <span>or choose a file · max 2 MiB</span>
+          <span>or choose a file · max 8 MiB</span>
         </label>
         <div class="or"><span>or use a demo recording</span></div>
         <div class="samples" id="samples" aria-label="Example recordings"></div>
         <div class="controls">
-          <label>Sample rate <span><input id="sampleRate" inputmode="numeric" type="number" min="256" max="5000" value="1024"> Hz</span></label>
+          <label>Sample rate <span><input id="sampleRate" inputmode="numeric" type="number" min="256" max="100000" value="25000"> Hz</span></label>
           <fieldset>
             <legend>Inference engine</legend>
             <label><input type="radio" name="engine" value="optimized" checked><span>INT8 SIMD <small>Arm path</small></span></label>
@@ -64,7 +65,7 @@
         <div class="empty-state" id="emptyState">
           <div class="radar" aria-hidden="true"><i></i><i></i><i></i><span></span></div>
           <p>Your machine note will appear here.</p>
-          <span>Try “Shift change” to see a fault emerge across the timeline.</span>
+          <span>Try a held-out physical test recording to see the real-data model work.</span>
         </div>
         <div id="reportContent" hidden>
           <div class="report-meta"><span id="engineBadge"></span><span id="timing"></span></div>
@@ -95,6 +96,10 @@
             <div><span class="kicker">Analysis passport</span><strong id="machineContext"></strong></div>
             <div><span>Evidence ID</span><code id="receiptId"></code></div>
           </div>
+          <div class="result-actions" aria-label="Export analysis">
+            <button id="downloadEvidence" type="button">Download evidence JSON</button>
+            <button id="copyMaintenanceNote" type="button">Copy maintenance note</button>
+          </div>
           <p class="disclaimer" id="disclaimer"></p>
         </div>
       </div>
@@ -102,14 +107,14 @@
 
     <section class="underhood">
       <span class="step">ARM</span>
-      <div><h2>Smaller weights. Measured vector work.</h2><p>The primary win is 74.4% fewer weight bytes. The judge toggle runs the same learned network two ways: scalar FP32 JavaScript or an INT8 WebAssembly SIMD kernel. Native Arm throughput is reported separately with uncertainty; x64 timing is never substituted.</p></div>
-      <div class="weight-stat"><strong>74.4%</strong><span>weight-byte reduction</span></div>
+      <div><h2>Real signals. Smaller weights.</h2><p>The FP32 and INT8 engines run the same real-data classifier. INT8 cuts weight bytes by 73.47% while preserving every four-channel recording decision across the 40,000-window build set. Native Arm throughput for this rebuilt model remains a separate evidence gate.</p></div>
+      <div class="weight-stat"><strong>73.47%</strong><span>weight-byte reduction</span></div>
     </section>
     <section class="proof-rail" aria-labelledby="proofHeading">
       <div class="proof-intro"><span class="kicker">Executed evidence</span><h2 id="proofHeading">Proof, not posture.</h2><p>Every number opens to raw, reproducible receipts. The unknown stays unknown.</p></div>
-      <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31681199791" target="_blank" rel="noreferrer"><span>Full Arm64 runtime</span><strong>1.2487×</strong><small>95% interval 1.2442–1.2519</small></a>
-      <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/receipts/native-arm64/run-31681199791/arm-dotprod.json" target="_blank" rel="noreferrer"><span>Armv8.2 dot product</span><strong>17.46×</strong><small>NEON · exact scalar match</small></a>
-      <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/field/results/cwru-grouped-validation.json" target="_blank" rel="noreferrer"><span>Real bearing evidence</span><strong>16 records</strong><small>group-held-out · intervals disclosed</small></a>
+      <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/field/results/open-grouped-cross-validation.json" target="_blank" rel="noreferrer"><span>Whole-test validation</span><strong>76.3%</strong><small>four-channel balanced accuracy</small></a>
+      <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/model/model.json" target="_blank" rel="noreferrer"><span>FP32 ↔ INT8 parity</span><strong>100%</strong><small>four-channel recording labels</small></a>
+      <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/field/results/axial-bearing-boundary.json" target="_blank" rel="noreferrer"><span>Foreign bearing rig</span><strong>4 / 4</strong><small>review required · zero auto conclusions</small></a>
     </section>
   </main>
   <footer><span>RotorNote · an open-source screening aid</span><span>MIT licensed</span></footer>

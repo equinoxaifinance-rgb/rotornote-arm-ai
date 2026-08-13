@@ -8,9 +8,9 @@ Untrusted inputs are the URL, headers, and CSV body. Static routes and sample ID
 
 ## Controls
 
-- Body bytes are rejected above 2 MiB using both declared length and streaming counts.
-- Sample counts are capped at 131,072; the minimum is 2,048.
-- Rates are limited to 256–5,000 Hz; amplitudes must be finite and within ±1,000.
+- Body bytes are rejected above 8 MiB using both declared length and streaming counts.
+- Sample counts are capped at 131,072 per channel; the minimum is 8,192.
+- Rates are limited to 256–100,000 Hz; amplitudes must be finite and within ±1,000.
 - Two-column timestamps must increase strictly; changing column counts are rejected.
 - Model artifacts are SHA-256 verified before either engine becomes available.
 - Every API decision is witnessed by the alternate engine and receives an analysis passport binding input, context, configuration, model and output hashes.
