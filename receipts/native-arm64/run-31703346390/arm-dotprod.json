@@ -1,0 +1,1 @@
+{"schema":"rotornote-arm-dotprod-v1","architecture":"aarch64","isa":"armv8.2-a+dotprod","kernel":"NEON vdotq_s32","length":256,"trials":31,"iterations_per_trial":20000,"correctness":{"scalar":-29502,"neon":-29502,"exact_match":true},"median_ns":{"scalar":83.0748,"neon_dotprod":5.0824},"median_speedup":16.3456}

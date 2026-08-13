@@ -1,0 +1,2203 @@
+{
+  "format": "rotornote-real-lda-v5",
+  "seed": 5246534,
+  "labels": [
+    "healthy",
+    "imbalance",
+    "misalignment",
+    "looseness"
+  ],
+  "inputFeatures": 48,
+  "architecture": [
+    48,
+    4
+  ],
+  "training": {
+    "method": "standard-scaled linear discriminant analysis over mean features from four synchronized channels and five windows per channel",
+    "dataKind": "real experimental vibration only",
+    "source": {
+      "title": "Mechanical faults in rotating machinery dataset (normal, unbalance, misalignment, looseness)",
+      "authors": [
+        "Lucas Costa Brito",
+        "Gian Antonio Susto",
+        "Jorge Nei Brito",
+        "Marcus Antonio Viana Duarte"
+      ],
+      "version": 3,
+      "doi": "10.17632/zx8pfhdtnb.3",
+      "recordUrl": "https://data.mendeley.com/datasets/zx8pfhdtnb/3",
+      "archiveUrl": "https://data.mendeley.com/public-api/zip/zx8pfhdtnb/download/3",
+      "archiveSha256": "2a1bf682b15ad09281546c9d680e71b9968d6b83fce8a0f53b10b8ced1b72df9",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "acquisition": "20 independently reset physical tests, 5 per condition; 4 accelerometers; 25 kHz; approximately 1238 RPM",
+      "operatingRpm": 1238,
+      "use": "Production classifier training and whole-test held-out validation",
+      "changes": "Deterministic 8,192-sample windows and RotorNote 48-feature vectors derived from selected raw recordings."
+    },
+    "sourceArchiveSha256": "2a1bf682b15ad09281546c9d680e71b9968d6b83fce8a0f53b10b8ced1b72df9",
+    "featureArtifactSha256": "32705b20f884e2e6914910b6294034de32ffab7a2f37d092885fa4ba9e99a6e0",
+    "sourceWindows": 40000,
+    "recordings": 2000,
+    "physicalTests": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "validationProtocol": "five outer folds; one whole physical test per class held out per fold; nested grouped confidence calibration; production refit after validation",
+    "groupedValidationReceipt": "field/results/open-grouped-cross-validation.json",
+    "groupedValidationSha256": "9103d3fac35799d51d9fe7dbcb6576552bc587478161e1e39b1837d7b117807b",
+    "singleChannelAblationBalancedAccuracy": 0.679625,
+    "fourChannelRecordingBalancedAccuracy": 0.9400000000000001,
+    "foldBalancedAccuracyRange": [
+      0.855,
+      1
+    ],
+    "physicalTestAccuracy": 0.95,
+    "engineAgreement": 1,
+    "recordingEngineAgreement": 1,
+    "p99ProbabilityDelta": 2.795975519066286e-10,
+    "maximumProbabilityDelta": 0.019958410508593594
+  },
+  "decisionPolicy": {
+    "minimumConfidence": 0.99,
+    "basis": "conservative engineering floor; confidence scores are not independently calibrated probabilities",
+    "groupedValidation": {
+      "minimumConfidence": 0.99,
+      "coverage": 0.9615,
+      "acceptedRecordings": 1923,
+      "selectiveAccuracy": 0.9583983359334374,
+      "selectiveBalancedAccuracy": 0.9563511734490465,
+      "acceptedByClass": [
+        497,
+        500,
+        437,
+        489
+      ],
+      "classConditionalAccuracy": [
+        0.9879275653923542,
+        1,
+        0.8947368421052632,
+        0.9427402862985685
+      ]
+    },
+    "nestedValidation": {
+      "method": "Calibration audit only: for each outer fold, inner grouped CV on the other 16 physical tests searched a predeclared grid spanning 0.50 through 0.9999 and recorded the complete trace. If the 95% target was not met inside, that outer fold accepted nothing. This audit does not justify a calibrated-probability claim.",
+      "folds": [
+        {
+          "outerFold": 1,
+          "heldTests": [
+            1,
+            2,
+            4,
+            5
+          ],
+          "thresholdChosenWithoutOuterFold": null,
+          "innerTargetMet": false,
+          "innerCalibrationTrace": [
+            {
+              "threshold": 0.5,
+              "coverage": 1,
+              "acceptedRecordings": 1600,
+              "selectiveAccuracy": 0.87125
+            },
+            {
+              "threshold": 0.51,
+              "coverage": 1,
+              "acceptedRecordings": 1600,
+              "selectiveAccuracy": 0.87125
+            },
+            {
+              "threshold": 0.52,
+              "coverage": 0.999375,
+              "acceptedRecordings": 1599,
+              "selectiveAccuracy": 0.8717948717948718
+            },
+            {
+              "threshold": 0.53,
+              "coverage": 0.998125,
+              "acceptedRecordings": 1597,
+              "selectiveAccuracy": 0.8722604884157796
+            },
+            {
+              "threshold": 0.54,
+              "coverage": 0.998125,
+              "acceptedRecordings": 1597,
+              "selectiveAccuracy": 0.8722604884157796
+            },
+            {
+              "threshold": 0.55,
+              "coverage": 0.9975,
+              "acceptedRecordings": 1596,
+              "selectiveAccuracy": 0.8721804511278195
+            },
+            {
+              "threshold": 0.56,
+              "coverage": 0.996875,
+              "acceptedRecordings": 1595,
+              "selectiveAccuracy": 0.8727272727272727
+            },
+            {
+              "threshold": 0.57,
+              "coverage": 0.996875,
+              "acceptedRecordings": 1595,
+              "selectiveAccuracy": 0.8727272727272727
+            },
+            {
+              "threshold": 0.58,
+              "coverage": 0.996875,
+              "acceptedRecordings": 1595,
+              "selectiveAccuracy": 0.8727272727272727
+            },
+            {
+              "threshold": 0.59,
+              "coverage": 0.99625,
+              "acceptedRecordings": 1594,
+              "selectiveAccuracy": 0.8726474278544541
+            },
+            {
+              "threshold": 0.6,
+              "coverage": 0.99625,
+              "acceptedRecordings": 1594,
+              "selectiveAccuracy": 0.8726474278544541
+            },
+            {
+              "threshold": 0.61,
+              "coverage": 0.99625,
+              "acceptedRecordings": 1594,
+              "selectiveAccuracy": 0.8726474278544541
+            },
+            {
+              "threshold": 0.62,
+              "coverage": 0.99625,
+              "acceptedRecordings": 1594,
+              "selectiveAccuracy": 0.8726474278544541
+            },
+            {
+              "threshold": 0.63,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.8725674827369743
+            },
+            {
+              "threshold": 0.64,
+              "coverage": 0.995,
+              "acceptedRecordings": 1592,
+              "selectiveAccuracy": 0.8731155778894473
+            },
+            {
+              "threshold": 0.65,
+              "coverage": 0.994375,
+              "acceptedRecordings": 1591,
+              "selectiveAccuracy": 0.8730358265241986
+            },
+            {
+              "threshold": 0.66,
+              "coverage": 0.994375,
+              "acceptedRecordings": 1591,
+              "selectiveAccuracy": 0.8730358265241986
+            },
+            {
+              "threshold": 0.67,
+              "coverage": 0.994375,
+              "acceptedRecordings": 1591,
+              "selectiveAccuracy": 0.8730358265241986
+            },
+            {
+              "threshold": 0.68,
+              "coverage": 0.994375,
+              "acceptedRecordings": 1591,
+              "selectiveAccuracy": 0.8730358265241986
+            },
+            {
+              "threshold": 0.69,
+              "coverage": 0.994375,
+              "acceptedRecordings": 1591,
+              "selectiveAccuracy": 0.8730358265241986
+            },
+            {
+              "threshold": 0.7,
+              "coverage": 0.993125,
+              "acceptedRecordings": 1589,
+              "selectiveAccuracy": 0.8728760226557584
+            },
+            {
+              "threshold": 0.71,
+              "coverage": 0.993125,
+              "acceptedRecordings": 1589,
+              "selectiveAccuracy": 0.8728760226557584
+            },
+            {
+              "threshold": 0.72,
+              "coverage": 0.993125,
+              "acceptedRecordings": 1589,
+              "selectiveAccuracy": 0.8728760226557584
+            },
+            {
+              "threshold": 0.73,
+              "coverage": 0.993125,
+              "acceptedRecordings": 1589,
+              "selectiveAccuracy": 0.8728760226557584
+            },
+            {
+              "threshold": 0.74,
+              "coverage": 0.9925,
+              "acceptedRecordings": 1588,
+              "selectiveAccuracy": 0.8727959697732998
+            },
+            {
+              "threshold": 0.75,
+              "coverage": 0.9925,
+              "acceptedRecordings": 1588,
+              "selectiveAccuracy": 0.8727959697732998
+            },
+            {
+              "threshold": 0.76,
+              "coverage": 0.9925,
+              "acceptedRecordings": 1588,
+              "selectiveAccuracy": 0.8727959697732998
+            },
+            {
+              "threshold": 0.77,
+              "coverage": 0.991875,
+              "acceptedRecordings": 1587,
+              "selectiveAccuracy": 0.8733459357277883
+            },
+            {
+              "threshold": 0.78,
+              "coverage": 0.991875,
+              "acceptedRecordings": 1587,
+              "selectiveAccuracy": 0.8733459357277883
+            },
+            {
+              "threshold": 0.79,
+              "coverage": 0.99125,
+              "acceptedRecordings": 1586,
+              "selectiveAccuracy": 0.8738965952080706
+            },
+            {
+              "threshold": 0.8,
+              "coverage": 0.990625,
+              "acceptedRecordings": 1585,
+              "selectiveAccuracy": 0.8738170347003155
+            },
+            {
+              "threshold": 0.81,
+              "coverage": 0.990625,
+              "acceptedRecordings": 1585,
+              "selectiveAccuracy": 0.8738170347003155
+            },
+            {
+              "threshold": 0.82,
+              "coverage": 0.990625,
+              "acceptedRecordings": 1585,
+              "selectiveAccuracy": 0.8738170347003155
+            },
+            {
+              "threshold": 0.83,
+              "coverage": 0.99,
+              "acceptedRecordings": 1584,
+              "selectiveAccuracy": 0.8743686868686869
+            },
+            {
+              "threshold": 0.84,
+              "coverage": 0.989375,
+              "acceptedRecordings": 1583,
+              "selectiveAccuracy": 0.8742893240682249
+            },
+            {
+              "threshold": 0.85,
+              "coverage": 0.98875,
+              "acceptedRecordings": 1582,
+              "selectiveAccuracy": 0.8748419721871049
+            },
+            {
+              "threshold": 0.86,
+              "coverage": 0.98875,
+              "acceptedRecordings": 1582,
+              "selectiveAccuracy": 0.8748419721871049
+            },
+            {
+              "threshold": 0.87,
+              "coverage": 0.98875,
+              "acceptedRecordings": 1582,
+              "selectiveAccuracy": 0.8748419721871049
+            },
+            {
+              "threshold": 0.88,
+              "coverage": 0.9875,
+              "acceptedRecordings": 1580,
+              "selectiveAccuracy": 0.8753164556962025
+            },
+            {
+              "threshold": 0.89,
+              "coverage": 0.986875,
+              "acceptedRecordings": 1579,
+              "selectiveAccuracy": 0.8752374920835972
+            },
+            {
+              "threshold": 0.9,
+              "coverage": 0.985625,
+              "acceptedRecordings": 1577,
+              "selectiveAccuracy": 0.87571337983513
+            },
+            {
+              "threshold": 0.91,
+              "coverage": 0.984375,
+              "acceptedRecordings": 1575,
+              "selectiveAccuracy": 0.8768253968253968
+            },
+            {
+              "threshold": 0.92,
+              "coverage": 0.983125,
+              "acceptedRecordings": 1573,
+              "selectiveAccuracy": 0.87730451366815
+            },
+            {
+              "threshold": 0.93,
+              "coverage": 0.983125,
+              "acceptedRecordings": 1573,
+              "selectiveAccuracy": 0.87730451366815
+            },
+            {
+              "threshold": 0.94,
+              "coverage": 0.980625,
+              "acceptedRecordings": 1569,
+              "selectiveAccuracy": 0.8776290630975143
+            },
+            {
+              "threshold": 0.95,
+              "coverage": 0.97875,
+              "acceptedRecordings": 1566,
+              "selectiveAccuracy": 0.8780332056194126
+            },
+            {
+              "threshold": 0.96,
+              "coverage": 0.978125,
+              "acceptedRecordings": 1565,
+              "selectiveAccuracy": 0.8785942492012779
+            },
+            {
+              "threshold": 0.97,
+              "coverage": 0.978125,
+              "acceptedRecordings": 1565,
+              "selectiveAccuracy": 0.8785942492012779
+            },
+            {
+              "threshold": 0.98,
+              "coverage": 0.9775,
+              "acceptedRecordings": 1564,
+              "selectiveAccuracy": 0.8785166240409207
+            },
+            {
+              "threshold": 0.99,
+              "coverage": 0.970625,
+              "acceptedRecordings": 1553,
+              "selectiveAccuracy": 0.8808757244043787
+            },
+            {
+              "threshold": 0.995,
+              "coverage": 0.96875,
+              "acceptedRecordings": 1550,
+              "selectiveAccuracy": 0.8812903225806452
+            },
+            {
+              "threshold": 0.997,
+              "coverage": 0.965,
+              "acceptedRecordings": 1544,
+              "selectiveAccuracy": 0.8821243523316062
+            },
+            {
+              "threshold": 0.999,
+              "coverage": 0.9575,
+              "acceptedRecordings": 1532,
+              "selectiveAccuracy": 0.8870757180156658
+            },
+            {
+              "threshold": 0.9995,
+              "coverage": 0.955,
+              "acceptedRecordings": 1528,
+              "selectiveAccuracy": 0.8893979057591623
+            },
+            {
+              "threshold": 0.9999,
+              "coverage": 0.945,
+              "acceptedRecordings": 1512,
+              "selectiveAccuracy": 0.8935185185185185
+            }
+          ],
+          "coverage": 0,
+          "acceptedRecordings": 0,
+          "selectiveAccuracy": null
+        },
+        {
+          "outerFold": 2,
+          "heldTests": [
+            3,
+            10,
+            7,
+            8
+          ],
+          "thresholdChosenWithoutOuterFold": null,
+          "innerTargetMet": false,
+          "innerCalibrationTrace": [
+            {
+              "threshold": 0.5,
+              "coverage": 1,
+              "acceptedRecordings": 1600,
+              "selectiveAccuracy": 0.921875
+            },
+            {
+              "threshold": 0.51,
+              "coverage": 1,
+              "acceptedRecordings": 1600,
+              "selectiveAccuracy": 0.921875
+            },
+            {
+              "threshold": 0.52,
+              "coverage": 1,
+              "acceptedRecordings": 1600,
+              "selectiveAccuracy": 0.921875
+            },
+            {
+              "threshold": 0.53,
+              "coverage": 1,
+              "acceptedRecordings": 1600,
+              "selectiveAccuracy": 0.921875
+            },
+            {
+              "threshold": 0.54,
+              "coverage": 1,
+              "acceptedRecordings": 1600,
+              "selectiveAccuracy": 0.921875
+            },
+            {
+              "threshold": 0.55,
+              "coverage": 1,
+              "acceptedRecordings": 1600,
+              "selectiveAccuracy": 0.921875
+            },
+            {
+              "threshold": 0.56,
+              "coverage": 1,
+              "acceptedRecordings": 1600,
+              "selectiveAccuracy": 0.921875
+            },
+            {
+              "threshold": 0.57,
+              "coverage": 1,
+              "acceptedRecordings": 1600,
+              "selectiveAccuracy": 0.921875
+            },
+            {
+              "threshold": 0.58,
+              "coverage": 0.99875,
+              "acceptedRecordings": 1598,
+              "selectiveAccuracy": 0.9230287859824781
+            },
+            {
+              "threshold": 0.59,
+              "coverage": 0.99875,
+              "acceptedRecordings": 1598,
+              "selectiveAccuracy": 0.9230287859824781
+            },
+            {
+              "threshold": 0.6,
+              "coverage": 0.998125,
+              "acceptedRecordings": 1597,
+              "selectiveAccuracy": 0.9229805886036319
+            },
+            {
+              "threshold": 0.61,
+              "coverage": 0.998125,
+              "acceptedRecordings": 1597,
+              "selectiveAccuracy": 0.9229805886036319
+            },
+            {
+              "threshold": 0.62,
+              "coverage": 0.998125,
+              "acceptedRecordings": 1597,
+              "selectiveAccuracy": 0.9229805886036319
+            },
+            {
+              "threshold": 0.63,
+              "coverage": 0.998125,
+              "acceptedRecordings": 1597,
+              "selectiveAccuracy": 0.9229805886036319
+            },
+            {
+              "threshold": 0.64,
+              "coverage": 0.9975,
+              "acceptedRecordings": 1596,
+              "selectiveAccuracy": 0.9229323308270677
+            },
+            {
+              "threshold": 0.65,
+              "coverage": 0.9975,
+              "acceptedRecordings": 1596,
+              "selectiveAccuracy": 0.9229323308270677
+            },
+            {
+              "threshold": 0.66,
+              "coverage": 0.9975,
+              "acceptedRecordings": 1596,
+              "selectiveAccuracy": 0.9229323308270677
+            },
+            {
+              "threshold": 0.67,
+              "coverage": 0.9975,
+              "acceptedRecordings": 1596,
+              "selectiveAccuracy": 0.9229323308270677
+            },
+            {
+              "threshold": 0.68,
+              "coverage": 0.9975,
+              "acceptedRecordings": 1596,
+              "selectiveAccuracy": 0.9229323308270677
+            },
+            {
+              "threshold": 0.69,
+              "coverage": 0.996875,
+              "acceptedRecordings": 1595,
+              "selectiveAccuracy": 0.922884012539185
+            },
+            {
+              "threshold": 0.7,
+              "coverage": 0.996875,
+              "acceptedRecordings": 1595,
+              "selectiveAccuracy": 0.922884012539185
+            },
+            {
+              "threshold": 0.71,
+              "coverage": 0.996875,
+              "acceptedRecordings": 1595,
+              "selectiveAccuracy": 0.922884012539185
+            },
+            {
+              "threshold": 0.72,
+              "coverage": 0.996875,
+              "acceptedRecordings": 1595,
+              "selectiveAccuracy": 0.922884012539185
+            },
+            {
+              "threshold": 0.73,
+              "coverage": 0.996875,
+              "acceptedRecordings": 1595,
+              "selectiveAccuracy": 0.922884012539185
+            },
+            {
+              "threshold": 0.74,
+              "coverage": 0.996875,
+              "acceptedRecordings": 1595,
+              "selectiveAccuracy": 0.922884012539185
+            },
+            {
+              "threshold": 0.75,
+              "coverage": 0.99625,
+              "acceptedRecordings": 1594,
+              "selectiveAccuracy": 0.9234629861982434
+            },
+            {
+              "threshold": 0.76,
+              "coverage": 0.99625,
+              "acceptedRecordings": 1594,
+              "selectiveAccuracy": 0.9234629861982434
+            },
+            {
+              "threshold": 0.77,
+              "coverage": 0.99625,
+              "acceptedRecordings": 1594,
+              "selectiveAccuracy": 0.9234629861982434
+            },
+            {
+              "threshold": 0.78,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.9240426867545511
+            },
+            {
+              "threshold": 0.79,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.9240426867545511
+            },
+            {
+              "threshold": 0.8,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.9240426867545511
+            },
+            {
+              "threshold": 0.81,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.9240426867545511
+            },
+            {
+              "threshold": 0.82,
+              "coverage": 0.995,
+              "acceptedRecordings": 1592,
+              "selectiveAccuracy": 0.9239949748743719
+            },
+            {
+              "threshold": 0.83,
+              "coverage": 0.994375,
+              "acceptedRecordings": 1591,
+              "selectiveAccuracy": 0.9245757385292269
+            },
+            {
+              "threshold": 0.84,
+              "coverage": 0.994375,
+              "acceptedRecordings": 1591,
+              "selectiveAccuracy": 0.9245757385292269
+            },
+            {
+              "threshold": 0.85,
+              "coverage": 0.99375,
+              "acceptedRecordings": 1590,
+              "selectiveAccuracy": 0.9245283018867925
+            },
+            {
+              "threshold": 0.86,
+              "coverage": 0.99375,
+              "acceptedRecordings": 1590,
+              "selectiveAccuracy": 0.9245283018867925
+            },
+            {
+              "threshold": 0.87,
+              "coverage": 0.9925,
+              "acceptedRecordings": 1588,
+              "selectiveAccuracy": 0.9250629722921915
+            },
+            {
+              "threshold": 0.88,
+              "coverage": 0.9925,
+              "acceptedRecordings": 1588,
+              "selectiveAccuracy": 0.9250629722921915
+            },
+            {
+              "threshold": 0.89,
+              "coverage": 0.991875,
+              "acceptedRecordings": 1587,
+              "selectiveAccuracy": 0.9250157529930687
+            },
+            {
+              "threshold": 0.9,
+              "coverage": 0.991875,
+              "acceptedRecordings": 1587,
+              "selectiveAccuracy": 0.9250157529930687
+            },
+            {
+              "threshold": 0.91,
+              "coverage": 0.99125,
+              "acceptedRecordings": 1586,
+              "selectiveAccuracy": 0.924968474148802
+            },
+            {
+              "threshold": 0.92,
+              "coverage": 0.99125,
+              "acceptedRecordings": 1586,
+              "selectiveAccuracy": 0.924968474148802
+            },
+            {
+              "threshold": 0.93,
+              "coverage": 0.99125,
+              "acceptedRecordings": 1586,
+              "selectiveAccuracy": 0.924968474148802
+            },
+            {
+              "threshold": 0.94,
+              "coverage": 0.98875,
+              "acceptedRecordings": 1582,
+              "selectiveAccuracy": 0.9254108723135271
+            },
+            {
+              "threshold": 0.95,
+              "coverage": 0.988125,
+              "acceptedRecordings": 1581,
+              "selectiveAccuracy": 0.9253636938646427
+            },
+            {
+              "threshold": 0.96,
+              "coverage": 0.9875,
+              "acceptedRecordings": 1580,
+              "selectiveAccuracy": 0.9259493670886076
+            },
+            {
+              "threshold": 0.97,
+              "coverage": 0.986875,
+              "acceptedRecordings": 1579,
+              "selectiveAccuracy": 0.9259024699176694
+            },
+            {
+              "threshold": 0.98,
+              "coverage": 0.985625,
+              "acceptedRecordings": 1577,
+              "selectiveAccuracy": 0.9264426125554851
+            },
+            {
+              "threshold": 0.99,
+              "coverage": 0.98375,
+              "acceptedRecordings": 1574,
+              "selectiveAccuracy": 0.9269377382465057
+            },
+            {
+              "threshold": 0.995,
+              "coverage": 0.98125,
+              "acceptedRecordings": 1570,
+              "selectiveAccuracy": 0.9286624203821656
+            },
+            {
+              "threshold": 0.997,
+              "coverage": 0.980625,
+              "acceptedRecordings": 1569,
+              "selectiveAccuracy": 0.92861695347355
+            },
+            {
+              "threshold": 0.999,
+              "coverage": 0.976875,
+              "acceptedRecordings": 1563,
+              "selectiveAccuracy": 0.9289827255278311
+            },
+            {
+              "threshold": 0.9995,
+              "coverage": 0.97625,
+              "acceptedRecordings": 1562,
+              "selectiveAccuracy": 0.9289372599231754
+            },
+            {
+              "threshold": 0.9999,
+              "coverage": 0.970625,
+              "acceptedRecordings": 1553,
+              "selectiveAccuracy": 0.9298132646490663
+            }
+          ],
+          "coverage": 0,
+          "acceptedRecordings": 0,
+          "selectiveAccuracy": null
+        },
+        {
+          "outerFold": 3,
+          "heldTests": [
+            6,
+            11,
+            15,
+            12
+          ],
+          "thresholdChosenWithoutOuterFold": null,
+          "innerTargetMet": false,
+          "innerCalibrationTrace": [
+            {
+              "threshold": 0.5,
+              "coverage": 1,
+              "acceptedRecordings": 1600,
+              "selectiveAccuracy": 0.870625
+            },
+            {
+              "threshold": 0.51,
+              "coverage": 0.99875,
+              "acceptedRecordings": 1598,
+              "selectiveAccuracy": 0.8710888610763454
+            },
+            {
+              "threshold": 0.52,
+              "coverage": 0.99875,
+              "acceptedRecordings": 1598,
+              "selectiveAccuracy": 0.8710888610763454
+            },
+            {
+              "threshold": 0.53,
+              "coverage": 0.99875,
+              "acceptedRecordings": 1598,
+              "selectiveAccuracy": 0.8710888610763454
+            },
+            {
+              "threshold": 0.54,
+              "coverage": 0.99875,
+              "acceptedRecordings": 1598,
+              "selectiveAccuracy": 0.8710888610763454
+            },
+            {
+              "threshold": 0.55,
+              "coverage": 0.99875,
+              "acceptedRecordings": 1598,
+              "selectiveAccuracy": 0.8710888610763454
+            },
+            {
+              "threshold": 0.56,
+              "coverage": 0.99875,
+              "acceptedRecordings": 1598,
+              "selectiveAccuracy": 0.8710888610763454
+            },
+            {
+              "threshold": 0.57,
+              "coverage": 0.99875,
+              "acceptedRecordings": 1598,
+              "selectiveAccuracy": 0.8710888610763454
+            },
+            {
+              "threshold": 0.58,
+              "coverage": 0.99875,
+              "acceptedRecordings": 1598,
+              "selectiveAccuracy": 0.8710888610763454
+            },
+            {
+              "threshold": 0.59,
+              "coverage": 0.998125,
+              "acceptedRecordings": 1597,
+              "selectiveAccuracy": 0.8710081402629931
+            },
+            {
+              "threshold": 0.6,
+              "coverage": 0.99625,
+              "acceptedRecordings": 1594,
+              "selectiveAccuracy": 0.8713927227101631
+            },
+            {
+              "threshold": 0.61,
+              "coverage": 0.99625,
+              "acceptedRecordings": 1594,
+              "selectiveAccuracy": 0.8713927227101631
+            },
+            {
+              "threshold": 0.62,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.871939736346516
+            },
+            {
+              "threshold": 0.63,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.871939736346516
+            },
+            {
+              "threshold": 0.64,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.871939736346516
+            },
+            {
+              "threshold": 0.65,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.871939736346516
+            },
+            {
+              "threshold": 0.66,
+              "coverage": 0.995,
+              "acceptedRecordings": 1592,
+              "selectiveAccuracy": 0.871859296482412
+            },
+            {
+              "threshold": 0.67,
+              "coverage": 0.995,
+              "acceptedRecordings": 1592,
+              "selectiveAccuracy": 0.871859296482412
+            },
+            {
+              "threshold": 0.68,
+              "coverage": 0.994375,
+              "acceptedRecordings": 1591,
+              "selectiveAccuracy": 0.8724072910119421
+            },
+            {
+              "threshold": 0.69,
+              "coverage": 0.99375,
+              "acceptedRecordings": 1590,
+              "selectiveAccuracy": 0.8729559748427673
+            },
+            {
+              "threshold": 0.7,
+              "coverage": 0.99125,
+              "acceptedRecordings": 1586,
+              "selectiveAccuracy": 0.8726355611601513
+            },
+            {
+              "threshold": 0.71,
+              "coverage": 0.99,
+              "acceptedRecordings": 1584,
+              "selectiveAccuracy": 0.8737373737373737
+            },
+            {
+              "threshold": 0.72,
+              "coverage": 0.98875,
+              "acceptedRecordings": 1582,
+              "selectiveAccuracy": 0.8748419721871049
+            },
+            {
+              "threshold": 0.73,
+              "coverage": 0.98875,
+              "acceptedRecordings": 1582,
+              "selectiveAccuracy": 0.8748419721871049
+            },
+            {
+              "threshold": 0.74,
+              "coverage": 0.988125,
+              "acceptedRecordings": 1581,
+              "selectiveAccuracy": 0.8753953194180898
+            },
+            {
+              "threshold": 0.75,
+              "coverage": 0.9875,
+              "acceptedRecordings": 1580,
+              "selectiveAccuracy": 0.8759493670886076
+            },
+            {
+              "threshold": 0.76,
+              "coverage": 0.9875,
+              "acceptedRecordings": 1580,
+              "selectiveAccuracy": 0.8759493670886076
+            },
+            {
+              "threshold": 0.77,
+              "coverage": 0.986875,
+              "acceptedRecordings": 1579,
+              "selectiveAccuracy": 0.876504116529449
+            },
+            {
+              "threshold": 0.78,
+              "coverage": 0.98625,
+              "acceptedRecordings": 1578,
+              "selectiveAccuracy": 0.8770595690747782
+            },
+            {
+              "threshold": 0.79,
+              "coverage": 0.98625,
+              "acceptedRecordings": 1578,
+              "selectiveAccuracy": 0.8770595690747782
+            },
+            {
+              "threshold": 0.8,
+              "coverage": 0.985625,
+              "acceptedRecordings": 1577,
+              "selectiveAccuracy": 0.8769816106531388
+            },
+            {
+              "threshold": 0.81,
+              "coverage": 0.985625,
+              "acceptedRecordings": 1577,
+              "selectiveAccuracy": 0.8769816106531388
+            },
+            {
+              "threshold": 0.82,
+              "coverage": 0.985625,
+              "acceptedRecordings": 1577,
+              "selectiveAccuracy": 0.8769816106531388
+            },
+            {
+              "threshold": 0.83,
+              "coverage": 0.985625,
+              "acceptedRecordings": 1577,
+              "selectiveAccuracy": 0.8769816106531388
+            },
+            {
+              "threshold": 0.84,
+              "coverage": 0.985,
+              "acceptedRecordings": 1576,
+              "selectiveAccuracy": 0.8775380710659898
+            },
+            {
+              "threshold": 0.85,
+              "coverage": 0.984375,
+              "acceptedRecordings": 1575,
+              "selectiveAccuracy": 0.8774603174603175
+            },
+            {
+              "threshold": 0.86,
+              "coverage": 0.983125,
+              "acceptedRecordings": 1573,
+              "selectiveAccuracy": 0.8779402415766052
+            },
+            {
+              "threshold": 0.87,
+              "coverage": 0.983125,
+              "acceptedRecordings": 1573,
+              "selectiveAccuracy": 0.8779402415766052
+            },
+            {
+              "threshold": 0.88,
+              "coverage": 0.9825,
+              "acceptedRecordings": 1572,
+              "selectiveAccuracy": 0.8778625954198473
+            },
+            {
+              "threshold": 0.89,
+              "coverage": 0.98125,
+              "acceptedRecordings": 1570,
+              "selectiveAccuracy": 0.8789808917197452
+            },
+            {
+              "threshold": 0.9,
+              "coverage": 0.980625,
+              "acceptedRecordings": 1569,
+              "selectiveAccuracy": 0.8789037603569152
+            },
+            {
+              "threshold": 0.91,
+              "coverage": 0.9775,
+              "acceptedRecordings": 1564,
+              "selectiveAccuracy": 0.8817135549872123
+            },
+            {
+              "threshold": 0.92,
+              "coverage": 0.975625,
+              "acceptedRecordings": 1561,
+              "selectiveAccuracy": 0.8827674567584881
+            },
+            {
+              "threshold": 0.93,
+              "coverage": 0.975,
+              "acceptedRecordings": 1560,
+              "selectiveAccuracy": 0.8826923076923077
+            },
+            {
+              "threshold": 0.94,
+              "coverage": 0.973125,
+              "acceptedRecordings": 1557,
+              "selectiveAccuracy": 0.8837508028259473
+            },
+            {
+              "threshold": 0.95,
+              "coverage": 0.969375,
+              "acceptedRecordings": 1551,
+              "selectiveAccuracy": 0.8852353320438426
+            },
+            {
+              "threshold": 0.96,
+              "coverage": 0.9675,
+              "acceptedRecordings": 1548,
+              "selectiveAccuracy": 0.8863049095607235
+            },
+            {
+              "threshold": 0.97,
+              "coverage": 0.96625,
+              "acceptedRecordings": 1546,
+              "selectiveAccuracy": 0.8868046571798189
+            },
+            {
+              "threshold": 0.98,
+              "coverage": 0.9625,
+              "acceptedRecordings": 1540,
+              "selectiveAccuracy": 0.8883116883116883
+            },
+            {
+              "threshold": 0.99,
+              "coverage": 0.95625,
+              "acceptedRecordings": 1530,
+              "selectiveAccuracy": 0.8915032679738563
+            },
+            {
+              "threshold": 0.995,
+              "coverage": 0.951875,
+              "acceptedRecordings": 1523,
+              "selectiveAccuracy": 0.8949441891004596
+            },
+            {
+              "threshold": 0.997,
+              "coverage": 0.945625,
+              "acceptedRecordings": 1513,
+              "selectiveAccuracy": 0.898876404494382
+            },
+            {
+              "threshold": 0.999,
+              "coverage": 0.936875,
+              "acceptedRecordings": 1499,
+              "selectiveAccuracy": 0.9006004002668445
+            },
+            {
+              "threshold": 0.9995,
+              "coverage": 0.93125,
+              "acceptedRecordings": 1490,
+              "selectiveAccuracy": 0.9026845637583892
+            },
+            {
+              "threshold": 0.9999,
+              "coverage": 0.919375,
+              "acceptedRecordings": 1471,
+              "selectiveAccuracy": 0.9082256968048946
+            }
+          ],
+          "coverage": 0,
+          "acceptedRecordings": 0,
+          "selectiveAccuracy": null
+        },
+        {
+          "outerFold": 4,
+          "heldTests": [
+            9,
+            13,
+            18,
+            14
+          ],
+          "thresholdChosenWithoutOuterFold": null,
+          "innerTargetMet": false,
+          "innerCalibrationTrace": [
+            {
+              "threshold": 0.5,
+              "coverage": 1,
+              "acceptedRecordings": 1600,
+              "selectiveAccuracy": 0.905
+            },
+            {
+              "threshold": 0.51,
+              "coverage": 1,
+              "acceptedRecordings": 1600,
+              "selectiveAccuracy": 0.905
+            },
+            {
+              "threshold": 0.52,
+              "coverage": 0.99875,
+              "acceptedRecordings": 1598,
+              "selectiveAccuracy": 0.9061326658322904
+            },
+            {
+              "threshold": 0.53,
+              "coverage": 0.99875,
+              "acceptedRecordings": 1598,
+              "selectiveAccuracy": 0.9061326658322904
+            },
+            {
+              "threshold": 0.54,
+              "coverage": 0.9975,
+              "acceptedRecordings": 1596,
+              "selectiveAccuracy": 0.906641604010025
+            },
+            {
+              "threshold": 0.55,
+              "coverage": 0.996875,
+              "acceptedRecordings": 1595,
+              "selectiveAccuracy": 0.9072100313479624
+            },
+            {
+              "threshold": 0.56,
+              "coverage": 0.996875,
+              "acceptedRecordings": 1595,
+              "selectiveAccuracy": 0.9072100313479624
+            },
+            {
+              "threshold": 0.57,
+              "coverage": 0.996875,
+              "acceptedRecordings": 1595,
+              "selectiveAccuracy": 0.9072100313479624
+            },
+            {
+              "threshold": 0.58,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.9077212806026366
+            },
+            {
+              "threshold": 0.59,
+              "coverage": 0.995,
+              "acceptedRecordings": 1592,
+              "selectiveAccuracy": 0.9076633165829145
+            },
+            {
+              "threshold": 0.6,
+              "coverage": 0.995,
+              "acceptedRecordings": 1592,
+              "selectiveAccuracy": 0.9076633165829145
+            },
+            {
+              "threshold": 0.61,
+              "coverage": 0.994375,
+              "acceptedRecordings": 1591,
+              "selectiveAccuracy": 0.907605279698303
+            },
+            {
+              "threshold": 0.62,
+              "coverage": 0.994375,
+              "acceptedRecordings": 1591,
+              "selectiveAccuracy": 0.907605279698303
+            },
+            {
+              "threshold": 0.63,
+              "coverage": 0.994375,
+              "acceptedRecordings": 1591,
+              "selectiveAccuracy": 0.907605279698303
+            },
+            {
+              "threshold": 0.64,
+              "coverage": 0.994375,
+              "acceptedRecordings": 1591,
+              "selectiveAccuracy": 0.907605279698303
+            },
+            {
+              "threshold": 0.65,
+              "coverage": 0.99375,
+              "acceptedRecordings": 1590,
+              "selectiveAccuracy": 0.9075471698113208
+            },
+            {
+              "threshold": 0.66,
+              "coverage": 0.99375,
+              "acceptedRecordings": 1590,
+              "selectiveAccuracy": 0.9075471698113208
+            },
+            {
+              "threshold": 0.67,
+              "coverage": 0.99375,
+              "acceptedRecordings": 1590,
+              "selectiveAccuracy": 0.9075471698113208
+            },
+            {
+              "threshold": 0.68,
+              "coverage": 0.993125,
+              "acceptedRecordings": 1589,
+              "selectiveAccuracy": 0.9074889867841409
+            },
+            {
+              "threshold": 0.69,
+              "coverage": 0.993125,
+              "acceptedRecordings": 1589,
+              "selectiveAccuracy": 0.9074889867841409
+            },
+            {
+              "threshold": 0.7,
+              "coverage": 0.991875,
+              "acceptedRecordings": 1587,
+              "selectiveAccuracy": 0.9073724007561437
+            },
+            {
+              "threshold": 0.71,
+              "coverage": 0.990625,
+              "acceptedRecordings": 1585,
+              "selectiveAccuracy": 0.9085173501577287
+            },
+            {
+              "threshold": 0.72,
+              "coverage": 0.989375,
+              "acceptedRecordings": 1583,
+              "selectiveAccuracy": 0.9084017687934302
+            },
+            {
+              "threshold": 0.73,
+              "coverage": 0.989375,
+              "acceptedRecordings": 1583,
+              "selectiveAccuracy": 0.9084017687934302
+            },
+            {
+              "threshold": 0.74,
+              "coverage": 0.98875,
+              "acceptedRecordings": 1582,
+              "selectiveAccuracy": 0.9089759797724399
+            },
+            {
+              "threshold": 0.75,
+              "coverage": 0.9875,
+              "acceptedRecordings": 1580,
+              "selectiveAccuracy": 0.910126582278481
+            },
+            {
+              "threshold": 0.76,
+              "coverage": 0.9875,
+              "acceptedRecordings": 1580,
+              "selectiveAccuracy": 0.910126582278481
+            },
+            {
+              "threshold": 0.77,
+              "coverage": 0.9875,
+              "acceptedRecordings": 1580,
+              "selectiveAccuracy": 0.910126582278481
+            },
+            {
+              "threshold": 0.78,
+              "coverage": 0.9875,
+              "acceptedRecordings": 1580,
+              "selectiveAccuracy": 0.910126582278481
+            },
+            {
+              "threshold": 0.79,
+              "coverage": 0.9875,
+              "acceptedRecordings": 1580,
+              "selectiveAccuracy": 0.910126582278481
+            },
+            {
+              "threshold": 0.8,
+              "coverage": 0.985,
+              "acceptedRecordings": 1576,
+              "selectiveAccuracy": 0.9098984771573604
+            },
+            {
+              "threshold": 0.81,
+              "coverage": 0.985,
+              "acceptedRecordings": 1576,
+              "selectiveAccuracy": 0.9098984771573604
+            },
+            {
+              "threshold": 0.82,
+              "coverage": 0.98375,
+              "acceptedRecordings": 1574,
+              "selectiveAccuracy": 0.9097839898348158
+            },
+            {
+              "threshold": 0.83,
+              "coverage": 0.983125,
+              "acceptedRecordings": 1573,
+              "selectiveAccuracy": 0.9097266369993643
+            },
+            {
+              "threshold": 0.84,
+              "coverage": 0.9825,
+              "acceptedRecordings": 1572,
+              "selectiveAccuracy": 0.9096692111959288
+            },
+            {
+              "threshold": 0.85,
+              "coverage": 0.980625,
+              "acceptedRecordings": 1569,
+              "selectiveAccuracy": 0.9094964945825367
+            },
+            {
+              "threshold": 0.86,
+              "coverage": 0.979375,
+              "acceptedRecordings": 1567,
+              "selectiveAccuracy": 0.9100191448627951
+            },
+            {
+              "threshold": 0.87,
+              "coverage": 0.979375,
+              "acceptedRecordings": 1567,
+              "selectiveAccuracy": 0.9100191448627951
+            },
+            {
+              "threshold": 0.88,
+              "coverage": 0.97875,
+              "acceptedRecordings": 1566,
+              "selectiveAccuracy": 0.9106002554278416
+            },
+            {
+              "threshold": 0.89,
+              "coverage": 0.9775,
+              "acceptedRecordings": 1564,
+              "selectiveAccuracy": 0.9104859335038363
+            },
+            {
+              "threshold": 0.9,
+              "coverage": 0.9775,
+              "acceptedRecordings": 1564,
+              "selectiveAccuracy": 0.9104859335038363
+            },
+            {
+              "threshold": 0.91,
+              "coverage": 0.9775,
+              "acceptedRecordings": 1564,
+              "selectiveAccuracy": 0.9104859335038363
+            },
+            {
+              "threshold": 0.92,
+              "coverage": 0.976875,
+              "acceptedRecordings": 1563,
+              "selectiveAccuracy": 0.910428662827895
+            },
+            {
+              "threshold": 0.93,
+              "coverage": 0.976875,
+              "acceptedRecordings": 1563,
+              "selectiveAccuracy": 0.910428662827895
+            },
+            {
+              "threshold": 0.94,
+              "coverage": 0.974375,
+              "acceptedRecordings": 1559,
+              "selectiveAccuracy": 0.9121231558691469
+            },
+            {
+              "threshold": 0.95,
+              "coverage": 0.973125,
+              "acceptedRecordings": 1557,
+              "selectiveAccuracy": 0.9126525369299936
+            },
+            {
+              "threshold": 0.96,
+              "coverage": 0.971875,
+              "acceptedRecordings": 1555,
+              "selectiveAccuracy": 0.912540192926045
+            },
+            {
+              "threshold": 0.97,
+              "coverage": 0.96875,
+              "acceptedRecordings": 1550,
+              "selectiveAccuracy": 0.9148387096774193
+            },
+            {
+              "threshold": 0.98,
+              "coverage": 0.9675,
+              "acceptedRecordings": 1548,
+              "selectiveAccuracy": 0.915374677002584
+            },
+            {
+              "threshold": 0.99,
+              "coverage": 0.960625,
+              "acceptedRecordings": 1537,
+              "selectiveAccuracy": 0.9186727391021471
+            },
+            {
+              "threshold": 0.995,
+              "coverage": 0.9575,
+              "acceptedRecordings": 1532,
+              "selectiveAccuracy": 0.9203655352480418
+            },
+            {
+              "threshold": 0.997,
+              "coverage": 0.955,
+              "acceptedRecordings": 1528,
+              "selectiveAccuracy": 0.9221204188481675
+            },
+            {
+              "threshold": 0.999,
+              "coverage": 0.9475,
+              "acceptedRecordings": 1516,
+              "selectiveAccuracy": 0.9241424802110818
+            },
+            {
+              "threshold": 0.9995,
+              "coverage": 0.9425,
+              "acceptedRecordings": 1508,
+              "selectiveAccuracy": 0.9250663129973474
+            },
+            {
+              "threshold": 0.9999,
+              "coverage": 0.929375,
+              "acceptedRecordings": 1487,
+              "selectiveAccuracy": 0.9266980497646268
+            }
+          ],
+          "coverage": 0,
+          "acceptedRecordings": 0,
+          "selectiveAccuracy": null
+        },
+        {
+          "outerFold": 5,
+          "heldTests": [
+            17,
+            16,
+            20,
+            19
+          ],
+          "thresholdChosenWithoutOuterFold": null,
+          "innerTargetMet": false,
+          "innerCalibrationTrace": [
+            {
+              "threshold": 0.5,
+              "coverage": 1,
+              "acceptedRecordings": 1600,
+              "selectiveAccuracy": 0.8525
+            },
+            {
+              "threshold": 0.51,
+              "coverage": 0.999375,
+              "acceptedRecordings": 1599,
+              "selectiveAccuracy": 0.8530331457160726
+            },
+            {
+              "threshold": 0.52,
+              "coverage": 0.99875,
+              "acceptedRecordings": 1598,
+              "selectiveAccuracy": 0.853566958698373
+            },
+            {
+              "threshold": 0.53,
+              "coverage": 0.9975,
+              "acceptedRecordings": 1596,
+              "selectiveAccuracy": 0.8540100250626567
+            },
+            {
+              "threshold": 0.54,
+              "coverage": 0.99625,
+              "acceptedRecordings": 1594,
+              "selectiveAccuracy": 0.855081555834379
+            },
+            {
+              "threshold": 0.55,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.8549905838041432
+            },
+            {
+              "threshold": 0.56,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.8549905838041432
+            },
+            {
+              "threshold": 0.57,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.8549905838041432
+            },
+            {
+              "threshold": 0.58,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.8549905838041432
+            },
+            {
+              "threshold": 0.59,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.8549905838041432
+            },
+            {
+              "threshold": 0.6,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.8549905838041432
+            },
+            {
+              "threshold": 0.61,
+              "coverage": 0.995625,
+              "acceptedRecordings": 1593,
+              "selectiveAccuracy": 0.8549905838041432
+            },
+            {
+              "threshold": 0.62,
+              "coverage": 0.99375,
+              "acceptedRecordings": 1590,
+              "selectiveAccuracy": 0.8553459119496856
+            },
+            {
+              "threshold": 0.63,
+              "coverage": 0.99375,
+              "acceptedRecordings": 1590,
+              "selectiveAccuracy": 0.8553459119496856
+            },
+            {
+              "threshold": 0.64,
+              "coverage": 0.99375,
+              "acceptedRecordings": 1590,
+              "selectiveAccuracy": 0.8553459119496856
+            },
+            {
+              "threshold": 0.65,
+              "coverage": 0.993125,
+              "acceptedRecordings": 1589,
+              "selectiveAccuracy": 0.855254877281309
+            },
+            {
+              "threshold": 0.66,
+              "coverage": 0.993125,
+              "acceptedRecordings": 1589,
+              "selectiveAccuracy": 0.855254877281309
+            },
+            {
+              "threshold": 0.67,
+              "coverage": 0.991875,
+              "acceptedRecordings": 1587,
+              "selectiveAccuracy": 0.8557025834908633
+            },
+            {
+              "threshold": 0.68,
+              "coverage": 0.99125,
+              "acceptedRecordings": 1586,
+              "selectiveAccuracy": 0.8562421185372006
+            },
+            {
+              "threshold": 0.69,
+              "coverage": 0.99125,
+              "acceptedRecordings": 1586,
+              "selectiveAccuracy": 0.8562421185372006
+            },
+            {
+              "threshold": 0.7,
+              "coverage": 0.99125,
+              "acceptedRecordings": 1586,
+              "selectiveAccuracy": 0.8562421185372006
+            },
+            {
+              "threshold": 0.71,
+              "coverage": 0.99125,
+              "acceptedRecordings": 1586,
+              "selectiveAccuracy": 0.8562421185372006
+            },
+            {
+              "threshold": 0.72,
+              "coverage": 0.99125,
+              "acceptedRecordings": 1586,
+              "selectiveAccuracy": 0.8562421185372006
+            },
+            {
+              "threshold": 0.73,
+              "coverage": 0.990625,
+              "acceptedRecordings": 1585,
+              "selectiveAccuracy": 0.8567823343848581
+            },
+            {
+              "threshold": 0.74,
+              "coverage": 0.990625,
+              "acceptedRecordings": 1585,
+              "selectiveAccuracy": 0.8567823343848581
+            },
+            {
+              "threshold": 0.75,
+              "coverage": 0.99,
+              "acceptedRecordings": 1584,
+              "selectiveAccuracy": 0.8573232323232324
+            },
+            {
+              "threshold": 0.76,
+              "coverage": 0.989375,
+              "acceptedRecordings": 1583,
+              "selectiveAccuracy": 0.8572331017056223
+            },
+            {
+              "threshold": 0.77,
+              "coverage": 0.98875,
+              "acceptedRecordings": 1582,
+              "selectiveAccuracy": 0.8571428571428571
+            },
+            {
+              "threshold": 0.78,
+              "coverage": 0.98875,
+              "acceptedRecordings": 1582,
+              "selectiveAccuracy": 0.8571428571428571
+            },
+            {
+              "threshold": 0.79,
+              "coverage": 0.98875,
+              "acceptedRecordings": 1582,
+              "selectiveAccuracy": 0.8571428571428571
+            },
+            {
+              "threshold": 0.8,
+              "coverage": 0.9875,
+              "acceptedRecordings": 1580,
+              "selectiveAccuracy": 0.8569620253164557
+            },
+            {
+              "threshold": 0.81,
+              "coverage": 0.9875,
+              "acceptedRecordings": 1580,
+              "selectiveAccuracy": 0.8569620253164557
+            },
+            {
+              "threshold": 0.82,
+              "coverage": 0.986875,
+              "acceptedRecordings": 1579,
+              "selectiveAccuracy": 0.8568714376187461
+            },
+            {
+              "threshold": 0.83,
+              "coverage": 0.98625,
+              "acceptedRecordings": 1578,
+              "selectiveAccuracy": 0.8567807351077313
+            },
+            {
+              "threshold": 0.84,
+              "coverage": 0.985,
+              "acceptedRecordings": 1576,
+              "selectiveAccuracy": 0.8572335025380711
+            },
+            {
+              "threshold": 0.85,
+              "coverage": 0.985,
+              "acceptedRecordings": 1576,
+              "selectiveAccuracy": 0.8572335025380711
+            },
+            {
+              "threshold": 0.86,
+              "coverage": 0.984375,
+              "acceptedRecordings": 1575,
+              "selectiveAccuracy": 0.8571428571428571
+            },
+            {
+              "threshold": 0.87,
+              "coverage": 0.98375,
+              "acceptedRecordings": 1574,
+              "selectiveAccuracy": 0.8570520965692503
+            },
+            {
+              "threshold": 0.88,
+              "coverage": 0.981875,
+              "acceptedRecordings": 1571,
+              "selectiveAccuracy": 0.8567791215786124
+            },
+            {
+              "threshold": 0.89,
+              "coverage": 0.981875,
+              "acceptedRecordings": 1571,
+              "selectiveAccuracy": 0.8567791215786124
+            },
+            {
+              "threshold": 0.9,
+              "coverage": 0.980625,
+              "acceptedRecordings": 1569,
+              "selectiveAccuracy": 0.8565965583173997
+            },
+            {
+              "threshold": 0.91,
+              "coverage": 0.98,
+              "acceptedRecordings": 1568,
+              "selectiveAccuracy": 0.8571428571428571
+            },
+            {
+              "threshold": 0.92,
+              "coverage": 0.98,
+              "acceptedRecordings": 1568,
+              "selectiveAccuracy": 0.8571428571428571
+            },
+            {
+              "threshold": 0.93,
+              "coverage": 0.979375,
+              "acceptedRecordings": 1567,
+              "selectiveAccuracy": 0.8570516911295469
+            },
+            {
+              "threshold": 0.94,
+              "coverage": 0.97875,
+              "acceptedRecordings": 1566,
+              "selectiveAccuracy": 0.8569604086845466
+            },
+            {
+              "threshold": 0.95,
+              "coverage": 0.9775,
+              "acceptedRecordings": 1564,
+              "selectiveAccuracy": 0.8567774936061381
+            },
+            {
+              "threshold": 0.96,
+              "coverage": 0.976875,
+              "acceptedRecordings": 1563,
+              "selectiveAccuracy": 0.8566858605246321
+            },
+            {
+              "threshold": 0.97,
+              "coverage": 0.97125,
+              "acceptedRecordings": 1554,
+              "selectiveAccuracy": 0.8577863577863578
+            },
+            {
+              "threshold": 0.98,
+              "coverage": 0.96875,
+              "acceptedRecordings": 1550,
+              "selectiveAccuracy": 0.8587096774193549
+            },
+            {
+              "threshold": 0.99,
+              "coverage": 0.959375,
+              "acceptedRecordings": 1535,
+              "selectiveAccuracy": 0.860586319218241
+            },
+            {
+              "threshold": 0.995,
+              "coverage": 0.953125,
+              "acceptedRecordings": 1525,
+              "selectiveAccuracy": 0.8642622950819672
+            },
+            {
+              "threshold": 0.997,
+              "coverage": 0.946875,
+              "acceptedRecordings": 1515,
+              "selectiveAccuracy": 0.8673267326732673
+            },
+            {
+              "threshold": 0.999,
+              "coverage": 0.933125,
+              "acceptedRecordings": 1493,
+              "selectiveAccuracy": 0.870060281312793
+            },
+            {
+              "threshold": 0.9995,
+              "coverage": 0.926875,
+              "acceptedRecordings": 1483,
+              "selectiveAccuracy": 0.8698583951449764
+            },
+            {
+              "threshold": 0.9999,
+              "coverage": 0.913125,
+              "acceptedRecordings": 1461,
+              "selectiveAccuracy": 0.8754277891854894
+            }
+          ],
+          "coverage": 0,
+          "acceptedRecordings": 0,
+          "selectiveAccuracy": null
+        }
+      ],
+      "aggregate": {
+        "coverage": 0,
+        "acceptedRecordings": 0,
+        "selectiveAccuracy": null,
+        "thresholds": [],
+        "calibrationTargetMetAllFolds": false
+      }
+    }
+  },
+  "normalization": {
+    "means": [
+      0.3266807794570923,
+      1.8757373094558716,
+      1.1277110576629639,
+      1.782608985900879,
+      1.9219896793365479,
+      1.3532145023345947,
+      1.2572191953659058,
+      0.9521010518074036,
+      1.6921461820602417,
+      2.2806339263916016,
+      1.1025924682617188,
+      1.4321892261505127,
+      1.7034828662872314,
+      1.7449743747711182,
+      1.9447407722473145,
+      2.833946943283081,
+      0.07874847203493118,
+      0.07874847203493118,
+      0.15597620606422424,
+      0.3704819083213806,
+      2.296858549118042,
+      2.256891965866089,
+      2.111825704574585,
+      2.90010142326355,
+      3.4248883724212646,
+      4.371222019195557,
+      5.258486270904541,
+      5.32662296295166,
+      4.165939807891846,
+      4.1135945320129395,
+      4.281126499176025,
+      4.343826770782471,
+      0.04657074809074402,
+      0.28507715463638306,
+      7.09785270690918,
+      12.94240951538086,
+      -0.02212107926607132,
+      0.22514718770980835,
+      0.03564280644059181,
+      9.722630500793457,
+      0.1832755208015442,
+      0.2181771993637085,
+      0.38345175981521606,
+      0.037211235612630844,
+      0.04235725477337837,
+      0.6798129677772522,
+      0.1369834691286087,
+      0.1832035630941391
+    ],
+    "deviations": [
+      0.1149672120809555,
+      1.4694100618362427,
+      0.2666628956794739,
+      0.7091094851493835,
+      0.6792570948600769,
+      0.6648626923561096,
+      0.6677736639976501,
+      0.4078824520111084,
+      0.5615482330322266,
+      0.3688303828239441,
+      0.561029314994812,
+      0.5735325217247009,
+      0.5047010779380798,
+      0.5088568329811096,
+      0.4910935163497925,
+      0.3176496922969818,
+      0.03684365749359131,
+      0.03684365749359131,
+      0.0642721951007843,
+      0.17819765210151672,
+      1.1563748121261597,
+      0.7440693974494934,
+      0.609258770942688,
+      0.4148406982421875,
+      0.3043057322502136,
+      0.3792419135570526,
+      0.30957862734794617,
+      0.33823636174201965,
+      0.43704694509506226,
+      0.3219227194786072,
+      0.35722577571868896,
+      0.5021889805793762,
+      0.012908418662846088,
+      0.15052884817123413,
+      3.2171010971069336,
+      22.978477478027344,
+      0.4090743064880371,
+      0.04355484992265701,
+      0.00845254585146904,
+      5.405454635620117,
+      0.058645397424697876,
+      0.033853739500045776,
+      0.14453771710395813,
+      0.0197355467826128,
+      0.01962757110595703,
+      0.10845651477575302,
+      0.046400733292102814,
+      0.08593043684959412
+    ]
+  },
+  "ood": {
+    "method": "mean squared normalized-feature distance to nearest real-training class centroid",
+    "trainingQuantile": 0.995,
+    "threshold": 4.868759612004461,
+    "centroids": [
+      [
+        -0.16876292051561176,
+        -0.9243595305681228,
+        -0.5099522227942943,
+        -1.0158507838845252,
+        -1.0418618368506432,
+        -0.8858661423921586,
+        -0.8519832730591297,
+        -0.5815562465097756,
+        -0.5028157345652581,
+        -0.36487273769825695,
+        -0.5759188200403005,
+        -0.723768016660586,
+        -0.7278044296400622,
+        -0.5890126787093468,
+        -0.38722214253200216,
+        0.08972321500536054,
+        0.21377836286462842,
+        0.21377836286462842,
+        0.12904137673787772,
+        -0.6334134809914976,
+        -0.9841576899290085,
+        -1.12282985496521,
+        -0.6333376773782075,
+        -0.7466533060753718,
+        -0.3270443388289714,
+        -0.6594713701028376,
+        -0.08304523398168386,
+        0.5331869401484728,
+        0.1455885634389706,
+        0.7428846671243373,
+        0.6593054075674154,
+        0.6665228667729388,
+        0.2661992872308474,
+        0.4484922160510905,
+        0.4639751237425953,
+        0.4924388073696755,
+        -0.0370367530209478,
+        0.6396448662192561,
+        0.20196127052605153,
+        0.518779537178576,
+        0.6018199005485513,
+        0.6420257381249684,
+        0.6844620983896311,
+        0.9295268189107301,
+        -0.8298309974204748,
+        -0.5366014975495637,
+        0.2354488111718092,
+        0.5501302342773415
+      ],
+      [
+        0.47703275713080073,
+        0.9993121027350426,
+        0.012751252327114344,
+        -0.08171209524059668,
+        -0.13217907698079945,
+        0.29958333623688665,
+        0.2747142809698707,
+        -0.6062313837334513,
+        -0.14977929478883742,
+        -0.21967009753524325,
+        -0.40514921314804814,
+        -0.1138158229868859,
+        0.04716054747952148,
+        -0.2670563871701452,
+        -0.12686996367294343,
+        0.1651427215609583,
+        -0.004525049027055502,
+        -0.004525049027055502,
+        0.15805211811885236,
+        0.8300461396696046,
+        0.9559429096877575,
+        0.02467240583896637,
+        -0.11147516483068466,
+        -0.18571931294735985,
+        -0.04108639786345884,
+        -0.1534295157827437,
+        0.48641890354966744,
+        0.4220888761840761,
+        -0.5649378050781088,
+        -0.036332784526515755,
+        -0.04080843924265355,
+        -0.1290069508254528,
+        -0.2473244547622744,
+        -0.23158620032737962,
+        -0.12552444164955523,
+        -0.07610647193249315,
+        0.17661644577230617,
+        -0.19617320081219078,
+        -0.18599393335923378,
+        -0.1659931368343532,
+        -0.2549753819529433,
+        -0.11960048691183328,
+        -0.17062548729404808,
+        -0.15913452675449663,
+        0.08042279523611069,
+        0.41074580916622655,
+        -0.5368416531890398,
+        -0.2285361474697711
+      ],
+      [
+        -0.7477302581360563,
+        -0.9252356332540512,
+        0.49943348504044116,
+        0.32469095722213387,
+        0.4546334626918688,
+        -0.5456098991576582,
+        -0.5777442038059235,
+        0.06188489114912227,
+        -0.002238674819469452,
+        0.029964548635762187,
+        -0.4272865161886439,
+        -0.4033567913542502,
+        -0.24088724873424508,
+        -0.19375635567121208,
+        -0.040942080686800185,
+        0.09287553704762831,
+        -0.4617920311607886,
+        -0.4617920311607886,
+        -0.5584505957281217,
+        -0.8694482177160681,
+        -0.7720506536364555,
+        0.1971036716569215,
+        -0.12400218585738912,
+        -0.18684831030934584,
+        -0.1427713876128546,
+        0.35910344149544837,
+        0.43222138629015533,
+        0.02940305659174919,
+        -0.489315088391304,
+        0.0454760271362029,
+        -0.1415230805587489,
+        -0.04198247206909582,
+        -0.36202129416971,
+        -0.413989700242877,
+        -0.33107238171994685,
+        -0.19603477791442855,
+        0.017245467729400842,
+        -0.08845414397749118,
+        -0.3119869826131035,
+        -0.3441955452984548,
+        -0.2243570037796162,
+        -0.09388346490450203,
+        -0.15338791016489267,
+        0.14788660664018244,
+        -0.007892618323676288,
+        0.36370666794944556,
+        -0.4319199366744142,
+        -0.22582171216397545
+      ],
+      [
+        0.43946057961275803,
+        0.8502829578709789,
+        -0.002233283169101924,
+        0.7728719829618931,
+        0.7194073855549795,
+        1.1318926373124123,
+        1.1550129031836986,
+        1.125902931894525,
+        0.6548339378135278,
+        0.5545772971110419,
+        1.4083548055007122,
+        1.24094103372097,
+        0.9215313530117273,
+        1.0498252088277369,
+        0.5550345451761969,
+        -0.34774204494431615,
+        0.2525385216936702,
+        0.2525385216936702,
+        0.27135678387666123,
+        0.6728155895235541,
+        0.8002655719146132,
+        0.9010542933220277,
+        0.8688150340495631,
+        1.1192216399312018,
+        0.5109033364751376,
+        0.4537983871144243,
+        -0.8355965778427199,
+        -0.9846806859062636,
+        0.9086638065129519,
+        -0.7520265617975965,
+        -0.47697638273611664,
+        -0.49553393799997864,
+        0.3431459519630298,
+        0.19708409462543205,
+        -0.007378106142277829,
+        -0.2202975439070724,
+        -0.15682516053772996,
+        -0.35501733390707524,
+        0.2960199534716085,
+        -0.008591032666037791,
+        -0.1224870438463986,
+        -0.4285422267848626,
+        -0.36044857901893557,
+        -0.9182788079103921,
+        0.757300762295723,
+        -0.2378510893518105,
+        0.7333132525566034,
+        -0.09577254738286138
+      ]
+    ]
+  },
+  "quantization": {
+    "input": "dynamic symmetric per inference",
+    "weights": "symmetric per output row"
+  },
+  "float": {
+    "file": "rotornote-fp32.bin",
+    "bytes": 784,
+    "sha256": "31905c17b5c706d3871c63dc0e459317992b1fb6e8ae6e5364558294d18db59e",
+    "layers": [
+      {
+        "name": "logits",
+        "inputs": 48,
+        "outputs": 4,
+        "weights": {
+          "offset": 0,
+          "length": 192
+        },
+        "bias": {
+          "offset": 768,
+          "length": 4
+        }
+      }
+    ]
+  },
+  "int8": {
+    "file": "rotornote-int8.bin",
+    "bytes": 208,
+    "sha256": "32e46b500078e39c59d6e133020f8aa26126995983dc9e4bf5712b2c3a356c88",
+    "layers": [
+      {
+        "name": "logits",
+        "inputs": 48,
+        "outputs": 4,
+        "weightScales": [
+          0.9684265016570804,
+          1.831690149983083,
+          1.8559534268116389,
+          0.992690379225363
+        ],
+        "weights": {
+          "offset": 0,
+          "length": 192
+        },
+        "bias": {
+          "offset": 192,
+          "length": 4
+        }
+      }
+    ]
+  }
+}

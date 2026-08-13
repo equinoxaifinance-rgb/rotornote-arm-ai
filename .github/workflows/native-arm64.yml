@@ -37,10 +37,12 @@ jobs:
           test -s "$RUNNER_TEMP/rotornote-dense-kit/model.json"
           test -s "$RUNNER_TEMP/rotornote-dense-kit/model-fp32.bin"
           test -s "$RUNNER_TEMP/rotornote-dense-kit/model-int8.bin"
-      - name: Test
+      - name: Test, validate, and scan
         run: |
           set -o pipefail
           npm test | tee test-output.txt
+          npm run validate | tee validation-output.txt
+          npm run secret-scan | tee secret-scan-output.txt
       - name: Benchmark native Arm64
         run: |
           set -o pipefail
@@ -67,6 +69,8 @@ jobs:
             benchmark-output.txt
             anomaly-benchmark-output.txt
             test-output.txt
+            validation-output.txt
+            secret-scan-output.txt
             machine-uname.txt
             machine-lscpu.txt
             machine-node.txt

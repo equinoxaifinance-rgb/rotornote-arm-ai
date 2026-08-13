@@ -1,0 +1,12 @@
+
+> rotornote@2.0.0 benchmark:anomaly
+> node benchmark/run-anomaly.js --output benchmark/results/anomaly-native-arm64.json --repetitions 51 --batch 1024 --warmups 16
+
+{
+  "pairedMedianSpeedup": 1.2737,
+  "confidence95": [
+    1.2718,
+    1.2749
+  ],
+  "weightByteReduction": 0.74144
+}

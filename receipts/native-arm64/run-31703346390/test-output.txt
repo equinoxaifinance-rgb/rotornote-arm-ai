@@ -1,0 +1,45 @@
+
+> rotornote@2.0.0 test
+> node --test --test-reporter=spec
+
+✔ deep anomaly head executes attributed physical data with cross-engine agreement (46.104918ms)
+✔ deep anomaly model fails closed if its quantized bytes are changed (11.745295ms)
+✔ parses one-column and timestamped CSV (50.001772ms)
+✔ parses four synchronized sensor channels (44.634618ms)
+✔ rejects malformed and hostile values (6.473854ms)
+✔ rejects out-of-range sample rates (6.584856ms)
+✔ enforces byte and sample-count ceilings before analysis (88.012389ms)
+✔ reusable dense compiler is deterministic and parity-gated (2.999889ms)
+✔ reusable dense compiler rejects malformed shapes (0.425442ms)
+✔ compiled non-SIMD-width layers execute through the actual WASM runtime (15.717784ms)
+✔ gateway requires identity and refuses plaintext remote transport (7.086118ms)
+✔ gateway parses a complete command and retries a transient server failure (6.137582ms)
+✔ gateway sends machine context through the real API (284.534876ms)
+✔ FP32 and INT8 SIMD engines agree on attributed real recordings (357.20441ms)
+✔ unseen broadband noise falls outside the fitted envelope and abstains (21.771204ms)
+✔ single-channel real-signal mixture remains an ablation and cannot screen (116.041313ms)
+✔ model loader fails closed on artifact tampering (12.852562ms)
+✔ quality gate accepts a real vibration trace (91.309254ms)
+✔ quality gate detects flatline, clipping, bias, and dropout (1.544142ms)
+✔ happy path serves UI, health, sample, and optimized analysis (397.209835ms)
+✔ variable-speed anomaly path serves a real attributed signal through both engines (27.588265ms)
+✔ unified screen route selects the honest model contract and emits receipts (109.844002ms)
+✔ variable-speed anomaly path rejects missing RPM and multi-sensor input (12.980084ms)
+✔ API abstains on unusable sensor data and validates machine context (61.901151ms)
+✔ API executes the four-sensor aggregation path (134.140116ms)
+✔ four-sensor path fails closed when one distinct channel is flatlined (112.905405ms)
+✔ API enforces media type, engine allowlist, routes, and method boundaries (6.234944ms)
+✔ dependency failure returns retry contract and then recovers (6.596681ms)
+✔ malformed uploads return bounded, structured errors (3.183717ms)
+✔ feature extraction is deterministic and finite (23.31361ms)
+✔ feature extraction supports documented power-of-two acquisition windows (1.774611ms)
+✔ FFT rejects non-power-of-two input (0.250359ms)
+✔ segmentation uses 50 percent overlap and ignores incomplete tails (0.209574ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1396.312782
