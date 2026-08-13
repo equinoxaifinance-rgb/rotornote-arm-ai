@@ -42,7 +42,7 @@ const sbom = JSON.parse(await readFile(new URL("../sbom.spdx.json", import.meta.
 assert.equal(sbom.spdxVersion, "SPDX-2.3");
 assert.equal(sbom.packages.filter(({ primaryPackagePurpose }) => primaryPackagePurpose !== "BUILD_TOOL").length, 1);
 const manifest = JSON.parse(await readFile(new URL("../dist/build-manifest.json", import.meta.url), "utf8"));
-assert.equal(Object.keys(manifest.files).length, 19);
+assert.equal(Object.keys(manifest.files).length, 22);
 for (const file of required.filter((path) => path.endsWith(".svg"))) {
   const svg = await readFile(new URL(`../${file}`, import.meta.url), "utf8");
   assert.match(svg, /viewBox="0 0 1600 900"/);

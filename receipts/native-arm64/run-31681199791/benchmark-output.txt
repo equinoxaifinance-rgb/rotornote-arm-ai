@@ -1,0 +1,30 @@
+
+> rotornote@1.2.0 benchmark
+> node benchmark/run.js --output benchmark/results/native-arm64.json --repetitions 51 --batch 2048 --warmups 16
+
+{
+  "baseline": {
+    "medianMs": 190.8924,
+    "p95Ms": 192.2151,
+    "medianInferencesPerSecond": 10728.56
+  },
+  "optimized": {
+    "medianMs": 152.8758,
+    "p95Ms": 154.7049,
+    "medianInferencesPerSecond": 13396.5
+  },
+  "medianSpeedup": 1.2487,
+  "speedupUncertainty": {
+    "method": "paired alternating-order samples; deterministic 10,000-resample bootstrap of the paired median",
+    "pairedSamples": 51,
+    "pairedMedian": 1.2462,
+    "pairedMean": 1.2479,
+    "pairedStdDev": 0.0112,
+    "confidence95": [
+      1.2442,
+      1.2519
+    ]
+  },
+  "weightByteReduction": 0.743669
+}
+wrote benchmark/results/native-arm64.json (native-arm64)

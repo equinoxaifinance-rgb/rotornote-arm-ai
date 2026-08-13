@@ -21,6 +21,9 @@ const files = [
   "scripts/prepare-cwru-field.py",
   "scripts/evaluate-cwru-field.js",
   "requirements-field.txt",
+  "web/index.html",
+  "web/styles.css",
+  "web/app.js",
 ];
 const hashes = {};
 for (const path of files) {
