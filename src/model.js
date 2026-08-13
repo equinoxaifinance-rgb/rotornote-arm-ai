@@ -53,7 +53,24 @@ export async function loadModel({ modelUrl = MODEL_URL, wasmUrl = WASM_URL } = {
   const instance = await WebAssembly.instantiate(wasmBuffer);
   const { memory, dense } = instance.instance.exports;
   const memoryBytes = new Uint8Array(memory.buffer);
-  const int8WeightAddresses = [65536, 80000, 114000];
+  const align16 = (value) => (value + 15) & ~15;
+  let memoryCursor = 0;
+  const int8WeightAddresses = metadata.int8.layers.map((layer) => {
+    const address = align16(memoryCursor);
+    memoryCursor = address + layer.weights.length;
+    return address;
+  });
+  const inputAddresses = metadata.int8.layers.map((layer) => {
+    const address = align16(memoryCursor);
+    memoryCursor = address + layer.inputs;
+    return address;
+  });
+  const outputAddresses = metadata.int8.layers.map((layer) => {
+    const address = align16(memoryCursor);
+    memoryCursor = address + layer.outputs * 4;
+    return address;
+  });
+  if (memoryCursor > memoryBytes.length) throw new Error(`Model needs ${memoryCursor} WASM bytes; kernel exposes ${memoryBytes.length}`);
   for (let index = 0; index < metadata.int8.layers.length; index += 1) {
     const descriptor = metadata.int8.layers[index].weights;
     const weights = int8Buffer.subarray(descriptor.offset, descriptor.offset + descriptor.length);
@@ -71,8 +88,6 @@ export async function loadModel({ modelUrl = MODEL_URL, wasmUrl = WASM_URL } = {
   }));
   const normalizedScratch = new Float32Array(metadata.inputFeatures);
   const inverseDeviations = Float64Array.from(metadata.normalization.deviations, (value) => 1 / value);
-  const inputAddresses = [0, 8192, 16384];
-  const outputAddresses = [4096, 12288, 20480];
   const int8InputViews = int8Layers.map((layer, index) => new Int8Array(memory.buffer, inputAddresses[index], layer.inputs));
   const int32OutputViews = int8Layers.map((layer, index) => new Int32Array(memory.buffer, outputAddresses[index], layer.outputs));
 
@@ -121,9 +136,11 @@ export async function loadModel({ modelUrl = MODEL_URL, wasmUrl = WASM_URL } = {
       throw new Error(`Unknown engine: ${engine}`);
     },
     assessDistribution(features) {
+      if (!metadata.ood) return { inDistribution: null, reason: "distribution_policy_not_configured" };
       const values = normalize(features, metadata);
       let nearestDistance = Infinity;
-      let nearestLabel = metadata.labels[0];
+      const distributionLabels = metadata.ood.labels ?? metadata.labels;
+      let nearestLabel = distributionLabels[0];
       for (let label = 0; label < metadata.ood.centroids.length; label += 1) {
         let total = 0;
         const centroid = metadata.ood.centroids[label];
@@ -131,7 +148,7 @@ export async function loadModel({ modelUrl = MODEL_URL, wasmUrl = WASM_URL } = {
         const distance = total / values.length;
         if (distance < nearestDistance) {
           nearestDistance = distance;
-          nearestLabel = metadata.labels[label];
+          nearestLabel = distributionLabels[label];
         }
       }
       return {

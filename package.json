@@ -13,6 +13,7 @@
     "build:kernel": "node scripts/build-kernel.js",
     "build:model": "node scripts/build-model.js",
     "build:anomaly": "node scripts/build-anomaly-model.js",
+    "compile:dense": "node scripts/compile-dense-model.js",
     "build:samples": "node scripts/verify-real-samples.js",
     "prepare:open-features": "node scripts/build-open-features.js",
     "train:real": "python scripts/train-real-crossval.py",

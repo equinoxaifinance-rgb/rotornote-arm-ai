@@ -49,7 +49,7 @@ export function createAnalysisReceipt({ csv, sampleRate, engine, model, context,
       fp32Sha256: model.metadata.float.sha256,
       int8Sha256: model.metadata.int8.sha256,
     },
-    route: model.metadata.labels.length === 2 ? "variable_speed_anomaly" : "four_sensor_specialist",
+    route: model.metadata.broadOutput ? "variable_speed_anomaly" : "four_sensor_specialist",
     statement: "Hash receipt proves reproducibility of these bytes and settings; it is not a digital signature or field certification.",
   };
 }

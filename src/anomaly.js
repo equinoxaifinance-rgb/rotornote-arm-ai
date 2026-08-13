@@ -13,9 +13,13 @@ export function analyzeVariableSpeedAnomaly(model, values, sampleRate, operating
   }
   const baseline = model.infer(features, "baseline");
   const optimized = model.infer(features, "optimized");
-  const baselineLabel = argmax(baseline);
-  const optimizedLabel = argmax(optimized);
-  const selected = engine === "baseline" ? baseline : optimized;
+  const healthyIndex = model.metadata.broadOutput.healthyConditionIndex;
+  const collapse = (probabilities) => [probabilities[healthyIndex], 1 - probabilities[healthyIndex]];
+  const baselineBroad = collapse(baseline);
+  const optimizedBroad = collapse(optimized);
+  const baselineLabel = argmax(baselineBroad);
+  const optimizedLabel = argmax(optimizedBroad);
+  const selected = engine === "baseline" ? baselineBroad : optimizedBroad;
   const selectedLabel = argmax(selected);
   const confidence = selected[selectedLabel];
   const distribution = model.assessDistribution(features);
@@ -26,15 +30,16 @@ export function analyzeVariableSpeedAnomaly(model, values, sampleRate, operating
   const status = reasons.length ? "review_required" : "screened";
   return {
     status,
-    primary: status === "screened" ? model.metadata.labels[selectedLabel] : "review_required",
+    primary: status === "screened" ? model.metadata.broadOutput.labels[selectedLabel] : "review_required",
     confidence: Number(confidence.toFixed(4)),
     engine,
     engineAgreement: baselineLabel === optimizedLabel,
-    probabilities: Object.fromEntries(model.metadata.labels.map((label, index) => [label, Number(selected[index].toFixed(6))])),
+    conditionRepresentationAgreement: argmax(baseline) === argmax(optimized),
+    probabilities: Object.fromEntries(model.metadata.broadOutput.labels.map((label, index) => [label, Number(selected[index].toFixed(6))])),
     distribution,
     reasons,
     signal: { samples: values.length, sampleRate, operatingRpm, featureWindows: offsets.length },
-    model: { format: model.metadata.format, architecture: model.metadata.architecture, source: model.metadata.training.source.title },
-    note: "Variable-speed healthy-versus-anomaly screen only. It does not identify a fault family, estimate severity, or replace a qualified vibration review.",
+    model: { format: model.metadata.format, architecture: model.metadata.architecture, learnedExperimentalConditions: model.metadata.labels.length, source: model.metadata.training.source.title },
+    note: "The learned representation preserves eight observed experimental conditions, but this product boundary emits healthy-versus-anomaly only. It does not identify a field fault family, estimate severity, or replace a qualified vibration review.",
   };
 }

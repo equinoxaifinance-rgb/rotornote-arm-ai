@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { compileDenseModel } from "../src/dense-compiler.js";
 
 const TRAINING_URL = new URL("../field/training/", import.meta.url);
 const RESULTS_URL = new URL("../field/results/", import.meta.url);
@@ -19,7 +20,7 @@ const validation = JSON.parse(validationBytes);
 if (manifest.format !== "rotornote-upatras-features-v1" || exported.format !== "rotornote-upatras-mlp-export-v1") throw new Error("UPATRAS model source contract mismatch");
 if (sha256(featureBuffer) !== manifest.featuresSha256 || sha256(labelBuffer) !== manifest.labelsSha256 || sha256(groupBuffer) !== manifest.groupsSha256) throw new Error("UPATRAS source artifact integrity failed");
 if (exported.sourceFeatureSha256 !== manifest.featuresSha256 || validation.modelExportSha256 !== sha256(Buffer.from(exportText))) throw new Error("UPATRAS export receipt binding failed");
-if (exported.architecture[0] !== 48 || exported.architecture.at(-1) !== 2 || exported.architecture.length !== 4) throw new Error("UPATRAS network architecture mismatch");
+if (exported.architecture[0] !== 48 || exported.architecture.at(-1) !== exported.labels.length || exported.architecture.length < 4 || exported.broadOutput?.labels?.length !== 2) throw new Error("UPATRAS network architecture mismatch");
 
 const signalFeatures = new Float32Array(manifest.signals * manifest.featureCount);
 const featureRows = new Float32Array(featureBuffer.buffer, featureBuffer.byteOffset, featureBuffer.byteLength / 4);
@@ -169,9 +170,14 @@ let int8Offset = 0;
 const int8Chunks = [];
 const int8Descriptors = [];
 for (const layer of quantizedLayers) {
-  const weightBytes = Buffer.from(layer.weights.buffer, layer.weights.byteOffset, layer.weights.byteLength);
+  const weightStride = Math.ceil(layer.inputs / 16) * 16;
+  const weightBytes = Buffer.alloc(weightStride * layer.outputs);
+  for (let output = 0; output < layer.outputs; output += 1) {
+    const source = Buffer.from(layer.weights.buffer, layer.weights.byteOffset + output * layer.inputs, layer.inputs);
+    source.copy(weightBytes, output * weightStride);
+  }
   const biasBytes = Buffer.from(layer.bias.buffer, layer.bias.byteOffset, layer.bias.byteLength);
-  const weights = { offset: int8Offset, length: layer.weights.length };
+  const weights = { offset: int8Offset, length: weightBytes.length, rowStride: weightStride };
   int8Chunks.push(weightBytes);
   int8Offset += weightBytes.length;
   if (int8Offset % 4) {
@@ -185,10 +191,17 @@ for (const layer of quantizedLayers) {
   int8Descriptors.push({ name: layer.name, inputs: layer.inputs, outputs: layer.outputs, weightScales: layer.weightScales, weights, bias });
 }
 const int8Buffer = Buffer.concat(int8Chunks);
+const reusableCompiled = compileDenseModel({
+  architecture: exported.architecture,
+  layers: layers.map((layer) => ({ name: layer.name, weights: layer.weights, bias: layer.bias })),
+  calibrationRows: normalizedRows,
+});
+if (!floatBuffer.equals(reusableCompiled.floatBuffer) || !int8Buffer.equals(reusableCompiled.int8Buffer)) throw new Error("Reusable dense compiler diverged from the production artifact build");
 const metadata = {
   format: "rotornote-upatras-mlp-v1",
   seed: exported.seed,
   labels: exported.labels,
+  broadOutput: exported.broadOutput,
   inputFeatures: manifest.featureCount,
   architecture: exported.architecture,
   training: {
@@ -204,7 +217,8 @@ const metadata = {
     validationProtocol: exported.validationProtocol,
     groupedValidationReceipt: "field/results/upatras-grouped-anomaly.json",
     groupedValidationSha256: sha256(canonicalTextBytes(validationBytes)),
-    signalBalancedAccuracy: validation.aggregate.signalBalancedAccuracy,
+    conditionBalancedAccuracy: validation.aggregate.conditionBalancedAccuracy,
+    broadAnomalyBalancedAccuracy: validation.aggregate.broadAnomalyBalancedAccuracy,
     measurementSequenceAccuracy: validation.aggregate.measurementSequenceAccuracy,
     measurementSequenceAccuracyWilson95: validation.aggregate.measurementSequenceAccuracyWilson95,
     engineLabelAgreement: labelAgreement,
@@ -217,8 +231,15 @@ const metadata = {
     groupedValidation: validation.aggregate.riskCoverage.find((row) => row.minimumConfidence === 0.9),
   },
   normalization: { means: Array.from(means), deviations: Array.from(deviations) },
-  ood: { method: "mean squared normalized-feature distance to nearest real-training class centroid", trainingQuantile: oodQuantile, threshold: oodThreshold, centroids: centroids.map((centroid) => Array.from(centroid)) },
+  ood: { method: "mean squared normalized-feature distance to nearest real-training broad class centroid", labels: exported.broadOutput.labels, trainingQuantile: oodQuantile, threshold: oodThreshold, centroids: centroids.map((centroid) => Array.from(centroid)) },
   quantization: { activations: "dynamic symmetric per layer", weights: "symmetric per output row" },
+  compiler: {
+    module: "src/dense-compiler.js",
+    deterministicArtifactCrossCheck: true,
+    parameters: reusableCompiled.compute.parameters,
+    multiplyAccumulatesPerInference: reusableCompiled.compute.multiplyAccumulates,
+    calibrationRows: reusableCompiled.parity.calibrationRows,
+  },
   utilization: { source: "all 2,925 real training-bank signal representations", hiddenLayers: utilization },
   float: { file: "rotornote-anomaly-fp32.bin", bytes: floatBuffer.length, sha256: sha256(floatBuffer), layers: floatDescriptors },
   int8: { file: "rotornote-anomaly-int8.bin", bytes: int8Buffer.length, sha256: sha256(int8Buffer), layers: int8Descriptors },

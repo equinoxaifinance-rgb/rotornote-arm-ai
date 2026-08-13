@@ -51,6 +51,7 @@ test("gateway sends machine context through the real API", async () => {
       engine: "optimized",
       retries: 0,
     });
+    assert.equal(payload.route, "four_sensor_specialist");
     assert.equal(payload.result.context.machineId, "pump-7");
     assert.equal(payload.result.context.operatingRpm, 1238);
     assert.equal(payload.result.decision.engineAgreement, 1);

@@ -5,6 +5,8 @@ const files = [
   "README.md",
   "ARCHITECTURE.md",
   "INTEGRATION.md",
+  "ARM-INT8-KIT.md",
+  "examples/dense-compile-input.json",
   "MODEL-CARD.md",
   "FIELD-VALIDATION.md",
   "DATA-LICENSES.md",

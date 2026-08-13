@@ -15,8 +15,8 @@
     "license": "CC BY 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
     "acquisition": "39 independent measurement sequences; 2,925 single-axis vibration signals; 1,024 Hz; 75 rotating speeds from 35.0 to 49.8 Hz; healthy plus seven incipient fault states.",
-    "use": "Production variable-speed healthy-versus-anomaly neural head and whole-measurement-sequence grouped validation.",
-    "changes": "Two deterministic 2,048-sample windows per signal and RotorNote 48-feature vectors; binary labels preserve healthy versus observed anomaly without inventing unsupported fault equivalence."
+    "use": "Production variable-speed neural head with an eight-condition learned representation, a healthy-versus-anomaly product boundary, and whole-measurement-sequence grouped validation.",
+    "changes": "Two deterministic 2,048-sample windows per signal and RotorNote 48-feature vectors. Source sequence names preserve all eight observed laboratory conditions for representation learning; the product output collapses them to healthy versus observed anomaly without presenting laboratory condition names as field diagnoses."
   },
   "sourceInnerArchiveSha256": "ef67eab64164ee23ebb584375c734d817d110f722229d6f1db6c5afa74767bfb",
   "sampleRateHz": 1024,
@@ -30,6 +30,16 @@
   "labels": [
     "healthy",
     "anomaly"
+  ],
+  "representationLabels": [
+    "Bolt_A_100",
+    "Bolt_A_50",
+    "Bolt_B_100",
+    "Bolt_B_50",
+    "Coupler_wear",
+    "Healthy",
+    "Unbalance_3g",
+    "Unbalance_5g"
   ],
   "splitPolicy": "whole measurement sequences; no speed signal or window crosses a validation boundary",
   "sourceFiles": [

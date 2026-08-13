@@ -31,8 +31,8 @@
     "license": "CC BY 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
     "acquisition": "39 independent measurement sequences; 2,925 single-axis vibration signals; 1,024 Hz; 75 rotating speeds from 35.0 to 49.8 Hz; healthy plus seven incipient fault states.",
-    "use": "Production variable-speed healthy-versus-anomaly neural head and whole-measurement-sequence grouped validation.",
-    "changes": "Two deterministic 2,048-sample windows per signal and RotorNote 48-feature vectors; binary labels preserve healthy versus observed anomaly without inventing unsupported fault equivalence."
+    "use": "Production variable-speed neural head with an eight-condition learned representation, a healthy-versus-anomaly product boundary, and whole-measurement-sequence grouped validation.",
+    "changes": "Two deterministic 2,048-sample windows per signal and RotorNote 48-feature vectors. Source sequence names preserve all eight observed laboratory conditions for representation learning; the product output collapses them to healthy versus observed anomaly without presenting laboratory condition names as field diagnoses."
   },
   "bearingBoundaryEvaluation": {
     "title": "Vibration Data for Axial Ball Bearings and Spall Faults",

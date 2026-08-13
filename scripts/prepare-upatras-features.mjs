@@ -83,6 +83,7 @@ const manifest = {
   featureRows: featureOffset / FEATURE_COUNT,
   featureCount: FEATURE_COUNT,
   labels: ["healthy", "anomaly"],
+  representationLabels: states,
   splitPolicy: "whole measurement sequences; no speed signal or window crosses a validation boundary",
   sourceFiles,
   featuresSha256: sha256(featureBytes),

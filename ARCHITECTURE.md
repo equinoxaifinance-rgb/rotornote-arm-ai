@@ -30,7 +30,8 @@ one 3,500-sample uniaxial signal + RPM
   -> two deterministic 2,048-sample windows
   -> mean 48-feature representation
   -> standard scaling
-  -> FP32 48->63->32->2 ReLU MLP (one inactive fitted unit pruned)
+  -> FP32 48->253->126->8 ReLU MLP (five inactive fitted units pruned)
+  -> collapse eight observed laboratory-condition probabilities to healthy | anomaly
        <-> exact alternate-engine witness
      dynamic-input/per-output-weight INT8 WASM SIMD
   -> training-envelope + confidence + engine-agreement gates

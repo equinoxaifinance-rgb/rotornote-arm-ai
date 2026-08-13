@@ -32,6 +32,9 @@
     (param $input i32) (param $weights i32) (param $output i32)
     (param $inputCount i32) (param $outputCount i32)
     (local $row i32)
+    (local $weightStride i32)
+    (local.set $weightStride
+      (i32.and (i32.add (local.get $inputCount) (i32.const 15)) (i32.const -16)))
     (block $done
       (loop $next
         (br_if $done (i32.ge_u (local.get $row) (local.get $outputCount)))
@@ -39,7 +42,7 @@
           (i32.add (local.get $output) (i32.mul (local.get $row) (i32.const 4)))
           (call $dot
             (local.get $input)
-            (i32.add (local.get $weights) (i32.mul (local.get $row) (local.get $inputCount)))
+            (i32.add (local.get $weights) (i32.mul (local.get $row) (local.get $weightStride)))
             (local.get $inputCount)))
         (local.set $row (i32.add (local.get $row) (i32.const 1)))
         (br $next))))

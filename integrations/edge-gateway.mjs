@@ -16,7 +16,7 @@ export function parseArguments(args) {
 }
 
 function endpointFor(base, engine) {
-  const endpoint = new URL("/api/analyze", base);
+  const endpoint = new URL("/api/screen", base);
   if (endpoint.protocol !== "https:" && !(endpoint.protocol === "http:" && ["localhost", "127.0.0.1", "::1"].includes(endpoint.hostname))) {
     throw new Error("Remote gateways require HTTPS; HTTP is accepted only for localhost testing");
   }
@@ -62,4 +62,3 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     process.exitCode = 1;
   }
 }
-

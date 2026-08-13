@@ -9,7 +9,7 @@ const required = [
   "README.md", "ARCHITECTURE.md", "SECURITY.md", "BENCHMARKS.md", "SUBMISSION.md", "LICENSE",
   "INTEGRATION.md", "MODEL-CARD.md", "FIELD-VALIDATION.md", "DATA-LICENSES.md", "sbom.spdx.json", "dist/build-manifest.json",
   "package.json", "package-lock.json", "Dockerfile", "compose.yaml", ".github/workflows/native-arm64.yml",
-  ".github/workflows/external-boundary.yml", "requirements-field.txt", "native/arm-dotprod-bench.c",
+  ".github/workflows/external-boundary.yml", "requirements-field.txt", "native/arm-dotprod-bench.c", "ARM-INT8-KIT.md", "src/dense-compiler.js", "scripts/compile-dense-model.js", "examples/dense-compile-input.json",
   "scripts/prepare-open-training.py", "scripts/build-open-features.js", "scripts/train-real-crossval.py",
   "scripts/prepare-axial-boundary.py", "scripts/evaluate-axial-boundary.js", "field/open-data-sources.json",
   "field/results/open-grouped-cross-validation.json", "field/results/axial-bearing-boundary.json",
@@ -46,15 +46,18 @@ for (const label of model.metadata.labels) {
   assert.equal(baseline.primary, optimized.primary, `${file} engine disagreement`);
 }
 const anomalyModel = await loadInferenceModel(new URL("../model/anomaly-model.json", import.meta.url));
-assert.deepEqual(anomalyModel.metadata.architecture, [48, 63, 32, 2]);
-assert.deepEqual(anomalyModel.metadata.training.pruning.inactiveUnitsPruned, [1, 0]);
+assert.deepEqual(anomalyModel.metadata.architecture, [48, 253, 126, 8]);
+assert.deepEqual(anomalyModel.metadata.training.pruning.inactiveUnitsPruned, [3, 2]);
 assert.ok(anomalyModel.metadata.training.pruning.maximumTrainingBankLogitDeltaAfterPruning <= 1e-5);
 assert.equal(anomalyModel.metadata.training.dataKind, "real experimental vibration only");
-assert.equal(anomalyModel.metadata.training.signalBalancedAccuracy, 1);
+assert.ok(anomalyModel.metadata.training.conditionBalancedAccuracy >= 0.998);
+assert.equal(anomalyModel.metadata.training.broadAnomalyBalancedAccuracy, 1);
 assert.equal(anomalyModel.metadata.training.measurementSequenceAccuracy, 1);
 assert.equal(anomalyModel.metadata.training.measurementSequences, 39);
 assert.ok(anomalyModel.metadata.training.measurementSequenceAccuracyWilson95[0] >= 0.9);
 assert.equal(anomalyModel.metadata.training.engineLabelAgreement, 1);
+assert.equal(anomalyModel.metadata.compiler.deterministicArtifactCrossCheck, true);
+assert.equal(anomalyModel.metadata.compiler.multiplyAccumulatesPerInference, 45030);
 assert.ok(anomalyModel.metadata.int8.bytes <= anomalyModel.metadata.float.bytes * 0.27);
 assert.ok(anomalyModel.metadata.utilization.hiddenLayers.every((layer) => layer.activeUnits === layer.units));
 assert.ok(anomalyModel.metadata.utilization.hiddenLayers.every((layer) => layer.rowsBelowMaximumWeight1e6 === 0));
