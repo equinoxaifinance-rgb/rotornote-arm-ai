@@ -107,7 +107,7 @@
 
     <section class="underhood">
       <span class="step">ARM</span>
-      <div><h2>Real signals. Smaller weights.</h2><p>The FP32 and INT8 engines run the same real-data classifier. INT8 cuts weight bytes by 73.47% while preserving every four-channel recording decision across the 40,000-window build set. Native Arm throughput for this rebuilt model remains a separate evidence gate.</p></div>
+      <div><h2>Real signals. Smaller and 3.15× faster on Arm.</h2><p>The FP32 and INT8 engines run the same real-data classifier. INT8 cuts weight bytes by 73.47% while preserving every four-channel recording decision across the 40,000-window build set. The final native Neoverse-N2 run measured a 3.1498× paired-median end-to-end speedup, with a 3.1264×–3.1711× bootstrap 95% interval.</p><p><a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31690655603" target="_blank" rel="noreferrer">Inspect the final native Arm receipt</a></p></div>
       <div class="weight-stat"><strong>73.47%</strong><span>weight-byte reduction</span></div>
     </section>
     <section class="proof-rail" aria-labelledby="proofHeading">
