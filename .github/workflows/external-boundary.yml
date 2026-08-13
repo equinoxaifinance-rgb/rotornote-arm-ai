@@ -19,12 +19,12 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 22
           cache: npm
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "3.12"
           cache: pip
@@ -33,13 +33,13 @@ jobs:
       - run: pip install -r requirements-field.txt
       - name: Download official CC BY archive
         run: |
-          mkdir -p .field-work/open-real/axial-bearing
-          curl --fail --location --retry 3 --output /tmp/axial.zip https://data.mendeley.com/public-api/zip/chwhh9n3bf/download/2
-          unzip -q /tmp/axial.zip -d .field-work/open-real/axial-bearing
+          mkdir -p .field-work/open-real
+          curl --fail --location --retry 3 --output .field-work/open-real/axial-bearing-v2.zip https://data.mendeley.com/public-api/zip/chwhh9n3bf/download/2
       - run: npm run build:kernel
       - run: npm run build:model
+      - run: npm run build:anomaly
       - run: npm run validate:field
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: rotornote-external-boundary-evidence
           path: field/results/axial-bearing-boundary.json

@@ -3,6 +3,7 @@ import { readFile, writeFile } from "node:fs/promises";
 
 const files = [
   "README.md",
+  "JUDGE-PATH.md",
   "ARCHITECTURE.md",
   "INTEGRATION.md",
   "ARM-INT8-KIT.md",

@@ -1,6 +1,6 @@
 {
-  "schema": "rotornote-axial-bearing-boundary-v1",
-  "createdAt": "2026-08-13T10:57:20.137Z",
+  "schema": "rotornote-axial-bearing-boundary-v2",
+  "createdAt": "2026-08-13T13:50:02.190Z",
   "source": {
     "title": "Vibration Data for Axial Ball Bearings and Spall Faults",
     "authors": [
@@ -14,79 +14,569 @@
     "doi": "10.17632/chwhh9n3bf.2",
     "recordUrl": "https://data.mendeley.com/datasets/chwhh9n3bf/2",
     "archiveUrl": "https://data.mendeley.com/public-api/zip/chwhh9n3bf/download/2",
+    "archiveSha256": "d22e5a569c8e675348f59c8024b2fb1037211619b68a390bd98409143961b927",
     "license": "CC BY 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "acquisition": "Single axial-vibration channel; 25.6 kHz; 30 seconds; 500 RPM; healthy and artificially seeded inner/outer race spalls.",
-    "use": "External bearing-distress boundary evaluation only; never production training."
+    "acquisition": "28 single-axis vibration records from a separate physical axial-bearing rig; 25.6 kHz for 30 seconds; 60 or 500 RPM; 5.0 or 8.8 kN axial load; four healthy captures plus 24 artificially seeded inner/outer race spalls across six fault sizes.",
+    "use": "Full-archive external boundary evaluation through the canonical one-channel anomaly route only; never production training.",
+    "expectedRecords": 28,
+    "expectedHealthyRecords": 4,
+    "expectedFaultRecords": 24
   },
-  "claim": "Boundary behavior on a separate CC BY physical bearing rig; bearing diagnosis is outside the production classifier's supported labels.",
+  "route": "canonical one-channel variable-speed anomaly head",
+  "selection": "Centered 131,072-sample segment from every record in the official archive; no cherry-picking.",
+  "archiveSha256": "d22e5a569c8e675348f59c8024b2fb1037211619b68a390bd98409143961b927",
+  "claim": "Full-archive boundary behavior on a separate CC BY physical bearing rig; this is a fail-closed test, not a bearing-detection accuracy estimate.",
   "cases": [
     {
-      "id": "n5k-healthy",
+      "id": "n5k-500-0p0",
       "condition": "healthy",
+      "axialLoadKn": 5,
+      "rpm": 500,
+      "spallLocation": null,
+      "spallWidthMm": 0,
       "sourceSha256": "07029c4dcb571188ee545176381312ebab7027a148069944d837b202997a47cf",
       "preparedSha256": "457bfecc6559c56463ccd30531d81066f9cafd8c875ecdf5f44f47e8931a83e1",
       "status": "review_required",
       "reasons": [
-        "single_channel_ablation_only",
-        "outside_calibration_envelope"
+        "outside_training_envelope"
       ],
-      "candidateInsideSupportedScope": "looseness",
-      "distributionCoverage": 0,
-      "engineAgreement": 1
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 3049.504052,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
     },
     {
-      "id": "n5k-inner",
+      "id": "n5k-500-1p0-inner",
       "condition": "bearing_spall",
+      "axialLoadKn": 5,
+      "rpm": 500,
+      "spallLocation": "inner",
+      "spallWidthMm": 1,
       "sourceSha256": "55fc7635978a7754676c8beb182fac437a8a3fba412f70e0ad267cc0589972d0",
       "preparedSha256": "0daf5c6b82e38eedf62fda78e77183f668465d87878b7b93b1d1a3a824dd2c84",
       "status": "review_required",
       "reasons": [
-        "single_channel_ablation_only",
-        "outside_calibration_envelope"
+        "outside_training_envelope"
       ],
-      "candidateInsideSupportedScope": "imbalance",
-      "distributionCoverage": 0,
-      "engineAgreement": 1
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 376.39148,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
     },
     {
-      "id": "n8k-healthy",
+      "id": "n5k-500-1p4-outer",
+      "condition": "bearing_spall",
+      "axialLoadKn": 5,
+      "rpm": 500,
+      "spallLocation": "outer",
+      "spallWidthMm": 1.4,
+      "sourceSha256": "d857cf5a106e3d786dc5af6175b8b7b667bdfab13aca9b6491e26cd7287b3adc",
+      "preparedSha256": "e41c81076124ccae5817301699d308549a266e0c61a59bd5176b59d6d245f5bb",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 367.306804,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n5k-500-2p1-inner",
+      "condition": "bearing_spall",
+      "axialLoadKn": 5,
+      "rpm": 500,
+      "spallLocation": "inner",
+      "spallWidthMm": 2.1,
+      "sourceSha256": "cc83c511e41cf95fd2087443fd68ad8eb3c3ec436341798aa852784cf12e3c2f",
+      "preparedSha256": "0d35cf6573e8c02fe24a8d70bea510373a3ce562f67c812f249e2957ea978745",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 472.198306,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n5k-500-2p4-outer",
+      "condition": "bearing_spall",
+      "axialLoadKn": 5,
+      "rpm": 500,
+      "spallLocation": "outer",
+      "spallWidthMm": 2.4,
+      "sourceSha256": "7f49b1680ff750d1b0d4d3d242bcb1833f6261bbe3f9eac23dcbc01158decfb5",
+      "preparedSha256": "3ab3fbf9cf2c3f03d8bd490421f6d7cc1d9a7b274ad45fcf876bc893599db3ed",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 952.005744,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n5k-500-3p8-inner",
+      "condition": "bearing_spall",
+      "axialLoadKn": 5,
+      "rpm": 500,
+      "spallLocation": "inner",
+      "spallWidthMm": 3.8,
+      "sourceSha256": "f51a767f62b326c192b00bc2159cca089e8a32c7cb3655f2828951f31683cd92",
+      "preparedSha256": "dd1f6788f0d58af0b69b6cac763641960a1cbcf4eb3a430fe6e55e95f92c1e4f",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 321.098278,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n5k-500-4p0-outer",
+      "condition": "bearing_spall",
+      "axialLoadKn": 5,
+      "rpm": 500,
+      "spallLocation": "outer",
+      "spallWidthMm": 4,
+      "sourceSha256": "a140d5f1fe38843db22524389c47f71e8d9ddcefc7e5cefd1f3aa17326b092dc",
+      "preparedSha256": "b5fa3bfc673335b4d72766763759a3941ee476e5654a00c918ccca2a2486af4e",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 2165.811475,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n5k-60-0p0",
       "condition": "healthy",
+      "axialLoadKn": 5,
+      "rpm": 60,
+      "spallLocation": null,
+      "spallWidthMm": 0,
+      "sourceSha256": "1c29a84229099a2f4049cc7d1f65acbb23ad2290c60ff5e730bd3c7312ae13b6",
+      "preparedSha256": "0a63dd276e3ca730f814750b8d2ba4ff18de3d9c266752ccd7703b02ce0acf68",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 26942.074655,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n5k-60-1p0-inner",
+      "condition": "bearing_spall",
+      "axialLoadKn": 5,
+      "rpm": 60,
+      "spallLocation": "inner",
+      "spallWidthMm": 1,
+      "sourceSha256": "075d9bf242ed858107539214e5797f7240f39bc3ec7f5265aba6a448c3d07af1",
+      "preparedSha256": "d1c2274151455c676adff4e7daa72f2a064a2906800ee5eee2474cb577ee1d79",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 11600.962484,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n5k-60-1p4-outer",
+      "condition": "bearing_spall",
+      "axialLoadKn": 5,
+      "rpm": 60,
+      "spallLocation": "outer",
+      "spallWidthMm": 1.4,
+      "sourceSha256": "9978879fec0dbfbcdacab87870294427386d6d64829a72272e2bc7abf34fb379",
+      "preparedSha256": "c67358fdd486ecd1c88f14cac40a2b5ca43040d23bc883a0094f3641d7225ec7",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 9838.756669,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n5k-60-2p1-inner",
+      "condition": "bearing_spall",
+      "axialLoadKn": 5,
+      "rpm": 60,
+      "spallLocation": "inner",
+      "spallWidthMm": 2.1,
+      "sourceSha256": "44d277a79ba0afb02d6600356f84640bede952e39ff4be31d2220eef7e30cd7c",
+      "preparedSha256": "5c444640af6cb8c76ae20a88889551cf34a91c64e053f3ddac5fce3d370233db",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 13026.107588,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n5k-60-2p4-outer",
+      "condition": "bearing_spall",
+      "axialLoadKn": 5,
+      "rpm": 60,
+      "spallLocation": "outer",
+      "spallWidthMm": 2.4,
+      "sourceSha256": "1be7f790a54d39060a9160bb53e8ee3cd07c40e07865358e144cc22d36a8d93e",
+      "preparedSha256": "e5668329b1ebf3d1c620f0f0fe69c442da6457c87a683b1a35fa886c61241b0a",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 24546.107725,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n5k-60-3p8-inner",
+      "condition": "bearing_spall",
+      "axialLoadKn": 5,
+      "rpm": 60,
+      "spallLocation": "inner",
+      "spallWidthMm": 3.8,
+      "sourceSha256": "00cf344725f930888856e230ae06034f2872484b6a83b5479dcd5a961cf1735a",
+      "preparedSha256": "2d77fc609cc4216f3f1b44cafff9c9d1e9b09f16c37d4e652350f8a975fa22f0",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 14097.077702,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n5k-60-4p0-outer",
+      "condition": "bearing_spall",
+      "axialLoadKn": 5,
+      "rpm": 60,
+      "spallLocation": "outer",
+      "spallWidthMm": 4,
+      "sourceSha256": "a4ea97132a696f5a0f37871dcc460a2661402d93e9cd87b5e6ac6361355ee2d7",
+      "preparedSha256": "160e45d136e5b7a03bc386ec3c13ed0dc718266187908760be7c98ccc3655e8b",
+      "status": "review_required",
+      "reasons": [
+        "engine_disagreement",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 9537.077561,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": false,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "n8p8k-500-0p0",
+      "condition": "healthy",
+      "axialLoadKn": 8.8,
+      "rpm": 500,
+      "spallLocation": null,
+      "spallWidthMm": 0,
       "sourceSha256": "9ebf149b894d9e683fa625e4e5c73def79926fa9f9558d67f330ff334a5a19e4",
       "preparedSha256": "f64072ccad4fa5cfb282fbfda8533f579d54d2d6d61937bb25b02fcccfd4ee25",
       "status": "review_required",
       "reasons": [
-        "single_channel_ablation_only",
-        "outside_calibration_envelope"
+        "outside_training_envelope"
       ],
-      "candidateInsideSupportedScope": "looseness",
-      "distributionCoverage": 0,
-      "engineAgreement": 1
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 5823.284473,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
     },
     {
-      "id": "n8k-outer",
+      "id": "n8p8k-500-1p0-inner",
       "condition": "bearing_spall",
+      "axialLoadKn": 8.8,
+      "rpm": 500,
+      "spallLocation": "inner",
+      "spallWidthMm": 1,
+      "sourceSha256": "c5b7ac8749a2ef40383339459f4671ccf48ba51cb467e7580b4a57e1bfd4a0e4",
+      "preparedSha256": "cafd956481878a5e8944a54236ab6f295c5aa33a6f5055559c9cea0bcc1afd54",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 1121.473834,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n8p8k-500-1p4-outer",
+      "condition": "bearing_spall",
+      "axialLoadKn": 8.8,
+      "rpm": 500,
+      "spallLocation": "outer",
+      "spallWidthMm": 1.4,
       "sourceSha256": "34242aae6213397b807a50b43446ae5982703a283aac5cc9825542843f66a479",
       "preparedSha256": "234066d42698588d47de7c5a8303834ae59777ce4a0f93dfe27e0247f20204ba",
       "status": "review_required",
       "reasons": [
-        "single_channel_ablation_only",
-        "outside_calibration_envelope",
-        "engine_disagreement"
+        "outside_training_envelope"
       ],
-      "candidateInsideSupportedScope": "imbalance",
-      "distributionCoverage": 0,
-      "engineAgreement": 0
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 601.65744,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n8p8k-500-2p1-inner",
+      "condition": "bearing_spall",
+      "axialLoadKn": 8.8,
+      "rpm": 500,
+      "spallLocation": "inner",
+      "spallWidthMm": 2.1,
+      "sourceSha256": "31c19405b091f80b9d4f3b7b34720706f1c7f27e08f8fa6eeafdfc91d75563ef",
+      "preparedSha256": "aea9007d212720ebbd76f1068a6fb508bf7e64a32171c946bab08158f7dedfbb",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 1805.939568,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n8p8k-500-2p4-outer",
+      "condition": "bearing_spall",
+      "axialLoadKn": 8.8,
+      "rpm": 500,
+      "spallLocation": "outer",
+      "spallWidthMm": 2.4,
+      "sourceSha256": "ae0e5a84e0289c6ada4bd1e0473c315f0c923432b59d4aaa6573ba86171a8e77",
+      "preparedSha256": "bc37d5a5b39e50f728e4c7d940fc3142515eacf35788c2cdd554d71bd9416d15",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 3240.676946,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n8p8k-500-3p8-inner",
+      "condition": "bearing_spall",
+      "axialLoadKn": 8.8,
+      "rpm": 500,
+      "spallLocation": "inner",
+      "spallWidthMm": 3.8,
+      "sourceSha256": "f7fb50631a66669cdbc6960692d620e86f730e988d04cb3ff2457e15f0cba328",
+      "preparedSha256": "1acb26263204cbcef3d68b421b5c9d72a507a32ba5f2515c7afd433cea66e109",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 245.437064,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n8p8k-500-4p0-outer",
+      "condition": "bearing_spall",
+      "axialLoadKn": 8.8,
+      "rpm": 500,
+      "spallLocation": "outer",
+      "spallWidthMm": 4,
+      "sourceSha256": "3d5f888c4f9194e25b68d732189cf6d20b2becdb2dbb8ad291414d866557d962",
+      "preparedSha256": "618494e6ef570aa1c98fc7beaebe9a75cb9771a048faede6f707adc203d2872f",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 1357.447765,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n8p8k-60-0p0",
+      "condition": "healthy",
+      "axialLoadKn": 8.8,
+      "rpm": 60,
+      "spallLocation": null,
+      "spallWidthMm": 0,
+      "sourceSha256": "69be388d9de137564b6b8725f5472e645dd9e4fff3c544764a16725a3b62dc01",
+      "preparedSha256": "d7b52359241c5c77b148723de8d4a1f21fbdaf21d370c8bc28ce83b1eea0e914",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 14596.476264,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n8p8k-60-1p0-inner",
+      "condition": "bearing_spall",
+      "axialLoadKn": 8.8,
+      "rpm": 60,
+      "spallLocation": "inner",
+      "spallWidthMm": 1,
+      "sourceSha256": "d228b5dee94af0b235e7212f7967b4cfb686728667f38d274eabb3693a55f5f1",
+      "preparedSha256": "a934146270f48dc61503f55e2e2015bce3024ede1fc18de286f04c9d57648c51",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 9295.889805,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n8p8k-60-1p4-outer",
+      "condition": "bearing_spall",
+      "axialLoadKn": 8.8,
+      "rpm": 60,
+      "spallLocation": "outer",
+      "spallWidthMm": 1.4,
+      "sourceSha256": "06146ff08267d49bf242d5b5e2c429dc21c05ede594f255f6c37c6d16dcbfb78",
+      "preparedSha256": "e841e1a6542b85d99ddf541793c0335afc3c9c42e514c8972320e8119801ea70",
+      "status": "review_required",
+      "reasons": [
+        "engine_disagreement",
+        "outside_training_envelope",
+        "low_model_confidence"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 7956.084076,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": false,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "n8p8k-60-2p1-inner",
+      "condition": "bearing_spall",
+      "axialLoadKn": 8.8,
+      "rpm": 60,
+      "spallLocation": "inner",
+      "spallWidthMm": 2.1,
+      "sourceSha256": "6640581db1a914f6c7819518305877fc76bcae9cf0b03fb876d416e9eab57c73",
+      "preparedSha256": "daae07014756e6e9ae10994365f188f98f57e34aa26d818bbf4d9f9252fc51af",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 14366.528108,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n8p8k-60-2p4-outer",
+      "condition": "bearing_spall",
+      "axialLoadKn": 8.8,
+      "rpm": 60,
+      "spallLocation": "outer",
+      "spallWidthMm": 2.4,
+      "sourceSha256": "83387f6b544139132171e4d671c2389e21f32915a797bd27cbb1ae8bc05ca92b",
+      "preparedSha256": "4ed8910aebdad7d90ca6dff79c6dc897a887c1ad7c058fa1d81ba039a49b3f1e",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 21794.645158,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n8p8k-60-3p8-inner",
+      "condition": "bearing_spall",
+      "axialLoadKn": 8.8,
+      "rpm": 60,
+      "spallLocation": "inner",
+      "spallWidthMm": 3.8,
+      "sourceSha256": "8099d2aba5df20de1d87c9182b6d6ec0c3958ebdef0bdee01025a50d3017af31",
+      "preparedSha256": "75b4f1f4682df1799a111d98eda69a8f0ea9246409a02583a2b960d28610a0d2",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 42718.063144,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "n8p8k-60-4p0-outer",
+      "condition": "bearing_spall",
+      "axialLoadKn": 8.8,
+      "rpm": 60,
+      "spallLocation": "outer",
+      "spallWidthMm": 4,
+      "sourceSha256": "906a68cdcf86b50d71adb173778fd0e705af217efd7a18722334bb8fcc89f928",
+      "preparedSha256": "96cb4ad97860aff6a7d8a215cd37697e5cc8a424e0450eb5d1e5f4a96f066fa0",
+      "status": "review_required",
+      "reasons": [
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "distributionDistance": 7163.170256,
+      "distributionThreshold": 5.209225,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
     }
   ],
   "summary": {
-    "records": 4,
+    "records": 28,
     "automaticConclusions": 0,
-    "abstentionRate": 1
+    "abstentionRate": 1,
+    "broadEngineAgreement": 0.9285714285714286,
+    "broadEngineDisagreements": 2,
+    "internalEightConditionRepresentationDisagreements": 3,
+    "uncontainedEngineDisagreements": 0
   },
   "limitations": [
-    "Four records from one external laboratory rig are a safety probe, not a field accuracy estimate.",
+    "All 28 records from one external laboratory rig are a safety probe, not a field accuracy estimate or a multi-rig validation study.",
     "Faults are artificially seeded inner/outer-race spalls.",
-    "The candidate label is retained only for review context and is never presented as an automatic bearing diagnosis."
+    "The archive operates at 60 or 500 RPM, outside the production head's 2,100-2,988 RPM training range; correct behavior is review_required through the fitted-envelope gate.",
+    "No candidate laboratory condition is exposed as an automatic bearing diagnosis."
   ]
 }

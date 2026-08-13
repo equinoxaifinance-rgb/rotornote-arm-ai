@@ -22,10 +22,10 @@ holds out whole sequences and observes 99.8% eight-condition balanced accuracy,
 
 SIMD-row-padded INT8 reduces learned bytes from 181,668 to 46,972 (74.14%)
 while preserving 100% eight-condition label agreement over the complete signal
-bank. The frozen native Arm64 run measures a 1.2737x paired median with a
-[1.2718, 1.2749] deterministic bootstrap 95% interval over 51
+bank. A frozen native Arm64 receipt measures a 1.2704x paired median with a
+[1.2674, 1.2726] deterministic bootstrap 95% interval over 51
 alternating-order samples of 1,024 inferences. This materially nonlinear head,
-not the tiny specialist, is the optimization headline.
+and the separately disclosed specialist micro-workload, make the tradeoff visible without conflating their scopes.
 
 The secondary four-fault specialist is a transparent 48->4 linear model over
 four sensors. It is only a 192-MAC micro-workload, so its 3.2x-3.4x native band
@@ -35,16 +35,17 @@ accuracy and 19/20 physical tests (Wilson 95%: 76.4%-99.1%). One complete
 misalignment test—test 10—was predicted healthy; the receipt preserves that
 failure and RotorNote makes no blanket misalignment-sensitivity claim.
 
-Production training contains no generated fault signals. A separate CC BY
-bearing dataset attacks cross-rig behavior: all four foreign records abstain,
-and no bearing capability is claimed. A nested audit did not establish a
+Production training contains no generated fault signals. The complete,
+SHA-256-pinned archive of a separate CC BY bearing dataset attacks cross-rig
+behavior through the canonical one-channel route: all 28 foreign records return
+`review_required`, and no bearing capability is claimed. A nested audit did not establish a
 calibrated selective-accuracy claim, so the confidence floors remain
 conservative engineering rules rather than field probabilities.
 
 RotorNote exposes its deterministic compiler, parity gate, utilization report,
 and layer-count-independent WASM memory planner as a reusable developer kit.
 The exact native workflow rebuilds the bytes, executes 33 product tests,
-validates 65 required artifacts, scans for secrets, and exercises a
+validates the required artifact set, scans for secrets, and exercises a
 non-multiple-of-16 model through the actual SIMD kernel. Independent pinned
 Syft, Grype, and npm-registry jobs cross-check the in-repo SBOM and scanner.
 

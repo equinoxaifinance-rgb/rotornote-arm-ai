@@ -6,7 +6,7 @@ import { parseCsv } from "../src/csv.js";
 import { loadInferenceModel, loadModel } from "../src/model.js";
 
 const required = [
-  "README.md", "ARCHITECTURE.md", "SECURITY.md", "BENCHMARKS.md", "SUBMISSION.md", "LICENSE",
+  "README.md", "JUDGE-PATH.md", "ARCHITECTURE.md", "SECURITY.md", "BENCHMARKS.md", "SUBMISSION.md", "LICENSE",
   "INTEGRATION.md", "MODEL-CARD.md", "FIELD-VALIDATION.md", "DATA-LICENSES.md", "sbom.spdx.json", "dist/build-manifest.json",
   "package.json", "package-lock.json", "Dockerfile", "compose.yaml", ".github/workflows/native-arm64.yml",
   ".github/workflows/external-boundary.yml", ".github/workflows/independent-supply-chain.yml", "requirements-field.txt", "native/arm-dotprod-bench.c", "ARM-INT8-KIT.md", "src/dense-compiler.js", "scripts/compile-dense-model.js", "examples/dense-compile-input.json",
@@ -69,10 +69,20 @@ assert.equal(anomalyResult.engineAgreement, true);
 const workflow = await readFile(new URL("../.github/workflows/native-arm64.yml", import.meta.url), "utf8");
 assert.match(workflow, /runs-on: ubuntu-24\.04-arm/);
 assert.match(workflow, /test "\$\(uname -m\)" = "aarch64"/);
+for (const workflowName of ["native-arm64.yml", "external-boundary.yml", "independent-supply-chain.yml"]) {
+  const workflowText = await readFile(new URL(`../.github/workflows/${workflowName}`, import.meta.url), "utf8");
+  const actionReferences = workflowText.split("\n").filter((line) => /^\s*-?\s*uses:/.test(line));
+  assert.ok(actionReferences.length > 0, `${workflowName} has no third-party action references`);
+  for (const reference of actionReferences) assert.match(reference.trim(), /^-?\s*uses: [^@]+@[0-9a-f]{40}(?:\s+#.*)?$/, `${workflowName} contains a mutable action reference`);
+}
 assert.match(await readFile(new URL("../native/arm-dotprod-bench.c", import.meta.url), "utf8"), /vdotq_s32/);
 const boundary = JSON.parse(await readFile(new URL("../field/results/axial-bearing-boundary.json", import.meta.url), "utf8"));
 assert.equal(boundary.summary.abstentionRate, 1);
 assert.equal(boundary.summary.automaticConclusions, 0);
+assert.equal(boundary.summary.records, 28);
+assert.equal(boundary.route, "canonical one-channel variable-speed anomaly head");
+assert.equal(boundary.summary.broadEngineDisagreements, 2);
+assert.equal(boundary.summary.uncontainedEngineDisagreements, 0);
 const grouped = JSON.parse(await readFile(new URL("../field/results/open-grouped-cross-validation.json", import.meta.url), "utf8"));
 assert.equal(grouped.physicalTests.length, 20);
 assert.ok(grouped.aggregate.fourChannelRecording.balancedAccuracy >= 0.93);

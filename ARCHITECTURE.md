@@ -1,7 +1,7 @@
 # Architecture
 
 ```text
-four synchronized CSV channels + RPM (one channel abstains)
+four synchronized CSV channels + RPM (specialist route)
   → bounded parser and acquisition-context validation
   → 8,192-sample windows (50% overlap)
   → 16 shaft-order + 16 log-band + 16 time/spectral features
@@ -22,6 +22,8 @@ The model is a fixed linear discriminant specification with a 1e-8 numerical cov
 FP32 stores 192 weights plus four biases. INT8 uses dynamic symmetric input scaling and one symmetric scale per output row; biases remain FP32. Build-time parity is measured over all 2,000 real four-channel recording representations and gates the production decision path. The WASM kernel performs signed vector dot accumulation; JavaScript applies scales, bias, and softmax.
 
 The server runs as one unprivileged Node 22 process with no production npm dependencies. Uploads are bounded and processed in memory. A high-volume deployment should use authenticated gateways and multiple replicas or worker threads; RotorNote never writes to a PLC.
+
+The native Arm64 workflow also builds the production container on an `aarch64` runner, verifies the image architecture, starts it read-only with every Linux capability dropped and `no-new-privileges`, and executes both canonical routes through the container's public HTTP boundary. Health, one-channel, four-channel, image-inspect, and container-log receipts ship with the raw native artifact.
 
 ## Variable-speed anomaly lane
 

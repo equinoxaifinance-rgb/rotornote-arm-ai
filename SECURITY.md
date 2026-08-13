@@ -18,7 +18,7 @@ Untrusted inputs are the URL, headers, and CSV body. Static routes and sample ID
 - Dependency failure yields a generic request ID and retry contract, not a filesystem path or stack trace.
 - CSP, frame denial, MIME sniffing denial, same-origin opener, and no-referrer headers ship on responses.
 - Uploads remain in process memory and are neither logged nor persisted.
-- The container uses a non-root user; `compose.yaml` adds a read-only filesystem and `no-new-privileges`.
+- The container uses a non-root user; `compose.yaml` adds a read-only filesystem and `no-new-privileges`. Native Arm64 CI independently starts the built image read-only with every Linux capability dropped, then exercises both canonical HTTP routes before retaining the container receipts.
 - The production server has zero third-party npm dependencies. `wabt` is build-only and locked.
 - A deterministic SPDX 2.3 SBOM and source/artifact build manifest ship with the repository. Separate pinned Syft and Grype actions regenerate an independent SBOM and vulnerability scan, and the npm registry audit independently checks the zero-production-dependency claim.
 
@@ -34,7 +34,7 @@ Signal-quality and calibration-envelope abstention reduce one class of misuse; t
 
 ## Supply chain and secrets
 
-`package-lock.json` pins the build dependency. No credential is required or read. `npm run secret-scan` checks common private-key, AWS, GitHub, OpenAI, and Slack signatures while excluding generated binary/dependency directories. The independent supply-chain workflow uses Syft and Grype actions pinned to full commit SHAs, fails on high-or-critical findings, records JSON/SPDX artifacts for 90 days, and runs `npm audit --omit=dev` against the registry.
+`package-lock.json` pins the build dependency. No credential is required or read. `npm run secret-scan` checks common private-key, AWS, GitHub, OpenAI, and Slack signatures while excluding generated binary/dependency directories. Every third-party GitHub Action is pinned to a full commit SHA. The independent supply-chain workflow uses Syft and Grype, fails on high-or-critical findings, records JSON/SPDX artifacts for 90 days, and runs `npm audit --omit=dev` against the registry.
 
 Dependency licenses:
 

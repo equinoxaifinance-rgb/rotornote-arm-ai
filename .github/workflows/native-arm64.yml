@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 22.18.0
           cache: npm
@@ -53,12 +53,38 @@ jobs:
           cc --version | tee arm-compiler.txt
           cc -O3 -std=c11 -Wall -Wextra -Werror -march=armv8.2-a+dotprod -o arm-dotprod native/arm-dotprod-bench.c
           ./arm-dotprod | tee arm-dotprod.json
+      - name: Build and exercise the hardened Arm64 container
+        run: |
+          set -euxo pipefail
+          docker build --pull --tag "rotornote:${GITHUB_SHA}" .
+          docker image inspect "rotornote:${GITHUB_SHA}" > container-image-inspect.json
+          test "$(docker image inspect --format '{{.Architecture}}' "rotornote:${GITHUB_SHA}")" = "arm64"
+          cid="$(docker run --detach --read-only --tmpfs /tmp:size=16m,noexec,nosuid --cap-drop ALL --security-opt no-new-privileges --publish 8787:8787 "rotornote:${GITHUB_SHA}")"
+          trap 'docker logs "$cid" > container-logs.txt 2>&1 || true; docker rm --force "$cid" >/dev/null 2>&1 || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent --show-error http://127.0.0.1:8787/health > container-health.json; then break; fi
+            sleep 1
+          done
+          node -e "const r=require('./container-health.json'); if(r.status!=='ready') throw new Error('container health gate failed')"
+          curl --fail-with-body --silent --show-error --request POST \
+            --header 'content-type: text/csv' --header 'x-sample-rate: 1024' --header 'x-operating-rpm: 2100' \
+            --data-binary @samples/real-variable-speed-anomaly.csv \
+            'http://127.0.0.1:8787/api/screen?engine=optimized' > container-one-channel.json
+          node -e "const r=require('./container-one-channel.json'); if(r.route!=='variable_speed_anomaly'||r.result.status!=='screened'||!r.result.engineAgreement) throw new Error('container anomaly path failed')"
+          curl --fail-with-body --silent --show-error --request POST \
+            --header 'content-type: text/csv' --header 'x-sample-rate: 25000' --header 'x-operating-rpm: 1238' \
+            --data-binary @samples/real-imbalance.csv \
+            'http://127.0.0.1:8787/api/screen?engine=optimized' > container-four-channel.json
+          node -e "const r=require('./container-four-channel.json'); if(r.route!=='four_sensor_specialist'||r.result.decision.status!=='screened'||r.result.primary!=='imbalance'||r.result.decision.engineAgreement!==1) throw new Error('container specialist path failed')"
+          docker logs "$cid" > container-logs.txt 2>&1
+          docker rm --force "$cid" >/dev/null
+          trap - EXIT
       - name: Record artifact hashes
         run: |
           find dist model assets/gallery -type f -print0 | sort -z | xargs -0 sha256sum | tee artifact-sha256.txt
           sha256sum package-lock.json sbom.spdx.json benchmark/results/native-arm64.json >> artifact-sha256.txt
       - name: Upload raw evidence
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: rotornote-native-arm64-evidence-${{ github.run_id }}
           if-no-files-found: error
@@ -77,6 +103,11 @@ jobs:
             artifact-sha256.txt
             arm-compiler.txt
             arm-dotprod.json
+            container-image-inspect.json
+            container-health.json
+            container-one-channel.json
+            container-four-channel.json
+            container-logs.txt
             model/model.json
             model/anomaly-model.json
       - name: Gate current native speed claim

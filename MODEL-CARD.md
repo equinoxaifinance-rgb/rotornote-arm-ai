@@ -22,7 +22,7 @@ After grouped validation, the fixed specification is refit on all 20 tests for p
 - Four-channel specialist results average the validated feature representation only after each synchronized channel is quality checked; one-channel input routes to the broad anomaly head, while the unsupported one-channel specialist ablation abstains.
 - An analysis passport binds input, acquisition settings, model artifacts, and deterministic output.
 
-The separate CC BY bearing boundary probe (DOI `10.17632/chwhh9n3bf.2`) produced 100% abstention across four foreign-rig records. This demonstrates fail-closed behavior only, not bearing detection accuracy.
+The complete, SHA-256-pinned CC BY bearing archive (DOI `10.17632/chwhh9n3bf.2`) produced 100% `review_required` decisions across all 28 foreign-rig records through the canonical one-channel anomaly route. The pre-inference selection includes four healthy captures and 24 seeded-spall captures at two loads and two speeds. Broad FP32/INT8 decisions agreed on 26/28 records; both disagreements remained contained behind `review_required`. This demonstrates fail-closed behavior on that separate rig only, not bearing detection accuracy or multi-rig field validation.
 
 ## Known limitations
 

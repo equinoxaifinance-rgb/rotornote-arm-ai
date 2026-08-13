@@ -31,7 +31,7 @@
           <div><span class="step">01</span><h2 id="workspace-title">Choose a recording</h2></div>
           <button class="text-button" id="formatHelp" type="button" aria-expanded="false">CSV format</button>
         </div>
-        <p id="formatCopy" class="format-copy" hidden>Validated screen: four synchronized sensor columns, with an optional timestamp first. One channel is accepted only as an abstaining ablation. At least 8,192 rows; enter sample rate and operating RPM.</p>
+        <p id="formatCopy" class="format-copy" hidden>One channel routes to broad variable-speed anomaly screening and needs at least 2,048 samples plus operating RPM. Four synchronized sensor columns unlock the narrower specialist and need at least 8,192 rows. An optional timestamp may come first.</p>
         <label class="dropzone" id="dropzone">
           <input id="fileInput" type="file" accept=".csv,text/csv">
           <span class="upload-mark" aria-hidden="true">↗</span>
@@ -75,7 +75,7 @@
             <span class="severity" id="severity"></span>
           </div>
           <h2 id="verdictTitle"></h2>
-          <div class="confidence"><div><span id="primaryLabel"></span><strong id="confidence"></strong></div><div class="meter"><i id="confidenceMeter"></i></div></div>
+          <div class="confidence"><div><span><span id="primaryLabel"></span> · model score, not calibrated probability</span><strong id="confidence"></strong></div><div class="meter"><i id="confidenceMeter"></i></div></div>
           <div class="assurance-strip"><span id="decisionBadge"></span><span id="assurance"></span></div>
           <div class="chart-card">
             <div class="chart-label"><span>Vibration trace</span><span id="duration"></span></div>
@@ -118,7 +118,7 @@
 
     <section class="underhood">
       <span class="step">ARM</span>
-      <div><h2>The 45k-MAC head is the Arm headline.</h2><p>The variable-speed front door preserves eight real laboratory conditions behind a safe broad decision, cuts learned bytes by 74.14%, and measures 1.2737× native end-to-end speedup [1.2718, 1.2749]. The 192-MAC specialist is disclosed as a secondary micro-workload, not the primary optimization proof.</p><p><a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/workflows/native-arm64.yml" target="_blank" rel="noreferrer">Inspect native Arm history</a></p></div>
+      <div><h2>Two measured Arm workloads. Two honest scopes.</h2><p>The 45,030-MAC variable-speed neural head cuts learned bytes by 74.14% and measures about 1.27× native end-to-end speedup. The 192-MAC four-sensor specialist measures about 3.23×, disclosed separately as a runtime micro-workload. Both retain FP32/INT8 agreement gates; neither number is an energy or universal-device claim.</p><p><a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/workflows/native-arm64.yml" target="_blank" rel="noreferrer">Inspect raw native Arm runs</a></p></div>
       <div class="weight-stat"><strong>74.14%</strong><span>weight-byte reduction</span></div>
     </section>
     <section class="proof-rail" aria-labelledby="proofHeading">

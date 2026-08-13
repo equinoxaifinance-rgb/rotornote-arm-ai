@@ -141,7 +141,7 @@ function maintenanceNote(result) {
   return [
     `RotorNote screening note — ${result.context.machineId}`,
     `Point: ${result.context.measurementPoint}; axis: ${result.context.sensorAxis}; sample rate: ${result.signal.sampleRate} Hz`,
-    `Result: ${status}; confidence: ${Math.round(result.confidence * 100)}%; evidence: ${result.receipt.evidenceId}`,
+    `Result: ${status}; model score (not a calibrated probability): ${Math.round(result.confidence * 100)}%; evidence: ${result.receipt.evidenceId}`,
     `Next action: ${result.guidance.action}`,
     "Screening aid only; confirm through like-for-like retest and qualified vibration review before maintenance action.",
   ].join("\n");
@@ -229,7 +229,7 @@ elements.anomalyDemo.addEventListener("click", async () => {
     const payload = await response.json();
     if (!response.ok) throw new Error(payload.message || payload.error || "Anomaly screen failed");
     const result = payload.result;
-    elements.anomalyResult.textContent = `${result.primary.replaceAll("_", " ")} · ${Math.round(result.confidence * 100)}% score · ${result.engineAgreement ? "FP32/INT8 agree" : "engine review"}`;
+    elements.anomalyResult.textContent = `${result.primary.replaceAll("_", " ")} · ${Math.round(result.confidence * 100)}% uncalibrated model score · ${result.engineAgreement ? "FP32/INT8 agree" : "engine review"}`;
   } catch (error) {
     elements.anomalyResult.textContent = error.message;
   } finally {

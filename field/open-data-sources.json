@@ -41,15 +41,13 @@
     "doi": "10.17632/chwhh9n3bf.2",
     "recordUrl": "https://data.mendeley.com/datasets/chwhh9n3bf/2",
     "archiveUrl": "https://data.mendeley.com/public-api/zip/chwhh9n3bf/download/2",
+    "archiveSha256": "d22e5a569c8e675348f59c8024b2fb1037211619b68a390bd98409143961b927",
     "license": "CC BY 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "acquisition": "Single axial-vibration channel; 25.6 kHz; 30 seconds; 500 RPM; healthy and artificially seeded inner/outer race spalls.",
-    "use": "External bearing-distress boundary evaluation only; never production training.",
-    "cases": [
-      {"id":"n5k-healthy","file":"N5k_500_0.0.mat","localFile":"n5k-healthy.mat","condition":"healthy","rpm":500,"sha256":"07029c4dcb571188ee545176381312ebab7027a148069944d837b202997a47cf"},
-      {"id":"n5k-inner","file":"N5k_500_1.0_inner.mat","localFile":"n5k-inner.mat","condition":"bearing_spall","rpm":500,"sha256":"55fc7635978a7754676c8beb182fac437a8a3fba412f70e0ad267cc0589972d0"},
-      {"id":"n8k-healthy","file":"N8.8k_500_0.0.mat","localFile":"n8k-healthy.mat","condition":"healthy","rpm":500,"sha256":"9ebf149b894d9e683fa625e4e5c73def79926fa9f9558d67f330ff334a5a19e4"},
-      {"id":"n8k-outer","file":"N8.8k_500_1.4_outer.mat","localFile":"n8k-outer.mat","condition":"bearing_spall","rpm":500,"sha256":"34242aae6213397b807a50b43446ae5982703a283aac5cc9825542843f66a479"}
-    ]
+    "acquisition": "28 single-axis vibration records from a separate physical axial-bearing rig; 25.6 kHz for 30 seconds; 60 or 500 RPM; 5.0 or 8.8 kN axial load; four healthy captures plus 24 artificially seeded inner/outer race spalls across six fault sizes.",
+    "use": "Full-archive external boundary evaluation through the canonical one-channel anomaly route only; never production training.",
+    "expectedRecords": 28,
+    "expectedHealthyRecords": 4,
+    "expectedFaultRecords": 24
   }
 }
