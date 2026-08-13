@@ -47,7 +47,7 @@ npm run gateway -- --url http://127.0.0.1:8787 --file samples/shift-change.csv -
 
 Remote targets must use HTTPS. Read [`INTEGRATION.md`](INTEGRATION.md) for the sensor-to-API contract, [`MODEL-CARD.md`](MODEL-CARD.md) for intended use and limits, and [`FIELD-VALIDATION.md`](FIELD-VALIDATION.md) for the standards-aligned path from contest prototype to a field-validated product.
 
-## Arm optimization
+## Arm optimization: memory first, throughput second
 
 Both paths run the same 48→256→128→5 learned network and the same signal features.
 
@@ -56,9 +56,9 @@ Both paths run the same 48→256→128→5 learned network and the same signal f
 | Baseline | FP32, 184,340-byte artifact | scalar JavaScript dense loops |
 | Optimized | symmetric INT8, 47,252-byte artifact | WebAssembly SIMD `v128` loads and dot products |
 
-The optimized artifact uses 74.37% fewer weight bytes. On exact public commit `fc55491`, [native Arm64 workflow run 31680834809](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31680834809) recorded `aarch64`, 21/21 passing tests, 100% label agreement, and a **1.2318× full-runtime median ratio** across 51 paired samples. The paired-median bootstrap 95% interval was **1.2311–1.2344**. A separate Armv8.2 NEON `vdotq_s32` proof exactly matched scalar INT8 and measured **16.8979×** for the core 256-element dot product. The downloaded artifact hash matched GitHub's digest and is preserved under [`receipts/native-arm64/run-31680834809`](receipts/native-arm64/run-31680834809).
+The primary production win is a **74.37% reduction in committed weight bytes**, lowering model storage and memory traffic. Compute throughput is a smaller, separately measured benefit: on exact public commit `a8bce54`, [native Arm64 workflow run 31681199791](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31681199791) recorded `aarch64`, 21/21 passing tests, 100% label agreement, and a **1.2487× full-runtime median ratio** across 51 paired samples. The paired-median bootstrap 95% interval was **1.2442–1.2519**. A separate Armv8.2 NEON `vdotq_s32` proof exactly matched scalar INT8 and measured **17.4637×** for the core 256-element dot product; it demonstrates an architecture-specific kernel ceiling, not the end-to-end product ratio. The downloaded artifact hash matched GitHub's digest and is preserved under [`receipts/native-arm64/run-31681199791`](receipts/native-arm64/run-31681199791).
 
-**Evidence status:** local x64 validation is available in [`receipts/LOCAL-VALIDATION.md`](receipts/LOCAL-VALIDATION.md); native Arm64 is verified by the linked workflow and downloaded artifact; the [external CWRU safety probe](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31680834724) also passed on that commit. x64 timing is never presented as native Arm evidence.
+**Evidence status:** local x64 validation is available in [`receipts/LOCAL-VALIDATION.md`](receipts/LOCAL-VALIDATION.md); native Arm64 is verified by the linked workflow and downloaded artifact; the [final-commit native run](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31681932724) and [external CWRU safety probe](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31681932730) also passed. x64 timing is never presented as native Arm evidence.
 
 ## Model and data
 
@@ -66,7 +66,7 @@ RotorNote uses a deterministic random-feature network with a genuinely ridge-fit
 
 The committed metadata records seed, architecture, ridge regularization, calibration scales, artifact hashes, ordinary held-out results, and an unseen-seed stress result with heavier noise, gain/bias shift, speed modulation, nuisance harmonics, and mixed faults. Those results validate controlled synthetic consistency only; they are **not field accuracy**. RotorNote is a screening aid, not a safety controller or diagnosis.
 
-`npm run validate:field` is a separate cross-domain safety probe. It downloads four hash-pinned experimental records from the official Case Western Reserve University Bearing Data Center, resamples the drive-end channel, and verifies that uncalibrated recordings fail closed. The committed receipt reports 100% abstention, zero automatic conclusions, and a bearing review candidate for all three faulted records. This is useful external evidence of the boundary—not certification or a field-accuracy estimate.
+`npm run validate:field` is a separate cross-domain safety probe. It downloads four hash-pinned experimental records from the official Case Western Reserve University Bearing Data Center, resamples the drive-end channel, and verifies that uncalibrated recordings fail closed. The committed receipt reports 0% simulated-envelope coverage, 100% abstention, zero automatic conclusions, and a bearing review candidate for all three faulted records. **The 0% coverage means the simulated envelope does not generalize to these real sensors and must be recalibrated on representative machinery before deployment.** This receipt proves refusal behavior only—not usefulness, certification, or field accuracy.
 
 The model also commits a 99.5th-percentile training envelope in normalized feature space. This is an abstention mechanism, not evidence of real-world calibration: recordings outside that simulated envelope are sent to review instead of receiving an unqualified conclusion.
 

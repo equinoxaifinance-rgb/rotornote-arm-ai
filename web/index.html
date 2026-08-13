@@ -102,14 +102,14 @@
 
     <section class="underhood">
       <span class="step">ARM</span>
-      <div><h2>Smaller weights. Vector work.</h2><p>The judge toggle runs the same learned network two ways: scalar FP32 JavaScript or an INT8 WebAssembly SIMD kernel. On Arm64, V8 maps SIMD operations to NEON. The repository records raw samples and never substitutes x64 timing for native evidence.</p></div>
+      <div><h2>Smaller weights. Measured vector work.</h2><p>The primary win is 74.4% fewer weight bytes. The judge toggle runs the same learned network two ways: scalar FP32 JavaScript or an INT8 WebAssembly SIMD kernel. Native Arm throughput is reported separately with uncertainty; x64 timing is never substituted.</p></div>
       <div class="weight-stat"><strong>74.4%</strong><span>weight-byte reduction</span></div>
     </section>
     <section class="proof-rail" aria-labelledby="proofHeading">
       <div class="proof-intro"><span class="kicker">Executed evidence</span><h2 id="proofHeading">Proof, not posture.</h2><p>Every number opens to raw, reproducible receipts. The unknown stays unknown.</p></div>
       <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31681199791" target="_blank" rel="noreferrer"><span>Full Arm64 runtime</span><strong>1.2487×</strong><small>95% interval 1.2442–1.2519</small></a>
       <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/receipts/native-arm64/run-31681199791/arm-dotprod.json" target="_blank" rel="noreferrer"><span>Armv8.2 dot product</span><strong>17.46×</strong><small>NEON · exact scalar match</small></a>
-      <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/workflows/external-field-probe.yml" target="_blank" rel="noreferrer"><span>External-data guard</span><strong>4 / 4</strong><small>abstained · zero auto conclusions</small></a>
+      <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31681932730" target="_blank" rel="noreferrer"><span>External calibration</span><strong>0% fit</strong><small>correctly refused 4 / 4 · field calibration required</small></a>
     </section>
   </main>
   <footer><span>RotorNote · an open-source screening aid</span><span>MIT licensed</span></footer>
