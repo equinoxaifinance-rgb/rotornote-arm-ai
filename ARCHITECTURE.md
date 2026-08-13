@@ -32,7 +32,7 @@ The input contains:
 - RMS, peak, crest factor, kurtosis, skew, zero crossings, mean absolute amplitude, and impulse factor;
 - spectral centroid, spread, 85% rolloff, dominant frequency/ratio, and three broad-band ratios.
 
-The classifier is a random-feature ridge network: two seeded random ReLU projections (48→256→128) followed by a multiclass linear head (128→5) fitted with a regularized least-squares solve. The build forms the normal equations, applies ridge regularization, performs a Cholesky factorization, and solves one target system per class. The final weights are learned from all 900 training rows; they are not class centroids or hand-authored rules.
+The classifier is a random-feature ridge network: two seeded random ReLU projections (48→256→128) followed by a multiclass linear head (128→5) fitted with a regularized least-squares solve. The build forms the normal equations, applies ridge regularization, performs a Cholesky factorization, and solves one target system per class. It then selects one scalar temperature on held-out multiclass negative log loss before quantization. The final weights and calibration are learned from data; they are not class centroids, hand-authored rules, or a UI-only confidence multiplier.
 
 There are 225 disjoint ordinary validation simulations plus 300 unseen-seed stress simulations. Both include variable severity, sensor gain/bias, speed modulation, nuisance harmonics, and secondary-fault blending; the stress split increases those shifts. `scripts/build-model.js` contains the entire generator, split, fitting, calibration, quantization, and artifact writer—there is no hidden notebook or downloaded checkpoint.
 

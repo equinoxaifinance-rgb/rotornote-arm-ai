@@ -28,7 +28,7 @@ The entire training set is original and deterministic. Physics-inspired signal g
 
 The transparent baseline stores FP32 weights and evaluates scalar JavaScript dense loops. The optimized path quantizes weights and calibrated activations to INT8, reducing the committed weight artifact from 184,340 to 47,252 bytes (74.37%). A hand-written WebAssembly SIMD kernel loads 16 signed values per vector and performs vector dot accumulation. V8 compiles that portable SIMD for the Arm64 host.
 
-The repository's `ubuntu-24.04-arm` action treats architecture as a hard gate, rebuilds deterministic artifacts, runs all tests, alternates both engines across raw benchmark samples, records machine/dependency details, and uploads hashes. On public commit `3cc999a`, the current 21-test native run recorded a **1.2418× median inference speedup**, 74.37% fewer weight bytes, 100% label agreement, and a 0.000376 maximum probability delta. The workflow URL and hash-matched downloaded artifact are linked in `BENCHMARKS.md`.
+The repository's `ubuntu-24.04-arm` action treats architecture as a hard gate, rebuilds deterministic artifacts, runs all tests, alternates both engines across raw benchmark samples, records uncertainty and machine/dependency details, and uploads hashes. On public commit `fc55491`, 51 paired samples recorded a **1.2318× full-runtime median ratio** with a **1.2311–1.2344** bootstrap 95% interval and 100% label agreement. An architecture-specific Armv8.2 NEON `vdotq_s32` proof exactly matched scalar INT8 and measured **16.8979×** on the core 256-element dot product. The workflow URL and hash-matched downloaded artifact are linked in `BENCHMARKS.md`.
 
 ## Challenges
 

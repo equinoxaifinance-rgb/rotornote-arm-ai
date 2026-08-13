@@ -185,6 +185,31 @@ for (let label = 0; label < OUTPUTS; label += 1) {
   bias3[label] = fittedHead[label][HIDDEN_2];
 }
 
+const validationLogits = validation.map(({ features, label }) => {
+  const input = normalize(features, means, deviations);
+  const hidden1 = relu(dense(input, weights1, bias1, HIDDEN_1));
+  const hidden2 = relu(dense(hidden1, weights2, bias2, HIDDEN_2));
+  return { logits: dense(hidden2, weights3, bias3, OUTPUTS), label };
+});
+const nllAtTemperature = (temperature) => validationLogits.reduce((total, { logits, label }) => {
+  const scaled = Array.from(logits, (value) => value / temperature);
+  const maximum = Math.max(...scaled);
+  const denominator = scaled.reduce((sum, value) => sum + Math.exp(value - maximum), 0);
+  return total - (scaled[label] - maximum - Math.log(denominator));
+}, 0) / validationLogits.length;
+let calibrationTemperature = 1;
+let calibrationNll = nllAtTemperature(calibrationTemperature);
+for (let step = 0; step <= 180; step += 1) {
+  const candidate = 0.2 + step * 0.01;
+  const candidateNll = nllAtTemperature(candidate);
+  if (candidateNll < calibrationNll) {
+    calibrationTemperature = candidate;
+    calibrationNll = candidateNll;
+  }
+}
+for (let index = 0; index < weights3.length; index += 1) weights3[index] /= calibrationTemperature;
+for (let index = 0; index < bias3.length; index += 1) bias3[index] /= calibrationTemperature;
+
 const layers = [
   { name: "dense1", weights: weights1, bias: bias1, inputs: INPUTS, outputs: HIDDEN_1 },
   { name: "dense2", weights: weights2, bias: bias2, inputs: HIDDEN_1, outputs: HIDDEN_2 },
@@ -295,6 +320,7 @@ const metadata = {
   training: {
     method: "ridge-fitted multiclass head over deterministic random ReLU features",
     ridgeLambda,
+    calibration: { method: "held-out scalar temperature minimizing multiclass negative log likelihood", temperature: calibrationTemperature, negativeLogLikelihood: calibrationNll },
     samples: training.length,
     validationSamples: validation.length,
     floatAccuracy: floatCorrect / validation.length,

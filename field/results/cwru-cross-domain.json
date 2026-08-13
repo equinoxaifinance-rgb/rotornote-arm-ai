@@ -1,6 +1,6 @@
 {
   "schema": "rotornote-cross-domain-probe-v1",
-  "createdAt": "2026-08-13T07:59:13.078Z",
+  "createdAt": "2026-08-13T08:13:49.378Z",
   "source": {
     "name": "Case Western Reserve University Bearing Data Center",
     "page": "https://engineering.case.edu/bearingdatacenter/download-data-file",
@@ -20,7 +20,7 @@
       "status": "review_required",
       "candidate": "bearing",
       "candidateMatchesExpected": false,
-      "confidence": 0.3092,
+      "confidence": 0.5319,
       "envelopeCoverage": 0,
       "engineAgreement": 1,
       "quality": "good"
@@ -36,7 +36,7 @@
       "status": "review_required",
       "candidate": "bearing",
       "candidateMatchesExpected": true,
-      "confidence": 0.8078,
+      "confidence": 1,
       "envelopeCoverage": 0,
       "engineAgreement": 1,
       "quality": "good"
@@ -52,7 +52,7 @@
       "status": "review_required",
       "candidate": "bearing",
       "candidateMatchesExpected": true,
-      "confidence": 0.4944,
+      "confidence": 0.8796,
       "envelopeCoverage": 0,
       "engineAgreement": 1,
       "quality": "review"
@@ -68,7 +68,7 @@
       "status": "review_required",
       "candidate": "bearing",
       "candidateMatchesExpected": true,
-      "confidence": 0.635,
+      "confidence": 0.9815,
       "envelopeCoverage": 0,
       "engineAgreement": 1,
       "quality": "review"

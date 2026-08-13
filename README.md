@@ -56,9 +56,9 @@ Both paths run the same 48→256→128→5 learned network and the same signal f
 | Baseline | FP32, 184,340-byte artifact | scalar JavaScript dense loops |
 | Optimized | symmetric INT8, 47,252-byte artifact | WebAssembly SIMD `v128` loads and dot products |
 
-The optimized artifact uses 74.37% fewer weight bytes. On exact public commit `3cc999a`, [native Arm64 workflow run 31678380107](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31678380107) recorded `aarch64`, 21/21 passing tests, 100% label agreement, a 0.000376 maximum probability delta, and a **1.2418× median inference speedup** (95.5562 ms to 76.9482 ms per 1,024-inference batch). The downloaded artifact hash matched GitHub's published digest and is preserved under [`receipts/native-arm64/run-31678380107`](receipts/native-arm64/run-31678380107).
+The optimized artifact uses 74.37% fewer weight bytes. On exact public commit `fc55491`, [native Arm64 workflow run 31680834809](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31680834809) recorded `aarch64`, 21/21 passing tests, 100% label agreement, and a **1.2318× full-runtime median ratio** across 51 paired samples. The paired-median bootstrap 95% interval was **1.2311–1.2344**. A separate Armv8.2 NEON `vdotq_s32` proof exactly matched scalar INT8 and measured **16.8979×** for the core 256-element dot product. The downloaded artifact hash matched GitHub's digest and is preserved under [`receipts/native-arm64/run-31680834809`](receipts/native-arm64/run-31680834809).
 
-**Evidence status:** local x64 validation is available in [`receipts/LOCAL-VALIDATION.md`](receipts/LOCAL-VALIDATION.md); native Arm64 is verified by the linked workflow and downloaded artifact. x64 timing is never presented as native Arm evidence.
+**Evidence status:** local x64 validation is available in [`receipts/LOCAL-VALIDATION.md`](receipts/LOCAL-VALIDATION.md); native Arm64 is verified by the linked workflow and downloaded artifact; the [external CWRU safety probe](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31680834724) also passed on that commit. x64 timing is never presented as native Arm evidence.
 
 ## Model and data
 

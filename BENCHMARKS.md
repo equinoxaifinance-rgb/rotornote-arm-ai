@@ -44,10 +44,11 @@ npm run benchmark -- --output benchmark/results/native-arm64.json --repetitions 
 | Generated FP32/INT8 artifacts and byte reduction | implemented and locally verified | `model/model.json`, local hashes |
 | Unit/integration/hostile/failure/retry tests on x64 | locally tested | `receipts/LOCAL-VALIDATION.md` |
 | Deterministic benchmark harness on x64 | locally run; not Arm evidence | `benchmark/results/local-x64.json` |
-| Native Arm64 tests and benchmark | **VERIFIED** | [run 31678380107](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31678380107), `receipts/native-arm64/run-31678380107/` |
+| Native Arm64 tests, full benchmark and Arm dot-product proof | **VERIFIED** | [run 31680834809](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31680834809), `receipts/native-arm64/run-31680834809/` |
+| Experimental cross-domain fail-closed probe | **VERIFIED** | [run 31680834724](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31680834724), `field/results/cwru-cross-domain.json` |
 | Live Arm cloud deployment | **PENDING GATE** | requires a deployed URL and health receipt |
 
-The verified GitHub artifact SHA-256 is `225dad3a9485f78efdc0a0b347954d1ae76a0ca2c51c8c0dc1fe56ff839f9c4b`. On commit `3cc999a`, the four-vCPU Ubuntu Arm64 runner recorded a 95.5562 ms baseline median and 76.9482 ms optimized median per 1,024-inference batch: **1.2418× speedup**, 74.3669% fewer weight bytes, 100% label agreement, and maximum probability delta 0.000375754. All 25 raw samples per path and the 21/21 native test receipt are preserved in the receipt directory.
+The verified GitHub artifact SHA-256 is `ef664f1c5e16d13c6bb7cb13481889e4a80951e0c1eaecf81b1769f868b109ac`. On commit `fc55491`, the four-vCPU Neoverse-N2 runner recorded 192.9697 ms FP32 and 156.6625 ms INT8/WASM-SIMD medians per 2,048-inference batch: **1.2318×**. Fifty-one alternating-order paired samples produced a **1.2311–1.2344** bootstrap 95% interval for the paired median, with 74.3669% fewer weight bytes and 100% label agreement. The Armv8.2 NEON `vdotq_s32` proof exactly matched scalar INT8 and measured **16.8979×** for its core dot product. Raw samples and the 21/21 native test receipt are preserved in the receipt directory.
 
 ## Interpreting results
 

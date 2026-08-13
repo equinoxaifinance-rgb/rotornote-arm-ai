@@ -18,11 +18,6 @@
   "training": {
     "method": "ridge-fitted multiclass head over deterministic random ReLU features",
     "ridgeLambda": 0.35,
-    "calibration": {
-      "method": "held-out scalar temperature minimizing multiclass negative log likelihood",
-      "temperature": 0.2,
-      "negativeLogLikelihood": 0.05008304135712782
-    },
     "samples": 900,
     "validationSamples": 225,
     "floatAccuracy": 0.9911111111111112,
@@ -402,7 +397,7 @@
   "float": {
     "file": "rotornote-fp32.bin",
     "bytes": 184340,
-    "sha256": "30136cd264161c508ca7e355cda181417e6f3faafc47e86e102bb6d9116cff1b",
+    "sha256": "c27bce35d4fca735d65c0e166cefbba268dc6c603649bb919acfefb158e9eb3b",
     "layers": [
       {
         "name": "dense1",
@@ -448,7 +443,7 @@
   "int8": {
     "file": "rotornote-int8.bin",
     "bytes": 47252,
-    "sha256": "f2eb675097f92f3ff441f7ed6137e5f104c43a5e7254d53cd6fb7cac7cc66c56",
+    "sha256": "de6372decaa10593441aca1b13df56d26e88bde94bc0ab5daf73dd33d753654a",
     "layers": [
       {
         "name": "dense1",
@@ -484,7 +479,7 @@
         "name": "logits",
         "inputs": 128,
         "outputs": 5,
-        "weightScale": 0.014012424964604414,
+        "weightScale": 0.0028024850867864656,
         "activationScale": 0.05491028229395548,
         "weights": {
           "offset": 46592,
