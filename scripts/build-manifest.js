@@ -13,7 +13,13 @@ const files = [
   "BENCHMARKS.md",
   "SECURITY.md",
   "SUBMISSION.md",
+  "package.json",
   "package-lock.json",
+  "Dockerfile",
+  "compose.yaml",
+  ".github/workflows/native-arm64.yml",
+  ".github/workflows/external-boundary.yml",
+  ".github/workflows/independent-supply-chain.yml",
   "kernel/dense.wat",
   "dist/dense.wasm",
   "model/model.json",
@@ -25,6 +31,7 @@ const files = [
   "src/analyze.js",
   "src/anomaly.js",
   "src/csv.js",
+  "src/dense-compiler.js",
   "src/evidence.js",
   "src/model.js",
   "src/quality.js",
@@ -32,6 +39,7 @@ const files = [
   "src/signal.js",
   "scripts/build-model.js",
   "scripts/build-anomaly-model.js",
+  "scripts/compile-dense-model.js",
   "scripts/prepare-upatras-features.mjs",
   "scripts/prepare-upatras-demo.mjs",
   "scripts/train-upatras-anomaly.py",
@@ -41,6 +49,14 @@ const files = [
   "scripts/evaluate-axial-boundary.js",
   "benchmark/run.js",
   "benchmark/run-anomaly.js",
+  "tests/anomaly.test.js",
+  "tests/csv.test.js",
+  "tests/dense-compiler.test.js",
+  "tests/gateway.test.js",
+  "tests/model.test.js",
+  "tests/quality.test.js",
+  "tests/server.test.js",
+  "tests/signal.test.js",
   "native/arm-dotprod-bench.c",
   "requirements-field.txt",
   "field/open-data-sources.json",
@@ -69,11 +85,11 @@ const files = [
   "samples/real-variable-speed-anomaly.csv",
 ];
 const hashes = {};
-const textExtensions = new Set([".c", ".css", ".html", ".js", ".json", ".md", ".py", ".txt", ".wat"]);
+const textExtensions = new Set([".c", ".css", ".html", ".js", ".json", ".md", ".mjs", ".py", ".txt", ".wat", ".yaml", ".yml"]);
 for (const path of files) {
   let bytes = await readFile(new URL(`../${path}`, import.meta.url));
   const extension = path.slice(path.lastIndexOf("."));
-  if (textExtensions.has(extension)) bytes = Buffer.from(bytes.toString("utf8").replace(/\r\n/g, "\n"));
+  if (path === "Dockerfile" || textExtensions.has(extension)) bytes = Buffer.from(bytes.toString("utf8").replace(/\r\n/g, "\n"));
   hashes[path] = createHash("sha256").update(bytes).digest("hex");
 }
 const manifest = {

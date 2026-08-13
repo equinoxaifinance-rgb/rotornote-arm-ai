@@ -17,6 +17,7 @@
 .anomaly-demo button:hover { background: var(--forest); }
 .anomaly-demo button:disabled { opacity: .55; }
 .anomaly-demo p { margin-top: 9px; font: 700 9px ui-monospace, monospace; text-transform: uppercase; }
+.anomaly-demo small { display: block; color: var(--muted); font-size: 9px; line-height: 1.4; }
 .underhood a { color: var(--acid); }
 
 @media (max-width: 840px) { .anomaly-lane { grid-template-columns: 1fr; } }

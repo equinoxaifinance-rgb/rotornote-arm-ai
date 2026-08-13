@@ -1,0 +1,47 @@
+name: Independent supply-chain evidence
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  syft-grype:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - name: Generate independent SPDX SBOM with Syft
+        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
+        with:
+          path: .
+          format: spdx-json
+          output-file: syft.spdx.json
+          artifact-name: rotornote-syft-spdx-${{ github.run_id }}
+          upload-artifact: true
+          upload-artifact-retention: 90
+      - name: Scan the Syft SBOM with Grype
+        uses: anchore/scan-action@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2 # v7.4.0
+        with:
+          sbom: syft.spdx.json
+          fail-build: true
+          severity-cutoff: high
+          output-format: json
+          output-file: grype.json
+      - name: Run npm registry audit
+        run: |
+          set -o pipefail
+          npm audit --omit=dev --audit-level=high --json | tee npm-audit.json
+      - name: Upload scanner receipts
+        uses: actions/upload-artifact@v6
+        with:
+          name: rotornote-independent-security-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 90
+          path: |
+            syft.spdx.json
+            grype.json
+            npm-audit.json

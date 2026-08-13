@@ -1,6 +1,6 @@
 # RotorNote
 
-**Hear the machine before it stops.** RotorNote turns four synchronized vibration channels into a deliberately small, auditable Arm condition screen, a concrete retest, and a tamper-evident analysis passport. One-channel input is accepted only as a fail-closed ablation. It is an advisory companion to an acquisition gateway, CMMS workflow, and qualified vibration analyst—not a shutdown controller or diagnosis.
+**Hear the machine before it stops.** RotorNote turns a single vibration channel into a broad variable-speed anomaly screen, then unlocks a narrower fault-family specialist when four synchronized channels satisfy that evidence contract. Both Arm-optimized paths produce a concrete retest and tamper-evident analysis passport. It is an advisory companion to an acquisition gateway, CMMS workflow, and qualified vibration analyst—not a shutdown controller or diagnosis.
 
 ![RotorNote hero](assets/gallery/01-hero.svg)
 
@@ -9,14 +9,14 @@
 - Production training uses **40,000 feature windows from physical experiments**, not generated fault signals.
 - The source is the CC BY 4.0 [Mechanical faults in rotating machinery dataset](https://data.mendeley.com/datasets/zx8pfhdtnb/3): 20 independently reset tests, four accelerometers, 25 kHz, and four conditions.
 - Five-fold grouped evaluation holds out one complete physical test per class in every fold. No recording or window from a held test enters its scaler or classifier fit.
-- Across 20 physical tests, the **76.4%–99.1% Wilson 95% interval** is the uncertainty statement; the observed point estimate is **19/20 tests** and **94.0% four-channel recording balanced accuracy**. The five held-test folds span **85.5%–100%**. A nested calibration audit could not establish 95% selective accuracy on every inner split, so the 0.99 floor remains a conservative engineering rule—not a calibrated probability claim. These are repeated laboratory measurements on one rig, not field sensitivity or certification.
+- Across 20 physical tests, the **76.4%–99.1% Wilson 95% interval** is the uncertainty statement; the observed point estimate is **19/20 tests** and **94.0% four-channel recording balanced accuracy**. One complete misalignment test (test 10) was predicted healthy; that failure is preserved in the receipt and prevents a blanket misalignment-sensitivity claim. The five held-test folds span **85.5%–100%**. A nested calibration audit could not establish 95% selective accuracy on every inner split, so the 0.99 floor remains a conservative engineering rule—not a calibrated probability claim. These are repeated laboratory measurements on one rig, not field sensitivity or certification.
 - A separate CC BY 4.0 [axial-bearing dataset](https://data.mendeley.com/datasets/chwhh9n3bf/2) attacks the boundary. RotorNote issued **zero automatic conclusions on 4/4 foreign-rig records**, including healthy and seeded-spall captures.
 
 The exact receipts are [`field/results/open-grouped-cross-validation.json`](field/results/open-grouped-cross-validation.json) and [`field/results/axial-bearing-boundary.json`](field/results/axial-bearing-boundary.json). Licenses and transformations are in [`DATA-LICENSES.md`](DATA-LICENSES.md).
 
 ## Complete loop
 
-1. Send four synchronized sensor channels for the validated aggregation path. A one-channel upload is accepted only as an explicitly abstaining ablation, never as an operational screen.
+1. Send one channel for the broad variable-speed anomaly screen, or four synchronized channels for the narrower fault-family specialist. The canonical endpoint routes by this evidence contract.
 2. Include sample rate and operating RPM; order-aware features depend on both.
 3. RotorNote runs FP32 and INT8 engines, checks signal quality and fitted-envelope coverage, applies a conservative 0.99 engineering floor, then abstains on disagreement or uncertainty. The nested audit is retained precisely because it did not validate that floor as a calibrated probability threshold.
 4. Export evidence JSON or copy a maintenance note into the existing work-order system.
@@ -40,11 +40,13 @@ npm run gateway -- --url http://127.0.0.1:8787 --file samples/real-imbalance.csv
 
 ## Arm optimization
 
-RotorNote optimizes two deliberately different workloads: an interpretable four-fault specialist and a materially nonlinear variable-speed front door. Both run through the same deterministic FP32-to-INT8 compiler, dynamically planned WASM SIMD runtime, artifact-parity gates, and native Arm evidence workflow. The compiler is reusable outside RotorNote; see [`ARM-INT8-KIT.md`](ARM-INT8-KIT.md) and the executable example in `examples/dense-compile-input.json`.
+RotorNote optimizes two deliberately different workloads: a materially nonlinear variable-speed front door and an interpretable four-fault specialist. Both run through the same deterministic FP32-to-INT8 compiler, dynamically planned WASM SIMD runtime, artifact-parity gates, and native Arm evidence workflow. The compiler is reusable outside RotorNote; see [`ARM-INT8-KIT.md`](ARM-INT8-KIT.md) and the executable example in `examples/dense-compile-input.json`.
+
+The primary Arm workload is the fitted-unit-pruned **48→253→126→8** anomaly head: 45,030 MACs per inference, 181,668 FP32 learned bytes versus 46,972 SIMD-row-padded INT8 bytes (74.14% reduction), and a frozen native Arm64 end-to-end paired-median speedup of **1.2737× [1.2718, 1.2749]**. That result uses 51 alternating-order samples of 1,024 inferences and preserves 100% eight-condition labels across the 2,925-signal bank. It is the optimization headline because it is the material compute workload.
 
 The real classifier is a transparent 48→4 linear discriminant model over the mean feature vector from four sensors and five windows per sensor. FP32 weights and bias occupy 784 bytes; row-wise INT8 weights plus FP32 bias occupy 208 bytes—a **73.47% reduction**. Dynamic per-inference activation scaling and per-output weight scales preserve **100% of production recording labels** across all 2,000 real recordings, with a 2.80e-10 p99 probability delta and 0.01996 maximum delta.
 
-Repeated native Arm64 Neoverse-N2 runs over identical linear-head FP32, INT8, and WASM hashes measure about **3.2×–3.4× paired-median speedup**; every deterministic bootstrap 95% interval excludes 1.0. Each rebuilds the repository and proves exact NEON `vdotq_s32` agreement; the current product suite contains 33 tests. This band is the repeatability claim—the exact frozen-commit JSON is authoritative for an individual run. These are workload-specific receipts, not energy, fleet, or universal-device claims. [Inspect the current Arm evidence history](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/workflows/native-arm64.yml).
+The 48→4 linear specialist is intentionally only 192 MACs. Repeated native Arm64 runs measure a 3.2×–3.4× paired-median band, but RotorNote labels this a secondary micro-workload where language-runtime overhead is material—not the primary proof of optimization payoff. Each native run rebuilds the repository, executes 33 tests, validates the artifact set, scans for secrets, and proves exact NEON `vdotq_s32` agreement. These are workload-specific receipts, not energy, fleet, or universal-device claims. [Inspect the current Arm evidence history](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/workflows/native-arm64.yml).
 
 ## API boundary
 
@@ -58,7 +60,7 @@ Repeated native Arm64 Neoverse-N2 runs over identical linear-head FP32, INT8, an
 
 Read [`INTEGRATION.md`](INTEGRATION.md), [`MODEL-CARD.md`](MODEL-CARD.md), and [`FIELD-VALIDATION.md`](FIELD-VALIDATION.md) before any operational pilot.
 
-MIT licensed. Production runtime has zero third-party npm dependencies.
+MIT licensed. Production runtime has zero third-party npm dependencies. The deterministic in-repo SBOM and secret scan are independently cross-checked in CI by Syft, Grype, and the npm registry audit; third-party actions are pinned to full commit SHAs.
 
 ## Variable-speed anomaly lane
 

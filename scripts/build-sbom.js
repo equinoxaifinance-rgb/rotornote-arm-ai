@@ -6,8 +6,8 @@ const document = {
   spdxVersion: "SPDX-2.3",
   dataLicense: "CC0-1.0",
   SPDXID: "SPDXRef-DOCUMENT",
-  name: "RotorNote-1.1.0",
-  documentNamespace: "https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/spdx/1.1.0",
+  name: "RotorNote-2.0.0",
+  documentNamespace: "https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/spdx/2.0.0",
   creationInfo: {
     created: "2026-08-13T00:00:00Z",
     creators: ["Tool: RotorNote deterministic SBOM generator"],
@@ -16,7 +16,7 @@ const document = {
     {
       name: "rotornote",
       SPDXID: "SPDXRef-Package-RotorNote",
-      versionInfo: "1.1.0",
+      versionInfo: "2.0.0",
       downloadLocation: "https://github.com/equinoxaifinance-rgb/rotornote-arm-ai",
       filesAnalyzed: false,
       licenseConcluded: "MIT",

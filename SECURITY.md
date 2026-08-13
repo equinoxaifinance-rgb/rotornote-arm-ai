@@ -9,7 +9,7 @@ Untrusted inputs are the URL, headers, and CSV body. Static routes and sample ID
 ## Controls
 
 - Body bytes are rejected above 8 MiB using both declared length and streaming counts.
-- Sample counts are capped at 131,072 per channel; the minimum is 8,192.
+- Sample counts are capped at 131,072 per channel; the broad anomaly route requires 2,048 and the four-channel specialist requires 8,192 synchronized samples.
 - Rates are limited to 256–100,000 Hz; amplitudes must be finite and within ±1,000.
 - Two-column timestamps must increase strictly; changing column counts are rejected.
 - Model artifacts are SHA-256 verified before either engine becomes available.
@@ -20,7 +20,7 @@ Untrusted inputs are the URL, headers, and CSV body. Static routes and sample ID
 - Uploads remain in process memory and are neither logged nor persisted.
 - The container uses a non-root user; `compose.yaml` adds a read-only filesystem and `no-new-privileges`.
 - The production server has zero third-party npm dependencies. `wabt` is build-only and locked.
-- A deterministic SPDX 2.3 SBOM and source/artifact build manifest ship with the repository.
+- A deterministic SPDX 2.3 SBOM and source/artifact build manifest ship with the repository. Separate pinned Syft and Grype actions regenerate an independent SBOM and vulnerability scan, and the npm registry audit independently checks the zero-production-dependency claim.
 
 ## Availability
 
@@ -34,7 +34,7 @@ Signal-quality and calibration-envelope abstention reduce one class of misuse; t
 
 ## Supply chain and secrets
 
-`package-lock.json` pins the build dependency. No credential is required or read. `npm run secret-scan` checks common private-key, AWS, GitHub, OpenAI, and Slack signatures while excluding generated binary/dependency directories. CI should also enable dependency review and code scanning when the repository is published.
+`package-lock.json` pins the build dependency. No credential is required or read. `npm run secret-scan` checks common private-key, AWS, GitHub, OpenAI, and Slack signatures while excluding generated binary/dependency directories. The independent supply-chain workflow uses Syft and Grype actions pinned to full commit SHAs, fails on high-or-critical findings, records JSON/SPDX artifacts for 90 days, and runs `npm audit --omit=dev` against the registry.
 
 Dependency licenses:
 

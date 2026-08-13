@@ -9,7 +9,7 @@ const required = [
   "README.md", "ARCHITECTURE.md", "SECURITY.md", "BENCHMARKS.md", "SUBMISSION.md", "LICENSE",
   "INTEGRATION.md", "MODEL-CARD.md", "FIELD-VALIDATION.md", "DATA-LICENSES.md", "sbom.spdx.json", "dist/build-manifest.json",
   "package.json", "package-lock.json", "Dockerfile", "compose.yaml", ".github/workflows/native-arm64.yml",
-  ".github/workflows/external-boundary.yml", "requirements-field.txt", "native/arm-dotprod-bench.c", "ARM-INT8-KIT.md", "src/dense-compiler.js", "scripts/compile-dense-model.js", "examples/dense-compile-input.json",
+  ".github/workflows/external-boundary.yml", ".github/workflows/independent-supply-chain.yml", "requirements-field.txt", "native/arm-dotprod-bench.c", "ARM-INT8-KIT.md", "src/dense-compiler.js", "scripts/compile-dense-model.js", "examples/dense-compile-input.json",
   "scripts/prepare-open-training.py", "scripts/build-open-features.js", "scripts/train-real-crossval.py",
   "scripts/prepare-axial-boundary.py", "scripts/evaluate-axial-boundary.js", "field/open-data-sources.json",
   "field/results/open-grouped-cross-validation.json", "field/results/axial-bearing-boundary.json",

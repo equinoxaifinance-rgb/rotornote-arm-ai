@@ -1,13 +1,53 @@
 # RotorNote submission copy — draft
 
-RotorNote turns real vibration recordings into an Arm-optimized first-pass machine screen, a retest instruction, and an evidence object that can travel into maintenance workflow.
+RotorNote turns real vibration recordings into an Arm-optimized first-pass
+machine screen, a retest instruction, and a hash-bound evidence object that can
+travel into a maintenance workflow.
 
-The product screens four synchronized sensors. It derives order-aware and broadband features, runs the same intentionally small and auditable 48→4 learned classifier through transparent FP32 JavaScript and INT8 WebAssembly SIMD engines, checks both engines plus signal quality and the fitted real-data envelope, then either reports one of four supported signatures or refuses the conclusion. One-channel input is accepted only as a fail-closed ablation; RotorNote does not pretend this transparent statistical classifier is a deep neural network.
+One channel enters the broad variable-speed anomaly head. Four synchronized
+channels unlock the narrower fault-family specialist. The canonical
+`POST /api/screen` route selects that contract from the evidence actually
+provided; it never turns an anomaly-only result into a field fault diagnosis.
+Both paths run FP32 and INT8 engines, enforce signal quality and fitted-envelope
+checks, and refuse a conclusion on uncertainty or disagreement.
 
-Production training contains no generated fault signals. It uses a CC BY 4.0 mechanical-fault dataset with 20 independently reset physical tests and four accelerometers. Five-fold whole-test cross-validation records 94.0% four-channel balanced accuracy, an 85.5%–100% fold range, and 19/20 physical-test accuracy with a 76.4%–99.1% Wilson interval. A nested audit did not establish a calibrated selective-accuracy claim, so the 0.99 floor is disclosed as a conservative engineering rule. A second CC BY bearing dataset attacks cross-rig behavior: all four foreign records abstain, and no bearing capability is claimed.
+The primary Arm workload is a fitted-unit-pruned 48->253->126->8 ReLU MLP with
+45,030 multiply-accumulates per inference. It uses 2,925 real CC BY UPATRAS
+signals spanning 39 complete physical measurement sequences and 75 speeds.
+Its representation preserves all eight observed laboratory conditions, while
+the product collapses them to healthy, anomaly, or review. Four-fold validation
+holds out whole sequences and observes 99.8% eight-condition balanced accuracy,
+100% broad anomaly balanced accuracy, and 39/39 sequence accuracy (Wilson 95%:
+91.0%-100%).
 
-The optimized artifact reduces model weight bytes from 784 to 208 (73.47%). Across all 2,000 real four-channel recordings, INT8 preserves 100% of production labels with a 2.80e-10 p99 probability delta and a 0.01996 maximum delta. Three native Neoverse-N2 runs over identical artifact hashes measured 3.2164×, 3.2819×, and 3.2805× paired-median end-to-end speedups; their 95% intervals were 3.1751×–3.2539×, 3.2512×–3.3015×, and 3.2361×–3.3111×.
+SIMD-row-padded INT8 reduces learned bytes from 181,668 to 46,972 (74.14%)
+while preserving 100% eight-condition label agreement over the complete signal
+bank. The frozen native Arm64 run measures a 1.2737x paired median with a
+[1.2718, 1.2749] deterministic bootstrap 95% interval over 51
+alternating-order samples of 1,024 inferences. This materially nonlinear head,
+not the tiny specialist, is the optimization headline.
 
-RotorNote is useful now as a local, zero-runtime-dependency screening companion to DAQ gateways, CMMS notes, and qualified analysts. It is not certified, not a safety controller, and not a diagnosis.
+The secondary four-fault specialist is a transparent 48->4 linear model over
+four sensors. It is only a 192-MAC micro-workload, so its 3.2x-3.4x native band
+is disclosed separately and not presented as the primary proof of practical
+payoff. Its five-fold whole-test validation records 94.0% four-channel balanced
+accuracy and 19/20 physical tests (Wilson 95%: 76.4%-99.1%). One complete
+misalignment test—test 10—was predicted healthy; the receipt preserves that
+failure and RotorNote makes no blanket misalignment-sensitivity claim.
 
-The distinct variable-speed lane proves RotorNote is not limited to a tiny linear demonstration. A fitted-unit-pruned 48->253->126->8 ReLU MLP performs 45,030 multiply-accumulates per inference and uses 2,925 real UPATRAS signals spanning 39 complete physical measurement sequences and 75 speeds. It preserves all eight observed laboratory conditions internally, while the public boundary collapses them to healthy, anomaly, or review rather than making an unsupported field diagnosis. Four-fold validation holds out whole sequences and observes 99.8% eight-condition balanced accuracy, 100% broad anomaly balanced accuracy, and 39/39 sequence accuracy (Wilson 95%: 91.0%-100%). SIMD-row-padded INT8 reduces learned bytes from 181,668 to 46,972 (74.14%) while preserving 100% eight-condition engine label agreement over the complete signal bank, and the frozen native Arm64 run measures a 1.2737× paired median [1.2718, 1.2749]. RotorNote also exposes the deterministic compiler, parity gate, and layer-count-independent WASM memory planner as a reusable developer kit rather than keeping the optimization as one-off product code.
+Production training contains no generated fault signals. A separate CC BY
+bearing dataset attacks cross-rig behavior: all four foreign records abstain,
+and no bearing capability is claimed. A nested audit did not establish a
+calibrated selective-accuracy claim, so the confidence floors remain
+conservative engineering rules rather than field probabilities.
+
+RotorNote exposes its deterministic compiler, parity gate, utilization report,
+and layer-count-independent WASM memory planner as a reusable developer kit.
+The exact native workflow rebuilds the bytes, executes 33 product tests,
+validates 65 required artifacts, scans for secrets, and exercises a
+non-multiple-of-16 model through the actual SIMD kernel. Independent pinned
+Syft, Grype, and npm-registry jobs cross-check the in-repo SBOM and scanner.
+
+RotorNote is useful now as a local, zero-runtime-dependency screening companion
+to DAQ gateways, CMMS notes, and qualified analysts. It is not certified, not a
+safety controller, and not a diagnosis.
