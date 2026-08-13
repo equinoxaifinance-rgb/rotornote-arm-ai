@@ -20,8 +20,6 @@
     "native/arm-dotprod-bench.c": "d1b149c8cd503ad417f8dc2ea06a603095f91a64b4515ecdf5273e9c854d217f",
     "scripts/prepare-cwru-field.py": "7b22d376bf06f675118dd0898feda3f449c5f516a31d7fc103309a4816138a61",
     "scripts/evaluate-cwru-field.js": "5743f22176094000959a38dd0364999a3316439da96d2676f45ba0d2846e7903",
-    "requirements-field.txt": "6afb83d59515deb526c4879fe45c151289c53c8b2bd6c073dfcd3702132e51ac",
-    ".github/workflows/native-arm64.yml": "f2fb9299d418747f11e7206157dfeb33f3e9e8d0fb6c96d1914f288f7848df9e",
-    ".github/workflows/external-field-probe.yml": "02b5e1d06f4a8b8b0ff390dc9bc7784959d779d6a2244f1e37aca76ccb5fbccf"
+    "requirements-field.txt": "6afb83d59515deb526c4879fe45c151289c53c8b2bd6c073dfcd3702132e51ac"
   }
 }

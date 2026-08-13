@@ -21,8 +21,6 @@ const files = [
   "scripts/prepare-cwru-field.py",
   "scripts/evaluate-cwru-field.js",
   "requirements-field.txt",
-  ".github/workflows/native-arm64.yml",
-  ".github/workflows/external-field-probe.yml",
 ];
 const hashes = {};
 for (const path of files) {
