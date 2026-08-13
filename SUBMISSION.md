@@ -41,7 +41,7 @@ The second challenge was responsible product language. Synthetic validation can 
 - Built the complete drop→screen→timeline→retest loop with no secrets or remote services.
 - Created original deterministic signal data, model fitting, INT8 calibration, a readable SIMD kernel, and hashed artifacts.
 - Reduced weight bytes by 74.37% while preserving FP32/INT8 agreement across controlled synthetic ordinary and harder mixed-fault stress validation; those percentages are not field accuracy.
-- Added a hash-pinned CWRU experimental-data safety probe that records 100% abstention outside calibration and zero automatic conclusions instead of laundering cross-domain data into an accuracy claim.
+- Added a 16-record, hash-pinned CWRU real-data lane: the synthetic model fails closed on the foreign domain, while a separate bearing/healthy head is evaluated with whole motor loads and fault mechanisms absent from training. The receipt reports record counts and Wilson intervals rather than laundering windows into sample size.
 - Covered malformed input, method/media boundaries, tampered models, dependency failure, retry, recovery, and both engines.
 - Produced a responsive, keyboard-usable interface and three original 1600×900 gallery assets.
 - Packaged an unprivileged, health-checked container and a strict native Arm64 evidence workflow.

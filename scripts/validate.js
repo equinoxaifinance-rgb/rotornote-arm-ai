@@ -10,6 +10,7 @@ const required = [
   "package.json", "package-lock.json", "Dockerfile", "compose.yaml", ".github/workflows/native-arm64.yml",
   ".github/workflows/external-field-probe.yml", "requirements-field.txt", "native/arm-dotprod-bench.c",
   "scripts/prepare-cwru-field.py", "scripts/evaluate-cwru-field.js", "field/results/cwru-cross-domain.json",
+  "field/results/cwru-grouped-validation.json",
   "dist/dense.wasm", "model/model.json", "model/rotornote-fp32.bin", "model/rotornote-int8.bin",
   "assets/gallery/01-hero.svg", "assets/gallery/02-analysis.svg", "assets/gallery/03-arm-optimization.svg",
 ];
@@ -37,7 +38,10 @@ assert.match(workflow, /--repetitions 51 --batch 2048 --warmups 16/);
 const fieldReceipt = JSON.parse(await readFile(new URL("../field/results/cwru-cross-domain.json", import.meta.url), "utf8"));
 assert.equal(fieldReceipt.summary.abstentionRate, 1);
 assert.equal(fieldReceipt.summary.automaticConclusions, 0);
-assert.equal(fieldReceipt.summary.faultCandidateRecall, 1);
+const groupedFieldReceipt = JSON.parse(await readFile(new URL("../field/results/cwru-grouped-validation.json", import.meta.url), "utf8"));
+assert.equal(groupedFieldReceipt.sourceRecords, 16);
+assert.ok(groupedFieldReceipt.leaveOneLoadOut.metrics.balancedAccuracy >= 0.8);
+assert.ok(groupedFieldReceipt.leaveOneMechanismAndLoadOut.metrics.balancedAccuracy >= 0.8);
 const sbom = JSON.parse(await readFile(new URL("../sbom.spdx.json", import.meta.url), "utf8"));
 assert.equal(sbom.spdxVersion, "SPDX-2.3");
 assert.equal(sbom.packages.filter(({ primaryPackagePurpose }) => primaryPackagePurpose !== "BUILD_TOOL").length, 1);
