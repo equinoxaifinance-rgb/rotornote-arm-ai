@@ -17,11 +17,11 @@ The JSON records raw alternating-order samples, checksums, medians, p95, paired 
 
 The model artifact reduction is deterministic: FP32 is 784 bytes and INT8 is 208 bytes, a 73.4694% reduction. Across all 40,000 real training/evaluation feature rows, build-time parity is 99.7825% by window and 100% after four-channel recording aggregation; p99 probability drift is 0.02774 and the disclosed maximum isolated drift is 0.42964.
 
-Run 31690244613 measured the current commit on a native Arm64 Neoverse-N2 runner under Node 22.18.0. For 51 alternating-order samples of 2,048 inferences, baseline delivered 180,420 median inferences/second and the optimized path delivered 569,352. The paired-median speedup was **3.1498×**, with a deterministic bootstrap 95% interval of **3.1264×–3.1711×**. Label agreement was 100% on the benchmark feature bank and maximum probability delta was 0.02014.
+Run 31693588831 measured the current model artifacts on a native Arm64 Neoverse-N2 runner under Node 22.18.0. For 51 alternating-order samples of 2,048 inferences, baseline delivered 183,741 median inferences/second and the optimized path delivered 593,463. The paired-median speedup was **3.2164×**, with a deterministic bootstrap 95% interval of **3.1751×–3.2539×**. Label agreement was 100% on the benchmark feature bank and maximum probability delta was 0.00000133.
 
-The separate compiled `vdotq_s32` witness matched the scalar result exactly and measured a 16.4295× kernel-only median ratio. That microkernel ratio is not presented as product throughput; the 3.1498× end-to-end paired result is the product claim. The [green workflow run](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31690244613) and the repository copy under `receipts/native-arm64/run-31690244613/` bind the claim to commit `cb10849427e60b33483e24a4f1b105c25b939aa3`. The downloaded GitHub artifact SHA-256 is `d253181f8b4e5afae9aba8774147c290f13d77c0d44854f0945c2eac7170432b`.
+The separate compiled `vdotq_s32` witness matched the scalar result exactly. That kernel-only ratio is not presented as product throughput; the 3.2164× end-to-end paired result is the product claim. The [green workflow run](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/runs/31693588831) binds the claim to model commit `4e54b1eb0156e0cb47fbd71c03bf911ed683b134`. The downloaded GitHub artifact SHA-256 is `ed850166408bc5f28b09726a07703b0613ca4e7deca71d813a0d6a728bf5bb4a`; its FP32, INT8, and WASM hashes match the repository artifacts.
 
-Earlier native receipts under `receipts/native-arm64/` belong to superseded model artifacts. They preserve engineering history but are not current product evidence; run 31690244613 is the current receipt.
+Earlier native receipts under `receipts/native-arm64/` belong to superseded model artifacts. They preserve engineering history but are not current product evidence; run 31693588831 is the current model receipt.
 
 ## Native Arm gate
 
