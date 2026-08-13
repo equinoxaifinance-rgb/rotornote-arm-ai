@@ -8,6 +8,8 @@ const required = [
   "README.md", "ARCHITECTURE.md", "SECURITY.md", "BENCHMARKS.md", "SUBMISSION.md", "LICENSE",
   "INTEGRATION.md", "MODEL-CARD.md", "FIELD-VALIDATION.md", "sbom.spdx.json", "dist/build-manifest.json",
   "package.json", "package-lock.json", "Dockerfile", "compose.yaml", ".github/workflows/native-arm64.yml",
+  ".github/workflows/external-field-probe.yml", "requirements-field.txt", "native/arm-dotprod-bench.c",
+  "scripts/prepare-cwru-field.py", "scripts/evaluate-cwru-field.js", "field/results/cwru-cross-domain.json",
   "dist/dense.wasm", "model/model.json", "model/rotornote-fp32.bin", "model/rotornote-int8.bin",
   "assets/gallery/01-hero.svg", "assets/gallery/02-analysis.svg", "assets/gallery/03-arm-optimization.svg",
 ];
@@ -15,7 +17,10 @@ await Promise.all(required.map((path) => access(new URL(`../${path}`, import.met
 
 const model = await loadModel();
 assert.deepEqual(model.metadata.architecture, [48, 256, 128, 5]);
+assert.equal(model.metadata.format, "rotornote-random-feature-ridge-v2");
 assert.equal(model.metadata.training.engineAgreement, 1);
+assert.ok(model.metadata.training.floatAccuracy >= 0.95 && model.metadata.training.floatAccuracy < 1);
+assert.ok(model.metadata.training.stressFloatAccuracy >= 0.85 && model.metadata.training.stressFloatAccuracy < model.metadata.training.floatAccuracy);
 assert.ok(model.metadata.ood.validationCoverage >= 0.94);
 assert.ok(model.metadata.ood.threshold > 0);
 for (const file of ["steady-baseline.csv", "bearing-pulse.csv", "shift-change.csv"]) {
@@ -27,11 +32,17 @@ for (const file of ["steady-baseline.csv", "bearing-pulse.csv", "shift-change.cs
 const workflow = await readFile(new URL("../.github/workflows/native-arm64.yml", import.meta.url), "utf8");
 assert.match(workflow, /runs-on: ubuntu-24\.04-arm/);
 assert.match(workflow, /test "\$\(uname -m\)" = "aarch64"/);
+assert.match(await readFile(new URL("../native/arm-dotprod-bench.c", import.meta.url), "utf8"), /vdotq_s32/);
+assert.match(workflow, /--repetitions 51 --batch 2048 --warmups 16/);
+const fieldReceipt = JSON.parse(await readFile(new URL("../field/results/cwru-cross-domain.json", import.meta.url), "utf8"));
+assert.equal(fieldReceipt.summary.abstentionRate, 1);
+assert.equal(fieldReceipt.summary.automaticConclusions, 0);
+assert.equal(fieldReceipt.summary.faultCandidateRecall, 1);
 const sbom = JSON.parse(await readFile(new URL("../sbom.spdx.json", import.meta.url), "utf8"));
 assert.equal(sbom.spdxVersion, "SPDX-2.3");
 assert.equal(sbom.packages.filter(({ primaryPackagePurpose }) => primaryPackagePurpose !== "BUILD_TOOL").length, 1);
 const manifest = JSON.parse(await readFile(new URL("../dist/build-manifest.json", import.meta.url), "utf8"));
-assert.equal(Object.keys(manifest.files).length, 13);
+assert.equal(Object.keys(manifest.files).length, 21);
 for (const file of required.filter((path) => path.endsWith(".svg"))) {
   const svg = await readFile(new URL(`../${file}`, import.meta.url), "utf8");
   assert.match(svg, /viewBox="0 0 1600 900"/);

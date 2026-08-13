@@ -1,0 +1,39 @@
+name: External field safety probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  cwru-cross-domain:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22.18.0
+          cache: npm
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: python -m pip install --disable-pip-version-check -r requirements-field.txt
+      - run: npm run build
+      - name: Download official records and run fail-closed probe
+        run: |
+          python scripts/prepare-cwru-field.py
+          node scripts/evaluate-cwru-field.js
+      - uses: actions/upload-artifact@v6
+        with:
+          name: rotornote-cwru-cross-domain-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 90
+          path: |
+            field/results/cwru-cross-domain.json
+            .field-work/manifest.json

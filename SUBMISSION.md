@@ -20,7 +20,7 @@ The memorable demo is **Shift change**: one recording visibly transitions from t
 
 ## How it works
 
-RotorNote validates and segments the recording into overlapping 2,048-sample windows. For each window it computes 48 time- and frequency-domain features, then runs a 48→256→128→5 supervised extreme-learning network. Window probabilities become the colored timeline; their aggregate becomes the primary screen. The report also includes confidence, signal statistics, the strongest spectral peak, machine context, dual-engine agreement, fitted-envelope coverage, a fail-closed review state, and a reproducible analysis passport.
+RotorNote validates and segments the recording into overlapping 2,048-sample windows. For each window it computes 48 time- and frequency-domain features, then runs a 48→256→128→5 random-feature network with a ridge-fitted multiclass head. Window probabilities become the colored timeline; their aggregate becomes the primary screen. The report also includes confidence, signal statistics, the strongest spectral peak, machine context, dual-engine agreement, fitted-envelope coverage, a fail-closed review state, and a reproducible analysis passport.
 
 The entire training set is original and deterministic. Physics-inspired signal generators model shaft harmonics, subharmonics, impulsive looseness, and damped high-frequency impacts. The model builder, quantizer, artifacts, hashes, samples, and validation split all ship in the repository.
 
@@ -40,7 +40,8 @@ The second challenge was responsible product language. Synthetic validation can 
 
 - Built the complete drop→screen→timeline→retest loop with no secrets or remote services.
 - Created original deterministic signal data, model fitting, INT8 calibration, a readable SIMD kernel, and hashed artifacts.
-- Reduced weight bytes by 74.37% while preserving all held-out simulated labels in the generated model receipt.
+- Reduced weight bytes by 74.37% while preserving FP32/INT8 agreement across ordinary and harder mixed-fault stress validation.
+- Added a hash-pinned CWRU experimental-data safety probe that records 100% abstention outside calibration and zero automatic conclusions instead of laundering cross-domain data into an accuracy claim.
 - Covered malformed input, method/media boundaries, tampered models, dependency failure, retry, recovery, and both engines.
 - Produced a responsive, keyboard-usable interface and three original 1600×900 gallery assets.
 - Packaged an unprivileged, health-checked container and a strict native Arm64 evidence workflow.

@@ -13,10 +13,10 @@ The feature vectors, network shape, test order, and outputs are held constant. T
 npm ci --ignore-scripts --no-audit --no-fund
 npm run build
 npm test
-npm run benchmark -- --output benchmark/results/local-x64.json --repetitions 15 --batch 512
+npm run benchmark -- --output benchmark/results/local-x64.json --repetitions 51 --batch 2048 --warmups 16
 ```
 
-Each engine receives four warmup batches. Recorded batches alternate engine order to reduce drift bias. Timing uses `process.hrtime.bigint()`. The JSON contains every raw duration and checksum, median and p95 latency, median throughput, model/kernel hashes, Node version, CPU description, architecture, batch size, and evidence class.
+The native protocol uses sixteen warmup batches. Fifty-one paired samples alternate engine order to reduce drift bias. Timing uses `process.hrtime.bigint()`. The JSON contains every raw duration and checksum, median and p95 latency, median throughput, a deterministic 10,000-resample 95% bootstrap interval for the paired median speedup, model/kernel hashes, Node version, CPU description, architecture, batch size, and evidence class.
 
 The benchmark isolates model inference. FFT and CSV parsing are deliberately excluded because they are identical across engines; the product API separately returns end-to-end and inference timing for practical observation.
 
@@ -28,12 +28,13 @@ Run **Native Arm64 evidence** in GitHub Actions. The workflow:
 2. fails unless `uname -m` is exactly `aarch64`;
 3. captures `uname`, `lscpu`, Node, tests, raw benchmark JSON, console summaries, and artifact hashes;
 4. rebuilds generated files and fails on a diff;
-5. uploads one 90-day evidence artifact.
+5. compiles and runs an Armv8.2 NEON `vdotq_s32` microkernel against an exact scalar INT8 witness;
+6. uploads one 90-day evidence artifact.
 
 Exact command:
 
 ```bash
-npm run benchmark -- --output benchmark/results/native-arm64.json --repetitions 25 --batch 1024
+npm run benchmark -- --output benchmark/results/native-arm64.json --repetitions 51 --batch 2048 --warmups 16
 ```
 
 ## Current evidence state
@@ -50,4 +51,4 @@ The verified GitHub artifact SHA-256 is `225dad3a9485f78efdc0a0b347954d1ae76a0ca
 
 ## Interpreting results
 
-Model byte reduction is deterministic: compare the recorded `bytes` fields. Speed is environment-dependent; use medians for the primary comparison and inspect all raw samples for jitter. A speedup below 1.0 is a valid result, not a harness failure. Energy is not measured, so RotorNote makes no energy claim.
+Model byte reduction is deterministic: compare the recorded `bytes` fields. Speed is environment-dependent; inspect raw samples and the paired confidence interval rather than treating one median ratio as certainty. The native release gate now requires the 95% interval's lower endpoint to exceed 1.0. Energy is not measured, so RotorNote makes no energy claim.

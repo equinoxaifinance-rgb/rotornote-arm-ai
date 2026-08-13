@@ -32,7 +32,9 @@ The input contains:
 - RMS, peak, crest factor, kurtosis, skew, zero crossings, mean absolute amplitude, and impulse factor;
 - spectral centroid, spread, 85% rolloff, dominant frequency/ratio, and three broad-band ratios.
 
-The classifier is a supervised extreme learning machine (ELM): two seeded random ReLU projections (48→256→128) followed by a learned nearest-centroid linear head (128→5). The head is fitted from 900 original deterministic simulations; 225 disjoint simulations are retained for pipeline validation. `scripts/build-model.js` contains the entire data generator, fitting, calibration, quantization, and artifact writer—there is no hidden notebook or downloaded checkpoint.
+The classifier is a random-feature ridge network: two seeded random ReLU projections (48→256→128) followed by a multiclass linear head (128→5) fitted with a regularized least-squares solve. The build forms the normal equations, applies ridge regularization, performs a Cholesky factorization, and solves one target system per class. The final weights are learned from all 900 training rows; they are not class centroids or hand-authored rules.
+
+There are 225 disjoint ordinary validation simulations plus 300 unseen-seed stress simulations. Both include variable severity, sensor gain/bias, speed modulation, nuisance harmonics, and secondary-fault blending; the stress split increases those shifts. `scripts/build-model.js` contains the entire generator, split, fitting, calibration, quantization, and artifact writer—there is no hidden notebook or downloaded checkpoint.
 
 The modeled classes are deliberately phrased as pattern resemblance, not a mechanical diagnosis. Simulation validation cannot establish field performance.
 
@@ -42,7 +44,9 @@ The baseline in `src/model.js` reads row-major Float32 weights and executes ordi
 
 The optimized path uses symmetric, per-layer INT8 weight quantization and calibrated INT8 activations. Biases stay Float32. `kernel/dense.wat` loads 16 signed bytes at a time, sign-extends low and high halves, accumulates `i32x4.dot_i16x8_s`, and writes Int32 outputs. JavaScript applies scales, bias, ReLU, and requantization between layers. All layer input widths are multiples of 16; no padded bytes or tail branch can contaminate a dot product.
 
-`scripts/build-kernel.js` compiles readable WAT to a 247-byte WebAssembly module with `wabt`. The SIMD program is architecture-neutral bytecode; V8 compiles it for the host. Native Arm benefit is therefore an empirical CI question. The workflow records native architecture before timing and never fails merely because the optimized path is slower.
+`scripts/build-kernel.js` compiles readable WAT to a 247-byte WebAssembly module with `wabt`. The production SIMD program is architecture-neutral bytecode; V8 compiles it for the host. Native Arm product benefit is therefore an empirical CI question. The workflow records native architecture before timing and requires the lower endpoint of a paired 95% bootstrap speedup interval to exceed 1.0.
+
+`native/arm-dotprod-bench.c` is a separate, architecture-specific proof of the dense-operation ceiling. On a native runner it compiles with `-march=armv8.2-a+dotprod`, uses NEON `vdotq_s32`, checks exact equality against a scalar INT8 implementation, alternates execution order across 31 trials, and fails if the Arm dot-product median is not faster. This microkernel receipt proves the ISA path; it is not silently substituted for the portable production runtime.
 
 Primary references for the dependency behavior:
 

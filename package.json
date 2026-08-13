@@ -1,6 +1,6 @@
 {
   "name": "rotornote",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "description": "Arm-optimized vibration screening for rotating equipment",
   "license": "MIT",
@@ -18,6 +18,7 @@
     "test": "node --test --test-reporter=spec",
     "test:coverage": "node --experimental-test-coverage --test",
     "benchmark": "node benchmark/run.js",
+    "validate:field": "python scripts/prepare-cwru-field.py && node scripts/evaluate-cwru-field.js",
     "gateway": "node integrations/edge-gateway.mjs",
     "validate": "node scripts/validate.js",
     "secret-scan": "node scripts/secret-scan.js"

@@ -6,6 +6,12 @@ RotorNote is **certification-ready evidence infrastructure, not a certified diag
 
 There is no universal single certificate for an AI vibration-screening application. Relevant standards govern the condition-monitoring program, vibration acquisition and analysis, machine-specific evaluation, personnel competence, software security, and AI risk management.
 
+## Executed external-data boundary probe
+
+`npm run validate:field` downloads four hash-pinned records directly from the [Case Western Reserve University Bearing Data Center](https://engineering.case.edu/bearingdatacenter/download-data-file), whose [apparatus page](https://engineering.case.edu/bearingdatacenter/apparatus-and-procedures) documents the motor, accelerometers, seeded faults, and acquisition rates. The probe uses one normal record and three 0.007-inch drive-end bearing-fault records, resamples only the drive-end channel from 12 kHz to RotorNote's 1,024 Hz contract, and does not train or recalibrate the model.
+
+The current receipt at `field/results/cwru-cross-domain.json` records four of four as `review_required`, zero automatic conclusions, and a bearing review candidate for all three faulted records. The normal record also remained outside the fitted envelope; its unaccepted candidate was bearing. This demonstrates a useful fail-closed domain boundary, not sensitivity, specificity, field calibration, or certification. Raw CWRU records are fetched at run time and are not redistributed in this repository.
+
 ## Standards map
 
 | Reference | What it covers | RotorNote evidence now | Remaining external work |
@@ -45,4 +51,3 @@ An alignment table is not certification or a declaration of conformity.
 - Signed review by the responsible organization and qualified domain personnel
 
 Until that package contains real independent field evidence, the accurate claim remains **field-validation ready**, never “certified.”
-

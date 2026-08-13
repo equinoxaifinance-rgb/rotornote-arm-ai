@@ -15,6 +15,14 @@ const files = [
   "src/quality.js",
   "src/server.js",
   "src/signal.js",
+  "scripts/build-model.js",
+  "benchmark/run.js",
+  "native/arm-dotprod-bench.c",
+  "scripts/prepare-cwru-field.py",
+  "scripts/evaluate-cwru-field.js",
+  "requirements-field.txt",
+  ".github/workflows/native-arm64.yml",
+  ".github/workflows/external-field-probe.yml",
 ];
 const hashes = {};
 for (const path of files) {
@@ -28,4 +36,3 @@ const manifest = {
 };
 await writeFile(new URL("../dist/build-manifest.json", import.meta.url), `${JSON.stringify(manifest, null, 2)}\n`);
 console.log(`built dist/build-manifest.json (${files.length} hashed inputs)`);
-

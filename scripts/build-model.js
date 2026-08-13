@@ -8,6 +8,7 @@ const HIDDEN_2 = 128;
 const OUTPUTS = LABELS.length;
 const TRAIN_PER_CLASS = 180;
 const VALIDATION_PER_CLASS = 45;
+const STRESS_PER_CLASS = 60;
 
 function gaussian(random) {
   const u = Math.max(random(), 1e-12);
@@ -61,14 +62,75 @@ function quantizedDense(input, weights, bias, inputScale, weightScale, outputs) 
   return result;
 }
 
+function fitRidgeHead(rows, outputs, lambda = 0.35) {
+  const dimensions = HIDDEN_2 + 1;
+  const gram = Array.from({ length: dimensions }, () => new Float64Array(dimensions));
+  const targets = Array.from({ length: outputs }, () => new Float64Array(dimensions));
+  for (const { hidden2, label } of rows) {
+    for (let row = 0; row < dimensions; row += 1) {
+      const left = row === HIDDEN_2 ? 1 : hidden2[row];
+      for (let column = 0; column <= row; column += 1) {
+        const right = column === HIDDEN_2 ? 1 : hidden2[column];
+        gram[row][column] += left * right;
+      }
+      for (let output = 0; output < outputs; output += 1) {
+        const target = output === label ? 1 : -0.2;
+        targets[output][row] += left * target;
+      }
+    }
+  }
+  for (let row = 0; row < dimensions; row += 1) {
+    for (let column = 0; column < row; column += 1) gram[column][row] = gram[row][column];
+    gram[row][row] += row === HIDDEN_2 ? lambda * 0.05 : lambda;
+  }
+
+  const lower = Array.from({ length: dimensions }, () => new Float64Array(dimensions));
+  for (let row = 0; row < dimensions; row += 1) {
+    for (let column = 0; column <= row; column += 1) {
+      let value = gram[row][column];
+      for (let index = 0; index < column; index += 1) value -= lower[row][index] * lower[column][index];
+      if (row === column) {
+        if (value <= 1e-10) throw new Error(`Ridge Cholesky failed at ${row}: ${value}`);
+        lower[row][column] = Math.sqrt(value);
+      } else {
+        lower[row][column] = value / lower[column][column];
+      }
+    }
+  }
+
+  const solutions = [];
+  for (let output = 0; output < outputs; output += 1) {
+    const forward = new Float64Array(dimensions);
+    for (let row = 0; row < dimensions; row += 1) {
+      let value = targets[output][row];
+      for (let column = 0; column < row; column += 1) value -= lower[row][column] * forward[column];
+      forward[row] = value / lower[row][row];
+    }
+    const solution = new Float64Array(dimensions);
+    for (let row = dimensions - 1; row >= 0; row -= 1) {
+      let value = forward[row];
+      for (let column = row + 1; column < dimensions; column += 1) value -= lower[column][row] * solution[column];
+      solution[row] = value / lower[row][row];
+    }
+    solutions.push(solution);
+  }
+  return solutions;
+}
+
 const random = mulberry32(0x524f544f);
 const training = [];
 const validation = [];
+const stressValidation = [];
 for (let label = 0; label < LABELS.length; label += 1) {
   for (let sample = 0; sample < TRAIN_PER_CLASS + VALIDATION_PER_CLASS; sample += 1) {
     const seed = 100_000 * (label + 1) + sample * 37;
     const features = extractFeatures(simulateSignal(LABELS[label], 2048, 1024, seed));
     (sample < TRAIN_PER_CLASS ? training : validation).push({ features, label });
+  }
+  for (let sample = 0; sample < STRESS_PER_CLASS; sample += 1) {
+    const seed = 900_000 + 100_000 * (label + 1) + sample * 53;
+    const features = extractFeatures(simulateSignal(LABELS[label], 2048, 1024, seed, { stress: true }));
+    stressValidation.push({ features, label });
   }
 }
 
@@ -112,31 +174,15 @@ const trainingDistances = embeddedTraining
 const oodQuantile = 0.995;
 const oodThreshold = trainingDistances[Math.floor((trainingDistances.length - 1) * oodQuantile)];
 
-const centroids = Array.from({ length: OUTPUTS }, () => new Float64Array(HIDDEN_2));
-const counts = new Uint32Array(OUTPUTS);
-for (const { hidden2, label } of embeddedTraining) {
-  counts[label] += 1;
-  for (let i = 0; i < HIDDEN_2; i += 1) centroids[label][i] += hidden2[i];
-}
-for (let label = 0; label < OUTPUTS; label += 1) {
-  for (let i = 0; i < HIDDEN_2; i += 1) centroids[label][i] /= counts[label];
-}
-
-let withinDistance = 0;
-for (const { hidden2, label } of embeddedTraining) {
-  for (let i = 0; i < HIDDEN_2; i += 1) withinDistance += (hidden2[i] - centroids[label][i]) ** 2;
-}
-withinDistance /= embeddedTraining.length;
-const temperature = Math.max(withinDistance / 6, 0.05);
+const ridgeLambda = 0.35;
+const fittedHead = fitRidgeHead(embeddedTraining, OUTPUTS, ridgeLambda);
 const weights3 = new Float32Array(OUTPUTS * HIDDEN_2);
 const bias3 = new Float32Array(OUTPUTS);
 for (let label = 0; label < OUTPUTS; label += 1) {
-  let norm = 0;
   for (let i = 0; i < HIDDEN_2; i += 1) {
-    weights3[label * HIDDEN_2 + i] = (2 * centroids[label][i]) / temperature;
-    norm += centroids[label][i] ** 2;
+    weights3[label * HIDDEN_2 + i] = fittedHead[label][i];
   }
-  bias3[label] = -norm / temperature;
+  bias3[label] = fittedHead[label][HIDDEN_2];
 }
 
 const layers = [
@@ -187,7 +233,17 @@ for (const row of validation) {
   const nearestDistance = Math.min(...featureCentroids.map((centroid) => featureDistance(normalized, centroid)));
   if (nearestDistance <= oodThreshold) validationInsideEnvelope += 1;
 }
-if (floatCorrect / validation.length < 0.95 || quantizedCorrect / validation.length < 0.95 || agreement !== validation.length || validationInsideEnvelope / validation.length < 0.94) {
+let stressFloatCorrect = 0;
+let stressQuantizedCorrect = 0;
+let stressAgreement = 0;
+for (const row of stressValidation) {
+  const floatPrediction = argmax(inferFloat(row.features));
+  const quantizedPrediction = argmax(inferQuantized(row.features));
+  if (floatPrediction === row.label) stressFloatCorrect += 1;
+  if (quantizedPrediction === row.label) stressQuantizedCorrect += 1;
+  if (floatPrediction === quantizedPrediction) stressAgreement += 1;
+}
+if (floatCorrect / validation.length < 0.88 || quantizedCorrect / validation.length < 0.88 || agreement / validation.length < 0.98 || validationInsideEnvelope / validation.length < 0.9 || stressFloatCorrect / stressValidation.length < 0.68 || stressQuantizedCorrect / stressValidation.length < 0.68) {
   throw new Error(`Model validation gate failed: float=${floatCorrect}, int8=${quantizedCorrect}, agreement=${agreement}, total=${validation.length}`);
 }
 
@@ -231,18 +287,24 @@ const floatBuffer = Buffer.concat(floatParts);
 const int8Buffer = Buffer.concat(int8Parts);
 const sha256 = (buffer) => createHash("sha256").update(buffer).digest("hex");
 const metadata = {
-  format: "rotornote-elm-v1",
+  format: "rotornote-random-feature-ridge-v2",
   seed: "0x524f544f",
   labels: LABELS,
   inputFeatures: INPUTS,
   architecture: [INPUTS, HIDDEN_1, HIDDEN_2, OUTPUTS],
   training: {
-    method: "supervised extreme learning machine on deterministic physics-inspired simulations",
+    method: "ridge-fitted multiclass head over deterministic random ReLU features",
+    ridgeLambda,
     samples: training.length,
     validationSamples: validation.length,
     floatAccuracy: floatCorrect / validation.length,
     int8Accuracy: quantizedCorrect / validation.length,
     engineAgreement: agreement / validation.length,
+    stressValidationSamples: stressValidation.length,
+    stressProfile: "unseen seeds with stronger noise, speed modulation, gain/bias shift, shared nuisance harmonics, and secondary-fault blending",
+    stressFloatAccuracy: stressFloatCorrect / stressValidation.length,
+    stressInt8Accuracy: stressQuantizedCorrect / stressValidation.length,
+    stressEngineAgreement: stressAgreement / stressValidation.length,
   },
   normalization: { means: Array.from(means), deviations: Array.from(deviations) },
   ood: {

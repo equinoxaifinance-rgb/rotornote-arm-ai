@@ -8,6 +8,12 @@ import { analyzeSignal } from "../src/analyze.js";
 
 test("FP32 and INT8 SIMD engines classify all conditions consistently", async () => {
   const model = await loadModel();
+  assert.equal(model.metadata.format, "rotornote-random-feature-ridge-v2");
+  assert.match(model.metadata.training.method, /ridge-fitted/);
+  assert.equal(model.metadata.training.stressValidationSamples, 300);
+  assert.ok(model.metadata.training.floatAccuracy >= 0.95 && model.metadata.training.floatAccuracy < 1);
+  assert.ok(model.metadata.training.stressFloatAccuracy >= 0.85);
+  assert.ok(model.metadata.training.stressFloatAccuracy < model.metadata.training.floatAccuracy);
   for (const [index, label] of LABELS.entries()) {
     const features = extractFeatures(simulateSignal(label, 2048, 1024, 700 + index));
     const baseline = model.infer(features, "baseline");

@@ -20,7 +20,7 @@ async function checkHealth() {
     const response = await fetch("/health");
     const health = await response.json();
     if (!response.ok) throw new Error(health.status);
-    elements.runtimeStatus.textContent = `${health.architecture} · model ready`;
+    elements.runtimeStatus.textContent = "model ready · evidence linked";
     document.querySelector(".status-dot").classList.add("ready");
   } catch {
     elements.runtimeStatus.textContent = "Runtime unavailable";

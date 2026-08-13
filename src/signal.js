@@ -19,39 +19,60 @@ function gaussian(random) {
   return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * random());
 }
 
-export function simulateSignal(kind, count = WINDOW_SIZE, sampleRate = 1024, seed = 1) {
+export function simulateSignal(kind, count = WINDOW_SIZE, sampleRate = 1024, seed = 1, options = {}) {
   if (!LABELS.includes(kind)) throw new Error(`Unknown simulation kind: ${kind}`);
   const random = mulberry32(seed);
   const values = new Float32Array(count);
   const shaftHz = 36 + random() * 18;
   const phase = random() * Math.PI * 2;
-  const noise = kind === "bearing" ? 0.16 : 0.07;
+  const stress = Boolean(options.stress);
+  const severity = options.severity ?? (0.48 + random() * 0.72);
+  const gain = 0.72 + random() * 0.64;
+  const noise = (stress ? 0.12 : 0.055) + random() * (stress ? 0.19 : 0.11);
+  const drift = (random() - 0.5) * (stress ? 0.055 : 0.018);
+  const bias = (random() - 0.5) * (stress ? 0.09 : 0.035);
+  const faultKinds = LABELS.filter((label) => label !== "healthy" && label !== kind);
+  const contaminant = faultKinds[Math.floor(random() * faultKinds.length)];
+  const contaminantStrength = (stress ? 0.18 : 0.04) + random() * (stress ? 0.3 : 0.15);
   const impulseSpacing = sampleRate / shaftHz;
+
+  const faultComponent = (fault, angle, time, index) => {
+    if (fault === "imbalance") return 0.78 * Math.sin(angle) + 0.16 * Math.sin(2 * angle + 0.2);
+    if (fault === "misalignment") return 0.3 * Math.sin(angle) + 0.58 * Math.sin(2 * angle + 0.4) + 0.31 * Math.sin(3 * angle - 0.2);
+    if (fault === "looseness") {
+      let component = 0.24 * Math.sin(angle / 2) + 0.27 * Math.sin(2 * angle);
+      component += 0.22 * Math.sign(Math.sin(angle)) * Math.abs(Math.sin(4 * angle));
+      if (random() < 0.006) component += (random() - 0.5) * 2.4;
+      return component;
+    }
+    if (fault === "bearing") {
+      const distance = ((index + impulseSpacing * 0.12) % impulseSpacing);
+      const impulse = distance < 22 ? 0.92 * Math.exp(-distance / 7) * Math.sin(2 * Math.PI * (210 + shaftHz * 0.7) * time) : 0;
+      return 0.13 * Math.sin(2 * angle) + impulse;
+    }
+    return 0;
+  };
 
   for (let index = 0; index < count; index += 1) {
     const time = index / sampleRate;
-    const angle = 2 * Math.PI * shaftHz * time + phase;
-    let value = 0.24 * Math.sin(angle) + noise * gaussian(random);
+    const instantaneousHz = shaftHz * (1 + drift * Math.sin(2 * Math.PI * 0.7 * time));
+    const angle = 2 * Math.PI * instantaneousHz * time + phase;
+    let value = 0.22 * Math.sin(angle) + 0.02 * Math.sin(2 * angle + 0.3) + noise * gaussian(random) + bias;
+
+    // Every class shares nuisance harmonics and a weak secondary fault. This
+    // deliberately prevents the synthetic benchmark from being a collection
+    // of non-overlapping formulas.
+    value += (0.03 + random() * 0.12) * Math.sin(2 * angle + random() * 0.04);
+    value += contaminantStrength * faultComponent(contaminant, angle, time, index);
 
     if (kind === "healthy") {
-      value += 0.035 * Math.sin(2 * angle + 0.3);
-    } else if (kind === "imbalance") {
-      value += 1.05 * Math.sin(angle) + 0.12 * Math.sin(2 * angle);
-    } else if (kind === "misalignment") {
-      value += 0.36 * Math.sin(angle) + 0.86 * Math.sin(2 * angle + 0.4);
-      value += 0.52 * Math.sin(3 * angle - 0.2);
-    } else if (kind === "looseness") {
-      value += 0.31 * Math.sin(angle / 2) + 0.32 * Math.sin(2 * angle);
-      value += 0.28 * Math.sign(Math.sin(angle)) * Math.abs(Math.sin(4 * angle));
-      if (random() < 0.008) value += (random() - 0.5) * 3.2;
-    } else if (kind === "bearing") {
-      value += 0.16 * Math.sin(2 * angle);
-      const distance = ((index + impulseSpacing * 0.12) % impulseSpacing);
-      if (distance < 20) {
-        value += 1.25 * Math.exp(-distance / 7) * Math.sin(2 * Math.PI * 238 * time);
-      }
+      value += 0.025 * Math.sin(3 * angle - 0.15);
+    } else {
+      value += severity * faultComponent(kind, angle, time, index);
     }
-    values[index] = value;
+
+    if (stress) value += 0.08 * Math.sin(2 * Math.PI * (72 + random() * 8) * time);
+    values[index] = gain * value;
   }
   return values;
 }

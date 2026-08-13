@@ -34,7 +34,12 @@ jobs:
       - name: Test
         run: npm test | tee test-output.txt
       - name: Benchmark native Arm64
-        run: npm run benchmark -- --output benchmark/results/native-arm64.json --repetitions 25 --batch 1024 | tee benchmark-output.txt
+        run: npm run benchmark -- --output benchmark/results/native-arm64.json --repetitions 51 --batch 2048 --warmups 16 | tee benchmark-output.txt
+      - name: Prove Arm dot-product ISA path
+        run: |
+          cc --version | tee arm-compiler.txt
+          cc -O3 -std=c11 -Wall -Wextra -Werror -march=armv8.2-a+dotprod -o arm-dotprod native/arm-dotprod-bench.c
+          ./arm-dotprod | tee arm-dotprod.json
       - name: Record artifact hashes
         run: |
           find dist model assets/gallery -type f -print0 | sort -z | xargs -0 sha256sum | tee artifact-sha256.txt
@@ -53,4 +58,6 @@ jobs:
             machine-lscpu.txt
             machine-node.txt
             artifact-sha256.txt
+            arm-compiler.txt
+            arm-dotprod.json
             model/model.json

@@ -62,9 +62,11 @@ The optimized artifact uses 74.37% fewer weight bytes. On exact public commit `3
 
 ## Model and data
 
-RotorNote uses a supervised extreme-learning network fitted to original, deterministic physics-inspired simulations for five patterns: healthy, imbalance, misalignment, looseness, and bearing-like impacts. Runtime features combine 32 normalized spectral bands, eight time-domain measures, and eight spectral-shape measures across 2,048-sample windows with 50% overlap.
+RotorNote uses a deterministic random-feature network with a genuinely ridge-fitted multiclass head for five patterns: healthy, imbalance, misalignment, looseness, and bearing-like impacts. Runtime features combine 32 normalized spectral bands, eight time-domain measures, and eight spectral-shape measures across 2,048-sample windows with 50% overlap.
 
-The committed metadata records seed, architecture, calibration scales, artifact hashes, and a held-out simulation result. That held-out result validates pipeline consistency only; it is **not field accuracy**. RotorNote is a screening aid, not a safety controller or diagnosis.
+The committed metadata records seed, architecture, ridge regularization, calibration scales, artifact hashes, ordinary held-out results, and an unseen-seed stress result with heavier noise, gain/bias shift, speed modulation, nuisance harmonics, and mixed faults. Those results validate controlled synthetic consistency only; they are **not field accuracy**. RotorNote is a screening aid, not a safety controller or diagnosis.
+
+`npm run validate:field` is a separate cross-domain safety probe. It downloads four hash-pinned experimental records from the official Case Western Reserve University Bearing Data Center, resamples the drive-end channel, and verifies that uncalibrated recordings fail closed. The committed receipt reports 100% abstention, zero automatic conclusions, and a bearing review candidate for all three faulted records. This is useful external evidence of the boundary—not certification or a field-accuracy estimate.
 
 The model also commits a 99.5th-percentile training envelope in normalized feature space. This is an abstention mechanism, not evidence of real-world calibration: recordings outside that simulated envelope are sent to review instead of receiving an unqualified conclusion.
 

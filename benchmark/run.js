@@ -13,8 +13,9 @@ function argument(name, fallback) {
 const outputPath = argument("--output", "benchmark/results/local.json");
 const repetitions = Number(argument("--repetitions", "15"));
 const batchSize = Number(argument("--batch", "512"));
-if (!Number.isInteger(repetitions) || repetitions < 3 || !Number.isInteger(batchSize) || batchSize < 16) {
-  throw new Error("repetitions must be >=3 and batch must be >=16");
+const warmups = Number(argument("--warmups", "12"));
+if (!Number.isInteger(repetitions) || repetitions < 15 || !Number.isInteger(batchSize) || batchSize < 16 || !Number.isInteger(warmups) || warmups < 4) {
+  throw new Error("repetitions must be >=15, batch must be >=16, and warmups must be >=4");
 }
 
 const model = await loadModel();
@@ -31,7 +32,7 @@ const measure = (engine) => {
   return { milliseconds: Number(process.hrtime.bigint() - started) / 1e6, checksum };
 };
 
-for (let warmup = 0; warmup < 4; warmup += 1) {
+for (let warmup = 0; warmup < warmups; warmup += 1) {
   measure("baseline");
   measure("optimized");
 }
@@ -52,6 +53,37 @@ const summarize = (samples) => {
   };
 };
 
+const quantile = (sorted, probability) => {
+  const position = (sorted.length - 1) * probability;
+  const lower = Math.floor(position);
+  const fraction = position - lower;
+  return sorted[lower] + (sorted[Math.min(lower + 1, sorted.length - 1)] - sorted[lower]) * fraction;
+};
+const pairedSpeedups = raw.baseline.map((sample, index) => sample.milliseconds / raw.optimized[index].milliseconds);
+let bootstrapState = 0x524f544f;
+const random = () => {
+  bootstrapState = (Math.imul(bootstrapState, 1664525) + 1013904223) >>> 0;
+  return bootstrapState / 2 ** 32;
+};
+const bootstrapMedians = [];
+for (let iteration = 0; iteration < 10_000; iteration += 1) {
+  const resample = Array.from({ length: pairedSpeedups.length }, () => pairedSpeedups[Math.floor(random() * pairedSpeedups.length)]).sort((a, b) => a - b);
+  bootstrapMedians.push(quantile(resample, 0.5));
+}
+bootstrapMedians.sort((a, b) => a - b);
+const pairedSorted = [...pairedSpeedups].sort((a, b) => a - b);
+const speedupMedian = quantile(pairedSorted, 0.5);
+const speedupMean = pairedSpeedups.reduce((sum, value) => sum + value, 0) / pairedSpeedups.length;
+const speedupDeviation = Math.sqrt(pairedSpeedups.reduce((sum, value) => sum + (value - speedupMean) ** 2, 0) / (pairedSpeedups.length - 1));
+const speedupUncertainty = {
+  method: "paired alternating-order samples; deterministic 10,000-resample bootstrap of the paired median",
+  pairedSamples: pairedSpeedups.length,
+  pairedMedian: Number(speedupMedian.toFixed(4)),
+  pairedMean: Number(speedupMean.toFixed(4)),
+  pairedStdDev: Number(speedupDeviation.toFixed(4)),
+  confidence95: [Number(quantile(bootstrapMedians, 0.025).toFixed(4)), Number(quantile(bootstrapMedians, 0.975).toFixed(4))],
+};
+
 let agreement = 0;
 let maximumProbabilityDelta = 0;
 for (const features of featureBank) {
@@ -69,7 +101,7 @@ const result = {
   schema: "rotornote-benchmark-v1",
   recordedAt: new Date().toISOString(),
   machine: { architecture: process.arch, platform: process.platform, cpus: os.cpus().length, cpuModel: os.cpus()[0]?.model, node: process.version },
-  workload: { batchSize, repetitions, warmups: 4, featureVectors: featureBank.length, network: model.metadata.architecture },
+  workload: { batchSize, repetitions, warmups, featureVectors: featureBank.length, network: model.metadata.architecture },
   artifacts: {
     fp32: { bytes: model.metadata.float.bytes, sha256: model.metadata.float.sha256 },
     int8: { bytes: model.metadata.int8.bytes, sha256: model.metadata.int8.sha256 },
@@ -81,10 +113,14 @@ const result = {
     baseline: baselineSummary,
     optimized: optimizedSummary,
     medianSpeedup: Number((baselineSummary.medianMs / optimizedSummary.medianMs).toFixed(4)),
+    speedupUncertainty,
     weightByteReduction: Number((1 - model.metadata.int8.bytes / model.metadata.float.bytes).toFixed(6)),
   },
   evidenceClass: process.arch === "arm64" ? "native-arm64" : "non-arm-local-only",
 };
+if (process.arch === "arm64" && speedupUncertainty.confidence95[0] <= 1) {
+  throw new Error(`Native speedup confidence gate failed: 95% CI=${speedupUncertainty.confidence95.join("..")}`);
+}
 await mkdir(dirname(fileURLToPath(new URL(`../${outputPath}`, import.meta.url))), { recursive: true });
 await writeFile(new URL(`../${outputPath}`, import.meta.url), `${JSON.stringify(result, null, 2)}\n`);
 console.log(JSON.stringify(result.summary, null, 2));

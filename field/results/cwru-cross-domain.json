@@ -1,0 +1,84 @@
+{
+  "schema": "rotornote-cross-domain-probe-v1",
+  "createdAt": "2026-08-13T07:59:13.078Z",
+  "source": {
+    "name": "Case Western Reserve University Bearing Data Center",
+    "page": "https://engineering.case.edu/bearingdatacenter/download-data-file",
+    "apparatus": "https://engineering.case.edu/bearingdatacenter/apparatus-and-procedures",
+    "note": "Official public experimental records are downloaded at run time and are not redistributed by this repository."
+  },
+  "adaptation": "drive-end channel; 12,000 Hz to 1,024 Hz polyphase resampling",
+  "cases": [
+    {
+      "id": "normal-0hp",
+      "expected": "healthy",
+      "sourceUrl": "https://engineering.case.edu/sites/default/files/97.mat",
+      "sourceSha256": "16bf48babcf1c7ac224bc1a81cd9eafdb27e42d5cf559761907e067e8eeadf3c",
+      "preparedSha256": "107f594e32632a8c89a7e27db7b4a098931a683d7ff065723c01a1e9d0b8ee05",
+      "sourceSamples": 243938,
+      "preparedSamples": 20817,
+      "status": "review_required",
+      "candidate": "bearing",
+      "candidateMatchesExpected": false,
+      "confidence": 0.3092,
+      "envelopeCoverage": 0,
+      "engineAgreement": 1,
+      "quality": "good"
+    },
+    {
+      "id": "inner-race-007-0hp",
+      "expected": "bearing",
+      "sourceUrl": "https://engineering.case.edu/sites/default/files/105.mat",
+      "sourceSha256": "f80b0ea04fd06b372a0eaec7c056543ea37e4bb4727a5b173d2a5bacd2aa9cab",
+      "preparedSha256": "31efe5114839dffe9e353b8156286c29b5cc41fc11518e15ffba52cab943a0b3",
+      "sourceSamples": 121265,
+      "preparedSamples": 10348,
+      "status": "review_required",
+      "candidate": "bearing",
+      "candidateMatchesExpected": true,
+      "confidence": 0.8078,
+      "envelopeCoverage": 0,
+      "engineAgreement": 1,
+      "quality": "good"
+    },
+    {
+      "id": "ball-007-0hp",
+      "expected": "bearing",
+      "sourceUrl": "https://engineering.case.edu/sites/default/files/118.mat",
+      "sourceSha256": "b00628f8dd8d1d930af77fa465d1e5cdb385fe259489053f91f3680bda7f640e",
+      "preparedSha256": "1d43ce6d28bc3708582dc8a45cf85e63630d80d5e522d338eaad5e925e9104ee",
+      "sourceSamples": 122571,
+      "preparedSamples": 10460,
+      "status": "review_required",
+      "candidate": "bearing",
+      "candidateMatchesExpected": true,
+      "confidence": 0.4944,
+      "envelopeCoverage": 0,
+      "engineAgreement": 1,
+      "quality": "review"
+    },
+    {
+      "id": "outer-race-007-0hp",
+      "expected": "bearing",
+      "sourceUrl": "https://engineering.case.edu/sites/default/files/130.mat",
+      "sourceSha256": "35a095307d0971477049b343a1b5981dde465a58fb7f233ad89b035068c1717d",
+      "preparedSha256": "bd25d6ae75d3d0883f87c6673ce9796a043812b9762be710a7a1d09e169b5078",
+      "sourceSamples": 121991,
+      "preparedSamples": 10410,
+      "status": "review_required",
+      "candidate": "bearing",
+      "candidateMatchesExpected": true,
+      "confidence": 0.635,
+      "envelopeCoverage": 0,
+      "engineAgreement": 1,
+      "quality": "review"
+    }
+  ],
+  "summary": {
+    "records": 4,
+    "abstentionRate": 1,
+    "automaticConclusions": 0,
+    "faultCandidateRecall": 1,
+    "interpretation": "Cross-domain safety probe only. It tests fail-closed behavior on experimental data; it is not training, field calibration, certification, or an accuracy estimate."
+  }
+}
