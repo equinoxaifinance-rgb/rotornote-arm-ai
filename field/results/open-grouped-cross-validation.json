@@ -1,7 +1,8 @@
 {
-  "format": "rotornote-open-grouped-cross-validation-v1",
-  "executedAt": "2026-08-13T09:53:24.106525+00:00",
-  "modelSpecification": "standard scaling plus multinomial logistic regression; C=1.0; fixed before this cross-validation",
+  "format": "rotornote-open-grouped-cross-validation-v2",
+  "executedAt": "2026-08-13T10:52:20.958979+00:00",
+  "modelSpecification": "standard scaling plus linear discriminant analysis with shared covariance (lsqr solver; fixed shrinkage=1e-8 numerical ridge); 48-to-4 linear inference layer",
+  "recordingRepresentation": "mean feature vector over four synchronized sensor channels and five deterministic windows per channel",
   "source": {
     "title": "Mechanical faults in rotating machinery dataset (normal, unbalance, misalignment, looseness)",
     "authors": [
@@ -23,7 +24,7 @@
     "changes": "Deterministic 8,192-sample windows and RotorNote 48-feature vectors derived from selected raw recordings."
   },
   "sourceFeatureSha256": "32705b20f884e2e6914910b6294034de32ffab7a2f37d092885fa4ba9e99a6e0",
-  "modelExportSha256": "0af084b58321698f5bfa520bcda3cac861c1d191230b51b5e3dcc0213c13a5d8",
+  "modelExportSha256": "178ce5abb9dd1e11343d7eb5ef28d380bded0d7cbeb9495eea6a052a7e44e790",
   "folds": [
     {
       "fold": 1,
@@ -33,45 +34,15 @@
         4,
         5
       ],
-      "windowLevel": {
-        "rows": 8000,
-        "balancedAccuracy": 0.777625,
-        "confusionMatrix": [
-          [
-            930,
-            3,
-            308,
-            759
-          ],
-          [
-            0,
-            1996,
-            0,
-            4
-          ],
-          [
-            670,
-            0,
-            1330,
-            0
-          ],
-          [
-            0,
-            28,
-            7,
-            1965
-          ]
-        ]
-      },
-      "singleChannelRecording": {
+      "singleChannelAblation": {
         "rows": 1600,
-        "balancedAccuracy": 0.7781250000000001,
+        "balancedAccuracy": 0.634375,
         "confusionMatrix": [
           [
-            181,
-            0,
-            56,
-            163
+            199,
+            2,
+            96,
+            103
           ],
           [
             0,
@@ -80,28 +51,28 @@
             0
           ],
           [
-            135,
+            200,
             0,
-            265,
+            200,
             0
           ],
           [
-            0,
-            1,
-            0,
-            399
+            23,
+            67,
+            94,
+            216
           ]
         ]
       },
       "fourChannelRecording": {
         "rows": 400,
-        "balancedAccuracy": 0.8674999999999999,
+        "balancedAccuracy": 0.8575,
         "confusionMatrix": [
           [
-            57,
+            93,
             0,
-            1,
-            42
+            4,
+            3
           ],
           [
             0,
@@ -110,16 +81,16 @@
             0
           ],
           [
-            10,
+            19,
             0,
-            90,
+            81,
             0
           ],
           [
             0,
+            31,
             0,
-            0,
-            100
+            69
           ]
         ]
       }
@@ -132,69 +103,39 @@
         7,
         8
       ],
-      "windowLevel": {
-        "rows": 8000,
-        "balancedAccuracy": 0.551875,
-        "confusionMatrix": [
-          [
-            1921,
-            0,
-            79,
-            0
-          ],
-          [
-            860,
-            1138,
-            1,
-            1
-          ],
-          [
-            1653,
-            1,
-            346,
-            0
-          ],
-          [
-            986,
-            4,
-            0,
-            1010
-          ]
-        ]
-      },
-      "singleChannelRecording": {
+      "singleChannelAblation": {
         "rows": 1600,
-        "balancedAccuracy": 0.553125,
+        "balancedAccuracy": 0.665,
         "confusionMatrix": [
           [
-            399,
+            212,
             0,
-            1,
+            188,
+            0
+          ],
+          [
+            64,
+            336,
+            0,
             0
           ],
           [
             166,
+            0,
             234,
-            0,
             0
           ],
           [
-            345,
-            0,
-            55,
-            0
-          ],
-          [
-            202,
-            1,
-            0,
-            197
+            98,
+            18,
+            2,
+            282
           ]
         ]
       },
       "fourChannelRecording": {
         "rows": 400,
-        "balancedAccuracy": 0.5775,
+        "balancedAccuracy": 0.855,
         "confusionMatrix": [
           [
             100,
@@ -203,22 +144,22 @@
             0
           ],
           [
-            22,
-            78,
+            0,
+            100,
             0,
             0
           ],
           [
-            99,
+            54,
             0,
-            1,
+            46,
             0
           ],
           [
-            48,
+            4,
             0,
             0,
-            52
+            96
           ]
         ]
       }
@@ -231,74 +172,44 @@
         15,
         12
       ],
-      "windowLevel": {
-        "rows": 8000,
-        "balancedAccuracy": 0.77925,
-        "confusionMatrix": [
-          [
-            1298,
-            16,
-            686,
-            0
-          ],
-          [
-            0,
-            1606,
-            0,
-            394
-          ],
-          [
-            492,
-            0,
-            1508,
-            0
-          ],
-          [
-            0,
-            164,
-            14,
-            1822
-          ]
-        ]
-      },
-      "singleChannelRecording": {
+      "singleChannelAblation": {
         "rows": 1600,
-        "balancedAccuracy": 0.77875,
+        "balancedAccuracy": 0.735,
         "confusionMatrix": [
           [
-            254,
+            300,
             0,
-            146,
+            99,
+            1
+          ],
+          [
+            0,
+            393,
+            0,
+            7
+          ],
+          [
+            200,
+            0,
+            200,
             0
           ],
           [
             0,
-            315,
+            117,
             0,
-            85
-          ],
-          [
-            93,
-            0,
-            307,
-            0
-          ],
-          [
-            0,
-            29,
-            1,
-            370
+            283
           ]
         ]
       },
       "fourChannelRecording": {
         "rows": 400,
-        "balancedAccuracy": 0.99,
+        "balancedAccuracy": 0.9875,
         "confusionMatrix": [
           [
-            96,
+            100,
             0,
-            4,
+            0,
             0
           ],
           [
@@ -308,9 +219,9 @@
             0
           ],
           [
+            5,
             0,
-            0,
-            100,
+            95,
             0
           ],
           [
@@ -330,74 +241,44 @@
         18,
         14
       ],
-      "windowLevel": {
-        "rows": 8000,
-        "balancedAccuracy": 0.590875,
-        "confusionMatrix": [
-          [
-            498,
-            4,
-            1279,
-            219
-          ],
-          [
-            0,
-            2000,
-            0,
-            0
-          ],
-          [
-            1133,
-            0,
-            863,
-            4
-          ],
-          [
-            0,
-            614,
-            20,
-            1366
-          ]
-        ]
-      },
-      "singleChannelRecording": {
+      "singleChannelAblation": {
         "rows": 1600,
-        "balancedAccuracy": 0.5725,
+        "balancedAccuracy": 0.70625,
         "confusionMatrix": [
           [
-            69,
+            267,
             0,
-            282,
-            49
+            33,
+            100
           ],
           [
-            0,
-            400,
+            2,
+            398,
             0,
             0
           ],
           [
-            227,
+            200,
             0,
-            173,
+            200,
             0
           ],
           [
-            0,
-            125,
-            1,
-            274
+            14,
+            117,
+            4,
+            265
           ]
         ]
       },
       "fourChannelRecording": {
         "rows": 400,
-        "balancedAccuracy": 0.525,
+        "balancedAccuracy": 1.0,
         "confusionMatrix": [
           [
-            2,
+            100,
             0,
-            98,
+            0,
             0
           ],
           [
@@ -407,16 +288,16 @@
             0
           ],
           [
-            79,
             0,
-            21,
+            0,
+            100,
             0
           ],
           [
             0,
-            13,
             0,
-            87
+            0,
+            100
           ]
         ]
       }
@@ -429,74 +310,44 @@
         20,
         19
       ],
-      "windowLevel": {
-        "rows": 8000,
-        "balancedAccuracy": 0.853375,
-        "confusionMatrix": [
-          [
-            937,
-            14,
-            1049,
-            0
-          ],
-          [
-            0,
-            1980,
-            0,
-            20
-          ],
-          [
-            0,
-            0,
-            1999,
-            1
-          ],
-          [
-            0,
-            77,
-            12,
-            1911
-          ]
-        ]
-      },
-      "singleChannelRecording": {
+      "singleChannelAblation": {
         "rows": 1600,
-        "balancedAccuracy": 0.8731249999999999,
+        "balancedAccuracy": 0.6575,
         "confusionMatrix": [
           [
-            203,
+            206,
             0,
-            197,
+            194,
             0
           ],
           [
+            3,
+            391,
             0,
-            400,
+            6
+          ],
+          [
+            200,
             0,
+            200,
             0
           ],
           [
+            42,
+            103,
             0,
-            0,
-            400,
-            0
-          ],
-          [
-            0,
-            6,
-            0,
-            394
+            255
           ]
         ]
       },
       "fourChannelRecording": {
         "rows": 400,
-        "balancedAccuracy": 0.855,
+        "balancedAccuracy": 1.0,
         "confusionMatrix": [
           [
-            42,
+            100,
             0,
-            58,
+            0,
             0
           ],
           [
@@ -522,194 +373,261 @@
     }
   ],
   "aggregate": {
-    "windowLevel": {
-      "rows": 40000,
-      "balancedAccuracy": 0.7106,
-      "confusionMatrix": [
-        [
-          5584,
-          37,
-          3401,
-          978
-        ],
-        [
-          860,
-          8720,
-          1,
-          419
-        ],
-        [
-          3948,
-          1,
-          6046,
-          5
-        ],
-        [
-          986,
-          887,
-          53,
-          8074
-        ]
-      ]
-    },
-    "singleChannelRecording": {
+    "singleChannelAblation": {
       "rows": 8000,
-      "balancedAccuracy": 0.711125,
+      "balancedAccuracy": 0.679625,
       "confusionMatrix": [
         [
-          1106,
-          0,
-          682,
-          212
+          1184,
+          2,
+          610,
+          204
         ],
         [
-          166,
-          1749,
+          69,
+          1918,
           0,
-          85
+          13
         ],
         [
-          800,
+          966,
           0,
-          1200,
+          1034,
           0
         ],
         [
-          202,
-          162,
-          2,
-          1634
+          177,
+          422,
+          100,
+          1301
         ]
       ]
     },
     "fourChannelRecording": {
       "rows": 2000,
-      "balancedAccuracy": 0.763,
+      "balancedAccuracy": 0.9400000000000001,
       "confusionMatrix": [
         [
-          297,
+          493,
           0,
-          161,
-          42
+          4,
+          3
         ],
         [
-          22,
-          478,
+          0,
+          500,
           0,
           0
         ],
         [
-          188,
+          78,
           0,
-          312,
+          422,
           0
         ],
         [
-          48,
-          13,
+          4,
+          31,
           0,
-          439
+          465
         ]
       ]
     },
-    "physicalTestAccuracy": 0.8,
+    "physicalTestAccuracy": 0.95,
     "fourChannelRiskCoverage": [
       {
         "minimumConfidence": 0.5,
-        "coverage": 0.971,
-        "acceptedRecordings": 1942,
-        "selectiveAccuracy": 0.7677651905252317,
-        "selectiveBalancedAccuracy": 0.7636590463624331,
+        "coverage": 1.0,
+        "acceptedRecordings": 2000,
+        "selectiveAccuracy": 0.94,
+        "selectiveBalancedAccuracy": 0.9400000000000001,
         "acceptedByClass": [
-          452,
-          499,
-          496,
-          495
+          500,
+          500,
+          500,
+          500
         ],
         "classConditionalAccuracy": [
-          0.5929203539823009,
-          0.9559118236472945,
-          0.6270161290322581,
-          0.8787878787878788
+          0.986,
+          1.0,
+          0.844,
+          0.93
         ]
       },
       {
         "minimumConfidence": 0.7,
-        "coverage": 0.631,
-        "acceptedRecordings": 1262,
-        "selectiveAccuracy": 0.8866877971473851,
-        "selectiveBalancedAccuracy": 0.8739155874551412,
+        "coverage": 0.9915,
+        "acceptedRecordings": 1983,
+        "selectiveAccuracy": 0.9440242057488654,
+        "selectiveBalancedAccuracy": 0.943377768669631,
         "acceptedByClass": [
-          145,
-          397,
-          312,
-          408
+          500,
+          500,
+          486,
+          497
         ],
         "classConditionalAccuracy": [
-          0.8689655172413793,
+          0.986,
           1.0,
-          0.7051282051282052,
-          0.9215686274509803
+          0.8539094650205762,
+          0.9336016096579477
         ]
       },
       {
         "minimumConfidence": 0.8,
-        "coverage": 0.4845,
-        "acceptedRecordings": 969,
-        "selectiveAccuracy": 0.9370485036119711,
-        "selectiveBalancedAccuracy": 0.9207439118153403,
+        "coverage": 0.986,
+        "acceptedRecordings": 1972,
+        "selectiveAccuracy": 0.9467545638945233,
+        "selectiveBalancedAccuracy": 0.9458309712322297,
         "acceptedByClass": [
-          99,
-          341,
-          196,
-          333
+          499,
+          500,
+          479,
+          494
         ],
         "classConditionalAccuracy": [
-          0.9797979797979798,
+          0.9879759519038076,
           1.0,
-          0.7091836734693877,
-          0.993993993993994
+          0.860125260960334,
+          0.9352226720647774
         ]
       },
       {
         "minimumConfidence": 0.9,
-        "coverage": 0.371,
-        "acceptedRecordings": 742,
-        "selectiveAccuracy": 0.977088948787062,
-        "selectiveBalancedAccuracy": 0.9645833333333333,
+        "coverage": 0.9755,
+        "acceptedRecordings": 1951,
+        "selectiveAccuracy": 0.9513070220399795,
+        "selectiveBalancedAccuracy": 0.9497546352256434,
         "acceptedByClass": [
-          70,
-          303,
-          120,
-          249
+          498,
+          500,
+          462,
+          491
         ],
         "classConditionalAccuracy": [
+          0.9879518072289156,
           1.0,
-          1.0,
-          0.8583333333333333,
-          1.0
+          0.8701298701298701,
+          0.9409368635437881
         ]
       },
       {
         "minimumConfidence": 0.95,
-        "coverage": 0.3005,
-        "acceptedRecordings": 601,
-        "selectiveAccuracy": 0.9900166389351082,
-        "selectiveBalancedAccuracy": 0.9858490566037736,
+        "coverage": 0.97,
+        "acceptedRecordings": 1940,
+        "selectiveAccuracy": 0.9551546391752578,
+        "selectiveBalancedAccuracy": 0.9533880782294792,
         "acceptedByClass": [
-          30,
-          290,
-          106,
-          175
+          498,
+          500,
+          452,
+          490
         ],
         "classConditionalAccuracy": [
+          0.9879518072289156,
           1.0,
+          0.8827433628318584,
+          0.9428571428571428
+        ]
+      },
+      {
+        "minimumConfidence": 0.99,
+        "coverage": 0.9615,
+        "acceptedRecordings": 1923,
+        "selectiveAccuracy": 0.9583983359334374,
+        "selectiveBalancedAccuracy": 0.9563511734490465,
+        "acceptedByClass": [
+          497,
+          500,
+          437,
+          489
+        ],
+        "classConditionalAccuracy": [
+          0.9879275653923542,
           1.0,
-          0.9433962264150944,
-          1.0
+          0.8947368421052632,
+          0.9427402862985685
         ]
       }
-    ]
+    ],
+    "nestedConfidencePolicy": {
+      "method": "For each outer fold, inner grouped CV on the other 16 physical tests selected the lowest 0.01-grid confidence threshold reaching 95% accepted accuracy; that threshold was then applied once to the unseen outer fold.",
+      "folds": [
+        {
+          "outerFold": 1,
+          "heldTests": [
+            1,
+            2,
+            4,
+            5
+          ],
+          "thresholdChosenWithoutOuterFold": 0.99,
+          "coverage": 0.9075,
+          "acceptedRecordings": 363,
+          "selectiveAccuracy": 0.8898071625344353
+        },
+        {
+          "outerFold": 2,
+          "heldTests": [
+            3,
+            10,
+            7,
+            8
+          ],
+          "thresholdChosenWithoutOuterFold": 0.99,
+          "coverage": 0.92,
+          "acceptedRecordings": 368,
+          "selectiveAccuracy": 0.8994565217391305
+        },
+        {
+          "outerFold": 3,
+          "heldTests": [
+            6,
+            11,
+            15,
+            12
+          ],
+          "thresholdChosenWithoutOuterFold": 0.99,
+          "coverage": 0.98,
+          "acceptedRecordings": 392,
+          "selectiveAccuracy": 0.9923469387755102
+        },
+        {
+          "outerFold": 4,
+          "heldTests": [
+            9,
+            13,
+            18,
+            14
+          ],
+          "thresholdChosenWithoutOuterFold": 0.99,
+          "coverage": 1.0,
+          "acceptedRecordings": 400,
+          "selectiveAccuracy": 1.0
+        },
+        {
+          "outerFold": 5,
+          "heldTests": [
+            17,
+            16,
+            20,
+            19
+          ],
+          "thresholdChosenWithoutOuterFold": 0.99,
+          "coverage": 1.0,
+          "acceptedRecordings": 400,
+          "selectiveAccuracy": 1.0
+        }
+      ],
+      "aggregate": {
+        "coverage": 0.9615,
+        "acceptedRecordings": 1923,
+        "selectiveAccuracy": 0.9583983359334374,
+        "thresholds": [
+          0.99
+        ]
+      }
+    }
   },
   "physicalTests": [
     {
@@ -799,15 +717,15 @@
     {
       "test": 9,
       "expected": "healthy",
-      "predicted": "misalignment",
-      "correct": false,
+      "predicted": "healthy",
+      "correct": true,
       "recordings": 100
     },
     {
       "test": 13,
       "expected": "misalignment",
-      "predicted": "healthy",
-      "correct": false,
+      "predicted": "misalignment",
+      "correct": true,
       "recordings": 100
     },
     {
@@ -827,8 +745,8 @@
     {
       "test": 17,
       "expected": "healthy",
-      "predicted": "misalignment",
-      "correct": false,
+      "predicted": "healthy",
+      "correct": true,
       "recordings": 100
     },
     {
@@ -852,6 +770,10 @@
       "correct": true,
       "recordings": 100
     }
+  ],
+  "physicalTestFoldBalancedAccuracyRange": [
+    0.855,
+    1.0
   ],
   "independenceWarning": "The 20 physical tests are the highest-level experimental units. Recordings and windows inside a test are repeated measures; row counts must not be interpreted as independent machines.",
   "scope": "One documented laboratory rig at approximately 1238 RPM. Not cross-machine validation, natural-fault validation, or certification."

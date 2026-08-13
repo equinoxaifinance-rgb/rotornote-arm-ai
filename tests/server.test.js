@@ -72,12 +72,9 @@ test("API abstains on unusable sensor data and validates machine context", async
 
 test("API executes the four-sensor aggregation path", async () => {
   await withServer(createHandler(), async (url) => {
-    const one = (await readFile(new URL("../samples/real-imbalance.csv", import.meta.url), "utf8")).trim().split(/\r?\n/);
-    const rows = one.slice(1).map((line) => {
-      const [timestamp, amplitude] = line.split(",");
-      return `${timestamp},${amplitude},${amplitude},${amplitude},${amplitude}`;
-    });
-    const csv = `timestamp,ch1,ch2,ch3,ch4\n${rows.join("\n")}\n`;
+    const csv = await readFile(new URL("../samples/real-imbalance.csv", import.meta.url), "utf8");
+    const firstDataRow = csv.trim().split(/\r?\n/)[1].split(",").slice(1);
+    assert.equal(new Set(firstDataRow).size, 4, "fixture must contain four distinct physical sensor readings");
     const response = await fetch(`${url}/api/analyze?engine=optimized`, {
       method: "POST",
       headers: { "content-type": "text/csv", "x-sample-rate": "25000", "x-operating-rpm": "1238" },
@@ -86,11 +83,31 @@ test("API executes the four-sensor aggregation path", async () => {
     assert.equal(response.status, 200);
     const payload = await response.json();
     assert.equal(payload.result.signal.channels, 4);
-    assert.equal(payload.result.signal.aggregation, "mean class probability across four synchronized sensor channels");
+    assert.equal(payload.result.signal.aggregation, "mean 48-feature recording representation across four synchronized sensors and five windows per sensor");
     assert.equal(payload.result.channelResults.length, 4);
     assert.ok(payload.result.timeline.every((window) => window.distribution.imbalance > 0));
     assert.equal(payload.result.primary, "imbalance");
     assert.equal(payload.result.decision.engineAgreement, 1);
+  });
+});
+
+test("four-sensor path fails closed when one distinct channel is flatlined", async () => {
+  await withServer(createHandler(), async (url) => {
+    const source = (await readFile(new URL("../samples/real-imbalance.csv", import.meta.url), "utf8")).trim().split(/\r?\n/);
+    const rows = source.slice(1).map((line) => {
+      const [timestamp, ch1, ch2, ch3] = line.split(",");
+      return `${timestamp},${ch1},${ch2},${ch3},0`;
+    });
+    const response = await fetch(`${url}/api/analyze?engine=optimized`, {
+      method: "POST",
+      headers: { "content-type": "text/csv", "x-sample-rate": "25000", "x-operating-rpm": "1238" },
+      body: `timestamp,ch1,ch2,ch3,ch4\n${rows.join("\n")}\n`,
+    });
+    assert.equal(response.status, 200);
+    const payload = await response.json();
+    assert.equal(payload.result.decision.status, "review_required");
+    assert.ok(payload.result.decision.reasons.includes("flatline"));
+    assert.equal(payload.result.decision.channelQuality[3].status, "review");
   });
 });
 

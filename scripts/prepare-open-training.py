@@ -83,7 +83,7 @@ def write_test(inner_bytes: bytes, test_number: int, windows, labels, groups, ro
             if array.shape != (CHANNELS, 25000):
                 raise ValueError(f"Unexpected shape {array.shape} in {entry.filename}")
             if test_number in VALIDATION_TESTS and label not in samples:
-                samples[label] = np.asarray(array[0], dtype="<f4")
+                samples[label] = np.asarray(array, dtype="<f4")
             for channel in range(CHANNELS):
                 for window_index, offset in enumerate(deterministic_offsets(array.shape[1])):
                     window = np.asarray(array[channel, offset : offset + WINDOW_SIZE], dtype="<f4")
@@ -138,9 +138,10 @@ def main() -> None:
     for label in LABELS:
         sample_path = samples_directory / f"real-{label}.csv"
         with sample_path.open("w", encoding="utf-8", newline="\n") as handle:
-            handle.write("timestamp,amplitude\n")
-            for index, value in enumerate(samples[label]):
-                handle.write(f"{index / 25000:.8f},{float(value):.9g}\n")
+            handle.write("timestamp,sensor_1,sensor_2,sensor_3,sensor_4\n")
+            for index in range(samples[label].shape[1]):
+                amplitudes = ",".join(f"{float(samples[label][channel, index]):.9g}" for channel in range(CHANNELS))
+                handle.write(f"{index / 25000:.8f},{amplitudes}\n")
         sample_hashes[label] = sha256_file(sample_path)
 
     manifest = {

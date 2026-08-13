@@ -1,6 +1,6 @@
 {
   "schema": "rotornote-axial-bearing-boundary-v1",
-  "createdAt": "2026-08-13T09:42:41.708Z",
+  "createdAt": "2026-08-13T10:57:20.137Z",
   "source": {
     "title": "Vibration Data for Axial Ball Bearings and Spall Faults",
     "authors": [
@@ -28,9 +28,10 @@
       "preparedSha256": "457bfecc6559c56463ccd30531d81066f9cafd8c875ecdf5f44f47e8931a83e1",
       "status": "review_required",
       "reasons": [
+        "single_channel_ablation_only",
         "outside_calibration_envelope"
       ],
-      "candidateInsideSupportedScope": "imbalance",
+      "candidateInsideSupportedScope": "looseness",
       "distributionCoverage": 0,
       "engineAgreement": 1
     },
@@ -41,6 +42,7 @@
       "preparedSha256": "0daf5c6b82e38eedf62fda78e77183f668465d87878b7b93b1d1a3a824dd2c84",
       "status": "review_required",
       "reasons": [
+        "single_channel_ablation_only",
         "outside_calibration_envelope"
       ],
       "candidateInsideSupportedScope": "imbalance",
@@ -54,9 +56,10 @@
       "preparedSha256": "f64072ccad4fa5cfb282fbfda8533f579d54d2d6d61937bb25b02fcccfd4ee25",
       "status": "review_required",
       "reasons": [
+        "single_channel_ablation_only",
         "outside_calibration_envelope"
       ],
-      "candidateInsideSupportedScope": "imbalance",
+      "candidateInsideSupportedScope": "looseness",
       "distributionCoverage": 0,
       "engineAgreement": 1
     },
@@ -67,11 +70,13 @@
       "preparedSha256": "234066d42698588d47de7c5a8303834ae59777ce4a0f93dfe27e0247f20204ba",
       "status": "review_required",
       "reasons": [
-        "outside_calibration_envelope"
+        "single_channel_ablation_only",
+        "outside_calibration_envelope",
+        "engine_disagreement"
       ],
       "candidateInsideSupportedScope": "imbalance",
       "distributionCoverage": 0,
-      "engineAgreement": 1
+      "engineAgreement": 0
     }
   ],
   "summary": {

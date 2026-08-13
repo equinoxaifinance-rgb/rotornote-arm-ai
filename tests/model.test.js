@@ -9,12 +9,13 @@ import { analyzeSignal } from "../src/analyze.js";
 
 test("FP32 and INT8 SIMD engines agree on attributed real recordings", async () => {
   const model = await loadModel();
-  assert.equal(model.metadata.format, "rotornote-real-logistic-v4");
-  assert.match(model.metadata.training.method, /multinomial logistic/);
+  assert.equal(model.metadata.format, "rotornote-real-lda-v5");
+  assert.match(model.metadata.training.method, /linear discriminant/);
   assert.equal(model.metadata.training.dataKind, "real experimental vibration only");
-  assert.equal(model.metadata.decisionPolicy.minimumConfidence, 0.9);
-  assert.equal(model.metadata.decisionPolicy.groupedValidation.coverage, 0.371);
-  assert.ok(model.metadata.training.fourChannelRecordingBalancedAccuracy >= 0.75);
+  assert.equal(model.metadata.decisionPolicy.minimumConfidence, 0.99);
+  assert.ok(model.metadata.decisionPolicy.nestedValidation.aggregate.selectiveAccuracy >= 0.95);
+  assert.ok(model.metadata.training.fourChannelRecordingBalancedAccuracy >= 0.93);
+  assert.ok(model.metadata.training.foldBalancedAccuracyRange[0] >= 0.85);
   assert.ok(model.metadata.training.recordingEngineAgreement >= 0.999);
   for (const label of LABELS) {
     const parsed = parseCsv(await readFile(new URL(`../samples/real-${label}.csv`, import.meta.url), "utf8"), 25000);
@@ -40,15 +41,14 @@ test("unseen broadband noise falls outside the fitted envelope and abstains", as
   assert.equal(result.decision.distributionCoverage, 0);
 });
 
-test("ambiguous real-signal mixture abstains below the confidence policy", async () => {
+test("single-channel real-signal mixture remains an ablation and cannot screen", async () => {
   const model = await loadModel();
   const healthy = parseCsv(await readFile(new URL("../samples/real-healthy.csv", import.meta.url), "utf8"), 25000).values;
   const misalignment = parseCsv(await readFile(new URL("../samples/real-misalignment.csv", import.meta.url), "utf8"), 25000).values;
   const mixture = Float32Array.from(healthy, (value, index) => (value + misalignment[index]) / 2);
   const result = analyzeSignal(model, mixture, 25000, "optimized", { verifyParity: true, context: { operatingRpm: 1238 } });
   assert.equal(result.decision.status, "review_required");
-  assert.ok(result.decision.reasons.includes("low_model_confidence"));
-  assert.ok(result.confidence < model.metadata.decisionPolicy.minimumConfidence);
+  assert.ok(result.decision.reasons.includes("single_channel_ablation_only"));
 });
 
 test("model loader fails closed on artifact tampering", async () => {

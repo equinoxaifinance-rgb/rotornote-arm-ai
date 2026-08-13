@@ -43,6 +43,12 @@ function argmax(values) {
   return best;
 }
 
+function meanFeatureVector(featureRows) {
+  const mean = new Float32Array(featureRows[0].length);
+  for (const row of featureRows) for (let index = 0; index < row.length; index += 1) mean[index] += row[index] / featureRows.length;
+  return mean;
+}
+
 export function analyzeSignal(model, values, sampleRate, engine = "optimized", { verifyParity = false, context = {} } = {}) {
   const started = performance.now();
   const windows = segmentSignal(values);
@@ -50,9 +56,11 @@ export function analyzeSignal(model, values, sampleRate, engine = "optimized", {
   let inferenceMs = 0;
   let agreementCount = 0;
   let inDistributionCount = 0;
+  const featureRows = [];
 
   for (let index = 0; index < windows.length; index += 1) {
     const features = extractFeatures(windows[index], sampleRate, context.operatingRpm);
+    featureRows.push(features);
     const inferenceStarted = performance.now();
     const probabilities = model.infer(features, engine);
     inferenceMs += performance.now() - inferenceStarted;
@@ -78,20 +86,23 @@ export function analyzeSignal(model, values, sampleRate, engine = "optimized", {
     });
   }
 
-  const averages = model.metadata.labels.map((_, labelIndex) =>
-    predictions.reduce((sum, prediction) => sum + prediction.probabilities[labelIndex], 0) / predictions.length);
+  const aggregateFeatures = meanFeatureVector(featureRows);
+  const averages = model.infer(aggregateFeatures, engine);
+  const aggregateDistribution = model.assessDistribution(aggregateFeatures);
   const primaryIndex = argmax(averages);
   const primary = model.metadata.labels[primaryIndex];
   const rms = Math.sqrt(values.reduce((sum, value) => sum + value * value, 0) / values.length);
   const peak = values.reduce((maximum, value) => Math.max(maximum, Math.abs(value)), 0);
   const clipping = values.reduce((count, value) => count + (Math.abs(value) >= 999 ? 1 : 0), 0) / values.length;
   const quality = assessSignalQuality(values, sampleRate);
-  const distributionCoverage = inDistributionCount / predictions.length;
-  const engineAgreement = verifyParity ? agreementCount / predictions.length : null;
+  const distributionCoverage = aggregateDistribution.inDistribution ? 1 : 0;
+  const aggregateWitness = verifyParity ? model.infer(aggregateFeatures, engine === "optimized" ? "baseline" : "optimized") : null;
+  const engineAgreement = verifyParity ? Number(argmax(aggregateWitness) === primaryIndex) : null;
   const reasons = [];
+  reasons.push("single_channel_ablation_only");
   if (quality.status !== "good") reasons.push(...quality.flags.map((flag) => flag.code));
   if (!Number.isFinite(context.operatingRpm) || context.operatingRpm <= 0) reasons.push("missing_operating_rpm");
-  if (distributionCoverage < 0.6) reasons.push("outside_calibration_envelope");
+  if (!aggregateDistribution.inDistribution) reasons.push("outside_calibration_envelope");
   if (verifyParity && engineAgreement < 1) reasons.push("engine_disagreement");
   if (averages[primaryIndex] < model.metadata.decisionPolicy.minimumConfidence) reasons.push("low_model_confidence");
   const decisionStatus = reasons.length ? "review_required" : "screened";
@@ -144,11 +155,17 @@ export function analyzeChannels(model, channels, sampleRate, engine = "optimized
   if (channels.length === 1) return analyzeSignal(model, channels[0], sampleRate, engine, options);
 
   const results = channels.map((values) => analyzeSignal(model, values, sampleRate, engine, options));
-  const distribution = Object.fromEntries(model.metadata.labels.map((label) => [label,
-    Number((results.reduce((sum, result) => sum + result.distribution[label], 0) / results.length).toFixed(4)),
-  ]));
+  const recordingFeatures = meanFeatureVector(channels.flatMap((values) =>
+    segmentSignal(values).map((window) => extractFeatures(window, sampleRate, options.context?.operatingRpm))));
+  const recordingProbabilities = model.infer(recordingFeatures, engine);
+  const distribution = Object.fromEntries(model.metadata.labels.map((label, index) => [label, Number(recordingProbabilities[index].toFixed(4))]));
   const primary = Object.entries(distribution).reduce((best, current) => current[1] > best[1] ? current : best)[0];
-  const reasons = [...new Set(results.flatMap((result) => result.decision.reasons).filter((reason) => reason !== "low_model_confidence"))];
+  const recordingDistribution = model.assessDistribution(recordingFeatures);
+  const witness = options.verifyParity ? model.infer(recordingFeatures, engine === "optimized" ? "baseline" : "optimized") : recordingProbabilities;
+  const witnessPrimary = model.metadata.labels[argmax(witness)];
+  const reasons = [...new Set(results.flatMap((result) => result.decision.reasons).filter((reason) => !["single_channel_ablation_only", "low_model_confidence", "outside_calibration_envelope", "engine_disagreement"].includes(reason)))];
+  if (!recordingDistribution.inDistribution) reasons.push("outside_calibration_envelope");
+  if (witnessPrimary !== primary) reasons.push("engine_disagreement");
   if (distribution[primary] < model.metadata.decisionPolicy.minimumConfidence) reasons.push("low_model_confidence");
   const screened = reasons.length === 0;
   const result = results[0];
@@ -165,13 +182,13 @@ export function analyzeChannels(model, channels, sampleRate, engine = "optimized
     ...result.decision,
     status: screened ? "screened" : "review_required",
     reasons,
-    distributionCoverage: Number((results.reduce((sum, item) => sum + item.decision.distributionCoverage, 0) / results.length).toFixed(4)),
-    engineAgreement: Number(Math.min(...results.map((item) => item.decision.engineAgreement ?? 1)).toFixed(4)),
+    distributionCoverage: recordingDistribution.inDistribution ? 1 : 0,
+    engineAgreement: witnessPrimary === primary ? 1 : 0,
     channelQuality: results.map((item, index) => ({ channel: index + 1, ...item.decision.quality })),
-    policy: "Four synchronized sensors are aggregated only after each channel passes quality, calibration-envelope, and engine-parity checks.",
+    policy: "Features from four synchronized sensors and five windows per sensor are averaged into the validated recording representation; the decision then passes quality, calibration-envelope, confidence, and engine-parity checks.",
   };
   result.signal.channels = channels.length;
-  result.signal.aggregation = "mean class probability across four synchronized sensor channels";
+  result.signal.aggregation = "mean 48-feature recording representation across four synchronized sensors and five windows per sensor";
   result.signal.displayChannel = 1;
   result.timeline = results[0].timeline.map((_, windowIndex) => {
     const windowDistribution = Object.fromEntries(model.metadata.labels.map((label) => [label,

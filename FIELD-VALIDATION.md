@@ -6,13 +6,13 @@ RotorNote is a working laboratory-data screening product with evidence infrastru
 
 ## Executed evidence
 
-The production dataset is the CC BY 4.0 [Mechanical faults in rotating machinery dataset](https://data.mendeley.com/datasets/zx8pfhdtnb/3), DOI `10.17632/zx8pfhdtnb.3`. Grouped cross-validation holds out whole physical tests and records 76.3% four-channel balanced accuracy plus 16/20 physical-test accuracy. At the product's 0.90 confidence floor, 37.1% of out-of-fold recordings are accepted at 97.71% accuracy and 96.46% selective balanced accuracy. The full confusion matrix, risk/coverage table, and fold membership are committed in `field/results/open-grouped-cross-validation.json`.
+The production dataset is the CC BY 4.0 [Mechanical faults in rotating machinery dataset](https://data.mendeley.com/datasets/zx8pfhdtnb/3), DOI `10.17632/zx8pfhdtnb.3`. Grouped cross-validation holds out whole physical tests and records 94.0% four-channel balanced accuracy plus 19/20 physical-test accuracy; the five fold scores span 85.5%–100%. The 0.99 product threshold is selected inside nested grouped validation without seeing each outer fold. On those outer folds it covers 96.15% of recordings at 95.84% accepted accuracy. The full confusion matrices, calibration folds, risk/coverage table, and membership are committed in `field/results/open-grouped-cross-validation.json`.
 
 The external safety dataset is the CC BY 4.0 [Vibration Data for Axial Ball Bearings and Spall Faults](https://data.mendeley.com/datasets/chwhh9n3bf/2), DOI `10.17632/chwhh9n3bf.2`. Four hash-pinned 25.6 kHz records from a separate rig all produced `review_required`; the receipt is `field/results/axial-bearing-boundary.json`. That proves the current gate refused this small foreign set, not that it will detect every out-of-domain signal.
 
 ## What makes it a product now
 
-RotorNote accepts the exact one- or four-channel CSV artifact a gateway can produce, returns a bounded decision, exports a machine-readable evidence receipt, and produces a maintenance note suitable for an existing CMMS. It replaces manual first-pass file inspection; it does not replace calibrated acquisition, diagnosis, or maintenance authority.
+RotorNote accepts the exact four-channel CSV artifact a gateway can produce, returns a bounded decision, exports a machine-readable evidence receipt, and produces a maintenance note suitable for an existing CMMS. One-channel input is explicitly an abstaining ablation. It replaces manual first-pass file inspection; it does not replace calibrated acquisition, diagnosis, or maintenance authority.
 
 ## Required prospective pilot
 

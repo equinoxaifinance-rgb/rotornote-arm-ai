@@ -28,7 +28,7 @@ FFT and inference are CPU work. Size/sample caps bound one request but do not re
 
 ## Model limitations
 
-The training data is physics-inspired simulation, not a certified field dataset. A high score does not prove a component fault; mounting, sensor orientation, speed, load, aliasing, and unrelated impacts can change the pattern. The interface uses “resembles,” provides a controlled retest, and tells users to involve a qualified technician. RotorNote must not trigger automatic shutdowns or replace a safety program.
+The training data contains real experimental vibration from one documented laboratory rig; it is not a certified or multi-machine field dataset. A high score does not prove a component fault; mounting, sensor orientation, speed, load, aliasing, and unrelated impacts can change the pattern. The interface uses “resembles,” provides a controlled retest, and tells users to involve a qualified technician. RotorNote must not trigger automatic shutdowns or replace a safety program.
 
 Signal-quality and calibration-envelope abstention reduce one class of misuse; they do not establish field accuracy. `FIELD-VALIDATION.md` defines the independent evidence required before stronger claims.
 

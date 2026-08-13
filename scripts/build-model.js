@@ -17,7 +17,7 @@ const [manifestText, exportText, validationBytes, featureBuffer, labelBuffer] = 
 const sourceManifest = JSON.parse(manifestText);
 const exported = JSON.parse(exportText);
 const validation = JSON.parse(validationBytes);
-if (sourceManifest.format !== "rotornote-real-features-v1" || exported.format !== "rotornote-real-logistic-export-v2") {
+if (sourceManifest.format !== "rotornote-real-features-v1" || exported.format !== "rotornote-real-lda-export-v3") {
   throw new Error("Real model source contract mismatch");
 }
 if (JSON.stringify(exported.labels) !== JSON.stringify(LABELS) || exported.featureCount !== FEATURE_COUNT) {
@@ -30,9 +30,23 @@ if (validation.modelExportSha256 !== sha256(Buffer.from(exportText))) {
   throw new Error("Grouped validation receipt does not bind the production export");
 }
 
-const rows = sourceManifest.rows;
+const sourceRows = sourceManifest.rows;
+const rowsPerRecording = sourceManifest.channelsPerFile * sourceManifest.windowsPerChannel;
+const rows = sourceRows / rowsPerRecording;
 const outputs = LABELS.length;
-const features = new Float32Array(featureBuffer.buffer, featureBuffer.byteOffset, featureBuffer.length / 4);
+const sourceFeatures = new Float32Array(featureBuffer.buffer, featureBuffer.byteOffset, featureBuffer.length / 4);
+const features = new Float32Array(rows * FEATURE_COUNT);
+const recordingLabels = new Uint8Array(rows);
+for (let recording = 0; recording < rows; recording += 1) {
+  const sourceStart = recording * rowsPerRecording;
+  recordingLabels[recording] = labelBuffer[sourceStart];
+  for (let row = sourceStart; row < sourceStart + rowsPerRecording; row += 1) {
+    if (labelBuffer[row] !== recordingLabels[recording]) throw new Error("Recording label boundary failed");
+    for (let feature = 0; feature < FEATURE_COUNT; feature += 1) {
+      features[recording * FEATURE_COUNT + feature] += sourceFeatures[row * FEATURE_COUNT + feature] / rowsPerRecording;
+    }
+  }
+}
 const means = Float32Array.from(exported.normalization.means);
 const deviations = Float32Array.from(exported.normalization.deviations);
 const weights = Float32Array.from(exported.weights.flat());
@@ -96,20 +110,11 @@ for (const normalized of normalizedRows) {
 const engineAgreement = agreement / rows;
 probabilityDeltas.sort((left, right) => left - right);
 const p99ProbabilityDelta = probabilityDeltas[Math.floor((probabilityDeltas.length - 1) * 0.99)];
-const rowsPerRecording = sourceManifest.channelsPerFile * sourceManifest.windowsPerChannel;
 let recordingAgreementCount = 0;
-for (let start = 0; start < rows; start += rowsPerRecording) {
-  const floatAverage = new Float64Array(outputs);
-  const int8Average = new Float64Array(outputs);
-  for (let row = start; row < start + rowsPerRecording; row += 1) {
-    for (let output = 0; output < outputs; output += 1) {
-      floatAverage[output] += floatRows[row][output];
-      int8Average[output] += int8Rows[row][output];
-    }
-  }
-  if (argmax(floatAverage) === argmax(int8Average)) recordingAgreementCount += 1;
+for (let row = 0; row < rows; row += 1) {
+  if (argmax(floatRows[row]) === argmax(int8Rows[row])) recordingAgreementCount += 1;
 }
-const recordingEngineAgreement = recordingAgreementCount / (rows / rowsPerRecording);
+const recordingEngineAgreement = recordingAgreementCount / rows;
 if (engineAgreement < 0.995 || recordingEngineAgreement < 0.999 || p99ProbabilityDelta > 0.05) {
   throw new Error(`INT8 parity gate failed: windowAgreement=${engineAgreement}, recordingAgreement=${recordingEngineAgreement}, p99Delta=${p99ProbabilityDelta}, maxDelta=${maximumProbabilityDelta}`);
 }
@@ -117,13 +122,13 @@ if (engineAgreement < 0.995 || recordingEngineAgreement < 0.999 || p99Probabilit
 const centroids = Array.from({ length: outputs }, () => new Float64Array(FEATURE_COUNT));
 const counts = new Uint32Array(outputs);
 for (let row = 0; row < rows; row += 1) {
-  const label = labelBuffer[row];
+  const label = recordingLabels[row];
   counts[label] += 1;
   for (let index = 0; index < FEATURE_COUNT; index += 1) centroids[label][index] += normalizedRows[row][index];
 }
 for (let label = 0; label < outputs; label += 1) for (let index = 0; index < FEATURE_COUNT; index += 1) centroids[label][index] /= counts[label];
 const distance = (values, centroid) => values.reduce((total, value, index) => total + (value - centroid[index]) ** 2, 0) / FEATURE_COUNT;
-const distances = normalizedRows.map((values, row) => distance(values, centroids[labelBuffer[row]])).sort((left, right) => left - right);
+const distances = normalizedRows.map((values, row) => distance(values, centroids[recordingLabels[row]])).sort((left, right) => left - right);
 const oodQuantile = 0.995;
 const oodThreshold = distances[Math.floor((distances.length - 1) * oodQuantile)];
 
@@ -136,25 +141,26 @@ const int8Buffer = Buffer.concat([
   Buffer.from(bias.buffer, bias.byteOffset, bias.byteLength),
 ]);
 const metadata = {
-  format: "rotornote-real-logistic-v4",
+  format: "rotornote-real-lda-v5",
   seed: exported.seed,
   labels: LABELS,
   inputFeatures: FEATURE_COUNT,
   architecture: [FEATURE_COUNT, outputs],
   training: {
-    method: "standard-scaled multinomial logistic regression",
+    method: "standard-scaled linear discriminant analysis over mean features from four synchronized channels and five windows per channel",
     dataKind: "real experimental vibration only",
     source: sourceManifest.sourceDataset,
     sourceArchiveSha256: sourceManifest.sourceArchiveSha256,
     featureArtifactSha256: sourceManifest.featuresSha256,
-    rows,
+    sourceWindows: sourceRows,
+    recordings: rows,
     physicalTests: exported.fitTests,
     validationProtocol: exported.validationProtocol,
     groupedValidationReceipt: "field/results/open-grouped-cross-validation.json",
     groupedValidationSha256: sha256(canonicalTextBytes(validationBytes)),
-    windowBalancedAccuracy: validation.aggregate.windowLevel.balancedAccuracy,
-    singleChannelRecordingBalancedAccuracy: validation.aggregate.singleChannelRecording.balancedAccuracy,
+    singleChannelAblationBalancedAccuracy: validation.aggregate.singleChannelAblation.balancedAccuracy,
     fourChannelRecordingBalancedAccuracy: validation.aggregate.fourChannelRecording.balancedAccuracy,
+    foldBalancedAccuracyRange: validation.physicalTestFoldBalancedAccuracyRange,
     physicalTestAccuracy: validation.aggregate.physicalTestAccuracy,
     engineAgreement,
     recordingEngineAgreement,
@@ -162,9 +168,10 @@ const metadata = {
     maximumProbabilityDelta,
   },
   decisionPolicy: {
-    minimumConfidence: 0.9,
-    basis: "fixed from out-of-fold four-channel risk/coverage analysis; not independent field calibration",
-    groupedValidation: validation.aggregate.fourChannelRiskCoverage.find((row) => row.minimumConfidence === 0.9),
+    minimumConfidence: 0.99,
+    basis: "nested grouped calibration: each outer fold was evaluated with a threshold selected only on the other physical tests",
+    groupedValidation: validation.aggregate.fourChannelRiskCoverage.find((row) => row.minimumConfidence === 0.99),
+    nestedValidation: validation.aggregate.nestedConfidencePolicy,
   },
   normalization: { means: Array.from(means), deviations: Array.from(deviations) },
   ood: {

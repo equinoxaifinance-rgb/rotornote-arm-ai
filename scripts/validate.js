@@ -22,11 +22,13 @@ await Promise.all(required.map((path) => access(new URL(`../${path}`, import.met
 
 const model = await loadModel();
 assert.deepEqual(model.metadata.architecture, [48, 4]);
-assert.equal(model.metadata.format, "rotornote-real-logistic-v4");
+assert.equal(model.metadata.format, "rotornote-real-lda-v5");
 assert.equal(model.metadata.training.dataKind, "real experimental vibration only");
 assert.ok(model.metadata.training.engineAgreement >= 0.995);
 assert.equal(model.metadata.training.recordingEngineAgreement, 1);
-assert.ok(model.metadata.training.fourChannelRecordingBalancedAccuracy >= 0.75);
+assert.ok(model.metadata.training.fourChannelRecordingBalancedAccuracy >= 0.93);
+assert.ok(model.metadata.training.foldBalancedAccuracyRange[0] >= 0.85);
+assert.ok(model.metadata.decisionPolicy.nestedValidation.aggregate.selectiveAccuracy >= 0.95);
 assert.ok(model.metadata.ood.threshold > 0);
 for (const label of model.metadata.labels) {
   const file = `real-${label}.csv`;
@@ -45,7 +47,8 @@ assert.equal(boundary.summary.abstentionRate, 1);
 assert.equal(boundary.summary.automaticConclusions, 0);
 const grouped = JSON.parse(await readFile(new URL("../field/results/open-grouped-cross-validation.json", import.meta.url), "utf8"));
 assert.equal(grouped.physicalTests.length, 20);
-assert.ok(grouped.aggregate.fourChannelRecording.balancedAccuracy >= 0.75);
+assert.ok(grouped.aggregate.fourChannelRecording.balancedAccuracy >= 0.93);
+assert.ok(grouped.physicalTestFoldBalancedAccuracyRange[0] >= 0.85);
 const sbom = JSON.parse(await readFile(new URL("../sbom.spdx.json", import.meta.url), "utf8"));
 assert.equal(sbom.spdxVersion, "SPDX-2.3");
 assert.equal(sbom.packages.filter(({ primaryPackagePurpose }) => primaryPackagePurpose !== "BUILD_TOOL").length, 1);

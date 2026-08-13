@@ -21,7 +21,7 @@
     <section class="hero">
       <div class="eyebrow"><span>Vibration screening</span><span>·</span><span>Arm cloud ready</span></div>
       <h1>Hear the machine<br><em>before it stops.</em></h1>
-      <p>Drop one vibration trace. RotorNote screens for healthy motion, imbalance, misalignment, and mechanical looseness—then gives you a specific retest.</p>
+      <p>Drop four synchronized vibration traces. RotorNote screens for healthy motion, imbalance, misalignment, and mechanical looseness—then gives you a specific retest.</p>
     </section>
 
     <section class="workspace" aria-labelledby="workspace-title">
@@ -30,7 +30,7 @@
           <div><span class="step">01</span><h2 id="workspace-title">Choose a recording</h2></div>
           <button class="text-button" id="formatHelp" type="button" aria-expanded="false">CSV format</button>
         </div>
-        <p id="formatCopy" class="format-copy" hidden>One channel: <code>amplitude</code> or <code>timestamp,amplitude</code>. Full rig: four synchronized sensor columns, with an optional timestamp first. At least 8,192 rows; enter sample rate and operating RPM.</p>
+        <p id="formatCopy" class="format-copy" hidden>Validated screen: four synchronized sensor columns, with an optional timestamp first. One channel is accepted only as an abstaining ablation. At least 8,192 rows; enter sample rate and operating RPM.</p>
         <label class="dropzone" id="dropzone">
           <input id="fileInput" type="file" accept=".csv,text/csv">
           <span class="upload-mark" aria-hidden="true">↗</span>
@@ -112,7 +112,7 @@
     </section>
     <section class="proof-rail" aria-labelledby="proofHeading">
       <div class="proof-intro"><span class="kicker">Executed evidence</span><h2 id="proofHeading">Proof, not posture.</h2><p>Every number opens to raw, reproducible receipts. The unknown stays unknown.</p></div>
-      <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/field/results/open-grouped-cross-validation.json" target="_blank" rel="noreferrer"><span>Whole-test validation</span><strong>76.3%</strong><small>four-channel balanced accuracy</small></a>
+      <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/field/results/open-grouped-cross-validation.json" target="_blank" rel="noreferrer"><span>Whole-test validation</span><strong>94.0%</strong><small>four-channel balanced accuracy · 85.5% worst fold</small></a>
       <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/model/model.json" target="_blank" rel="noreferrer"><span>FP32 ↔ INT8 parity</span><strong>100%</strong><small>four-channel recording labels</small></a>
       <a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/field/results/axial-bearing-boundary.json" target="_blank" rel="noreferrer"><span>Foreign bearing rig</span><strong>4 / 4</strong><small>review required · zero auto conclusions</small></a>
     </section>
