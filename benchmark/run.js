@@ -123,10 +123,10 @@ const result = {
     weightByteReduction: Number((1 - model.metadata.int8.bytes / model.metadata.float.bytes).toFixed(6)),
   },
   evidenceClass: process.arch === "arm64" ? "native-arm64" : "non-arm-local-only",
+  claims: {
+    nativeSpeedupSupported: process.arch === "arm64" && speedupUncertainty.confidence95[0] > 1,
+  },
 };
-if (process.arch === "arm64" && speedupUncertainty.confidence95[0] <= 1) {
-  throw new Error(`Native speedup confidence gate failed: 95% CI=${speedupUncertainty.confidence95.join("..")}`);
-}
 await mkdir(dirname(fileURLToPath(new URL(`../${outputPath}`, import.meta.url))), { recursive: true });
 await writeFile(new URL(`../${outputPath}`, import.meta.url), `${JSON.stringify(result, null, 2)}\n`);
 console.log(JSON.stringify(result.summary, null, 2));

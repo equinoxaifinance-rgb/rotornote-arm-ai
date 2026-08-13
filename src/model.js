@@ -69,6 +69,12 @@ export async function loadModel({ modelUrl = MODEL_URL, wasmUrl = WASM_URL } = {
     ...layer,
     biasView: viewFloat(int8Buffer, layer.bias),
   }));
+  const normalizedScratch = new Float32Array(metadata.inputFeatures);
+  const inverseDeviations = Float64Array.from(metadata.normalization.deviations, (value) => 1 / value);
+  const inputAddresses = [0, 8192, 16384];
+  const outputAddresses = [4096, 12288, 20480];
+  const int8InputViews = int8Layers.map((layer, index) => new Int8Array(memory.buffer, inputAddresses[index], layer.inputs));
+  const int32OutputViews = int8Layers.map((layer, index) => new Int32Array(memory.buffer, outputAddresses[index], layer.outputs));
 
   const inferBaseline = (features) => {
     let values = normalize(features, metadata);
@@ -80,26 +86,25 @@ export async function loadModel({ modelUrl = MODEL_URL, wasmUrl = WASM_URL } = {
     return softmax(values);
   };
 
-  const quantizeInto = (values, scale, address) => {
-    const target = new Int8Array(memory.buffer, address, values.length);
+  const quantizeInto = (values, scale, target) => {
     for (let index = 0; index < values.length; index += 1) {
       target[index] = Math.max(-127, Math.min(127, Math.round(values[index] / scale)));
     }
   };
 
   const inferOptimized = (features) => {
-    let values = normalize(features, metadata);
-    const inputAddresses = [0, 8192, 16384];
-    const outputAddresses = [4096, 12288, 20480];
+    let values = normalizedScratch;
+    for (let index = 0; index < features.length; index += 1) {
+      values[index] = (features[index] - metadata.normalization.means[index]) * inverseDeviations[index];
+    }
     for (let index = 0; index < int8Layers.length; index += 1) {
       const layer = int8Layers[index];
       let maximum = 0;
       for (const value of values) maximum = Math.max(maximum, Math.abs(value));
       const inputScale = maximum === 0 ? 1 : maximum / 127;
-      quantizeInto(values, inputScale, inputAddresses[index]);
+      quantizeInto(values, inputScale, int8InputViews[index]);
       dense(inputAddresses[index], int8WeightAddresses[index], outputAddresses[index], layer.inputs, layer.outputs);
-      const integers = new Int32Array(memory.buffer, outputAddresses[index], layer.outputs);
-      values = Float32Array.from(integers, (value, row) =>
+      values = Float32Array.from(int32OutputViews[index], (value, row) =>
         value * inputScale * layer.weightScales[row] + layer.biasView[row]);
       if (index < int8Layers.length - 1) values = relu(values);
     }
