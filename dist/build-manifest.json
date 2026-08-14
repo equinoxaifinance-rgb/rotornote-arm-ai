@@ -52,7 +52,7 @@
     "scripts/prepare-zhenjiang-boundary.py": "5436ff11de924db0d1fb82928b7802ef2c6c81c47b75e183988b4087dd0e3fa6",
     "scripts/evaluate-zhenjiang-boundary.js": "8174140af79b6be947ae1d66cfa3f04280491efdb659a5136e3996687c887e74",
     "benchmark/run.js": "e641c5937c51bd4d15dc5d419e2f04e13c81dadf28121460bf8bcd42284c4fa9",
-    "benchmark/run-anomaly.js": "f8518561ffdcb58c290ec04e6a0c4c5deed634368c8794e2f1105cad6b268e90",
+    "benchmark/run-anomaly.js": "370b303c053e60b103caad76d6e46166815007d24a53ecd66b9c1935c166f01e",
     "tests/anomaly.test.js": "af180f44fc3d1eb0d867327e682812bad9920c4611ec899b9cea4293f986fb13",
     "tests/csv.test.js": "511d9baeeea513a99846bb42bc2b74c360a0eedf1c1530200994374f64974ba1",
     "tests/dense-compiler.test.js": "b3beb63e06c4df32363e20f7ee5bb214bf182a2ba230b9dcd09565b982a8d784",

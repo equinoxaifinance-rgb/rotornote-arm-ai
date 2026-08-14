@@ -59,6 +59,9 @@ assert.ok(anomalyModel.metadata.training.measurementSequenceAccuracyWilson95[0] 
 assert.equal(anomalyModel.metadata.training.engineLabelAgreement, 1);
 assert.equal(anomalyModel.metadata.compiler.deterministicArtifactCrossCheck, true);
 assert.ok(anomalyModel.metadata.compiler.multiplyAccumulatesPerInference >= 250000);
+const anomalyBenchmarkSource = await readFile(new URL("../benchmark/run-anomaly.js", import.meta.url), "utf8");
+assert.match(anomalyBenchmarkSource, /temporalAggregation:\s*"ordered_concatenation"/);
+assert.doesNotMatch(anomalyBenchmarkSource, /features\[feature\].*\/\s*manifest\.featureWindowsPerSignal/);
 assert.ok(anomalyModel.metadata.int8.bytes <= anomalyModel.metadata.float.bytes * 0.27);
 assert.ok(anomalyModel.metadata.utilization.hiddenLayers.every((layer) => layer.activeUnits === layer.units));
 assert.ok(anomalyModel.metadata.utilization.hiddenLayers.every((layer) => layer.rowsBelowMaximumWeight1e6 === 0));

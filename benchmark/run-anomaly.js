@@ -20,10 +20,11 @@ const bytes = await readFile(new URL("../field/training/upatras-features.f32", i
 const rows = new Float32Array(bytes.buffer, bytes.byteOffset, bytes.byteLength / 4);
 const featureBank = Array.from({ length: 64 }, (_, bankIndex) => {
   const signal = bankIndex % manifest.signals;
-  const features = new Float32Array(manifest.featureCount);
+  const features = new Float32Array(manifest.featureCount * manifest.featureWindowsPerSignal);
+  if (features.length !== model.metadata.inputFeatures) throw new Error("benchmark temporal feature contract does not match production model");
   for (let window = 0; window < manifest.featureWindowsPerSignal; window += 1) {
     const offset = (signal * manifest.featureWindowsPerSignal + window) * manifest.featureCount;
-    for (let feature = 0; feature < manifest.featureCount; feature += 1) features[feature] += rows[offset + feature] / manifest.featureWindowsPerSignal;
+    features.set(rows.subarray(offset, offset + manifest.featureCount), window * manifest.featureCount);
   }
   return features;
 });
@@ -72,7 +73,7 @@ const result = {
   schema: "rotornote-anomaly-benchmark-v1",
   recordedAt: new Date().toISOString(),
   machine: { architecture: process.arch, platform: process.platform, cpus: os.cpus().length, cpuModel: os.cpus()[0]?.model, node: process.version },
-  workload: { batchSize, repetitions, warmups, featureVectors: featureBank.length, network: model.metadata.architecture },
+  workload: { batchSize, repetitions, warmups, featureVectors: featureBank.length, inputFeatures: model.metadata.inputFeatures, temporalAggregation: "ordered_concatenation", network: model.metadata.architecture },
   artifacts: {
     fp32: { bytes: model.metadata.float.bytes, sha256: model.metadata.float.sha256 },
     int8: { bytes: model.metadata.int8.bytes, sha256: model.metadata.int8.sha256 },
