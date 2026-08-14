@@ -17,6 +17,9 @@ test("happy path serves UI, health, sample, and optimized analysis", async () =>
     assert.match(await page.text(), /Hear the machine/);
     assert.match(await (await fetch(url)).text(), /Analysis passport/);
     assert.match(page.headers.get("content-security-policy"), /default-src 'self'/);
+    const app = await (await fetch(`${url}/app.js`)).text();
+    assert.match(app, /fetch\(`\/api\/screen\?engine=\$\{engine\}`/);
+    assert.doesNotMatch(app, /fetch\(`\/api\/analyze\?engine=\$\{engine\}`/);
     const styles = await (await fetch(`${url}/styles.css?v=layout-regression`)).text();
     assert.match(styles, /\.empty-state\[hidden\],#reportContent\[hidden\]\{display:none!important\}/);
 
@@ -24,6 +27,9 @@ test("happy path serves UI, health, sample, and optimized analysis", async () =>
     assert.equal(health.status, "ready");
     assert.equal(health.nativeArm64, process.arch === "arm64");
     assert.match(health.anomalyModel, /upatras/);
+
+    const sampleCatalog = await (await fetch(`${url}/api/samples`)).json();
+    assert.ok(sampleCatalog.samples.some((entry) => entry.id === "real-variable-speed-anomaly" && entry.sampleRate === 1024 && entry.operatingRpm === 2100));
 
     const sample = await (await fetch(`${url}/samples/real-imbalance.csv`)).text();
     const response = await fetch(`${url}/api/analyze?engine=optimized`, {
@@ -85,7 +91,30 @@ test("unified screen route selects the honest model contract and emits receipts"
     const broad = await broadResponse.json();
     assert.equal(broad.route, "variable_speed_anomaly");
     assert.equal(broad.result.receipt.route, "variable_speed_anomaly");
+    assert.ok(broad.result.timing.totalMs >= broad.result.timing.inferenceMs);
+    assert.equal(broad.result.signal.waveform.length, 180);
+    assert.ok(broad.result.signal.spectrum.peaks.length > 0);
+    assert.equal(broad.result.context.operatingRpm, 2100);
+    assert.equal(broad.result.decision.status, "screened");
+    assert.equal(broad.result.guidance.severity, "inspect");
+    assert.equal(broad.workOrder.screening.route, "variable_speed_anomaly");
     const specialist = await readFile(new URL("../samples/real-imbalance.csv", import.meta.url), "utf8");
+    const missingRpm = await fetch(`${url}/api/screen`, {
+      method: "POST",
+      headers: { "content-type": "text/csv", "x-sample-rate": "25000" },
+      body: specialist,
+    });
+    assert.equal(missingRpm.status, 422);
+    assert.equal((await missingRpm.json()).error, "operating_rpm_required");
+    const unsupportedRpm = await fetch(`${url}/api/screen`, {
+      method: "POST",
+      headers: { "content-type": "text/csv", "x-sample-rate": "25000", "x-operating-rpm": "1800" },
+      body: specialist,
+    });
+    assert.equal(unsupportedRpm.status, 200);
+    const unsupported = await unsupportedRpm.json();
+    assert.equal(unsupported.result.decision.status, "review_required");
+    assert.ok(unsupported.result.decision.reasons.includes("outside_operating_envelope"));
     const specialistResponse = await fetch(`${url}/api/screen`, {
       method: "POST",
       headers: { "content-type": "text/csv", "x-sample-rate": "25000", "x-operating-rpm": "1238" },

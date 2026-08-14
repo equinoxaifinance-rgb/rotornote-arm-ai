@@ -15,8 +15,8 @@ Open `http://127.0.0.1:8787`.
 
 ## 2. Exercise both model contracts
 
-1. Click **Run held-sequence demo**. This executes the real one-channel, 297,078-MAC variable-speed neural head through INT8 WASM SIMD and independently witnesses the broad answer with FP32.
-2. Select **Real imbalance**, then **Screen recording**. This executes the narrower four-sensor specialist, exposes the retest instruction, and enables both evidence JSON and deterministic CMMS work-order downloads.
+1. Select **Variable-speed anomaly**, then **Screen recording**. The primary product control sets the attributed 1,024 Hz / 2,100 RPM context, routes one channel through the real 297,078-MAC neural head, visibly names the broad route, and independently witnesses the answer with FP32. The result enables both evidence JSON and deterministic CMMS work-order downloads.
+2. Select **Rotor imbalance**, then **Screen recording**. The same control switches to the 25 kHz / 1,238 RPM four-sensor contract, visibly names the specialist route, and exposes its narrower retest instruction. A custom upload remains disabled until measured RPM is supplied; an off-envelope RPM forces review instead of an unsupported conclusion.
 3. Click **Compile example head**. The working compiler API emits two downloadable, hash-bound model artifacts and reports calibration parity.
 4. Upload a malformed, flatlined, or unsupported capture. RotorNote returns a bounded error or `review_required`; it does not manufacture a diagnosis.
 

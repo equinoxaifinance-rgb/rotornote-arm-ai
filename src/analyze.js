@@ -102,6 +102,8 @@ export function analyzeSignal(model, values, sampleRate, engine = "optimized", {
   reasons.push("single_channel_ablation_only");
   if (quality.status !== "good") reasons.push(...quality.flags.map((flag) => flag.code));
   if (!Number.isFinite(context.operatingRpm) || context.operatingRpm <= 0) reasons.push("missing_operating_rpm");
+  const trainingRpm = model.metadata.training.source.operatingRpm;
+  if (Number.isFinite(context.operatingRpm) && context.operatingRpm > 0 && Number.isFinite(trainingRpm) && Math.abs(context.operatingRpm - trainingRpm) / trainingRpm > 0.05) reasons.push("outside_operating_envelope");
   if (!aggregateDistribution.inDistribution) reasons.push("outside_calibration_envelope");
   if (verifyParity && engineAgreement < 1) reasons.push("engine_disagreement");
   if (averages[primaryIndex] < model.metadata.decisionPolicy.minimumConfidence) reasons.push("low_model_confidence");
@@ -129,7 +131,7 @@ export function analyzeSignal(model, values, sampleRate, engine = "optimized", {
       distributionCoverage: Number(distributionCoverage.toFixed(4)),
       engineAgreement: engineAgreement === null ? null : Number(engineAgreement.toFixed(4)),
       quality,
-      policy: `Abstain when confidence is below ${model.metadata.decisionPolicy.minimumConfidence}, signal quality fails, most windows leave the fitted envelope, or FP32 and INT8 labels disagree.`,
+      policy: `Abstain when confidence is below ${model.metadata.decisionPolicy.minimumConfidence}, signal quality fails, operating RPM leaves the fitted envelope, most windows leave the feature envelope, or FP32 and INT8 labels disagree.`,
     },
     validationContext: {
       independenceUnit: "complete physical test",

@@ -48,6 +48,8 @@ jobs:
       - run: npm run build:anomaly
       - run: npm run validate:field
       - run: npm run validate:natural
+      - name: Require committed receipts to match regenerated evidence
+        run: git diff --exit-code -- field/results/axial-bearing-boundary.json field/results/zhenjiang-bearing-boundary.json field/results/ims-natural-failure-boundary.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: rotornote-external-boundary-evidence

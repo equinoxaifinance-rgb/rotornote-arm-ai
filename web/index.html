@@ -32,7 +32,7 @@
           <div><span class="step">01</span><h2 id="workspace-title">Choose a recording</h2></div>
           <button class="text-button" id="formatHelp" type="button" aria-expanded="false">CSV format</button>
         </div>
-        <p id="formatCopy" class="format-copy" hidden>One channel routes to broad variable-speed anomaly screening and needs at least 2,048 samples plus operating RPM. Four synchronized sensor columns unlock the narrower specialist and need at least 8,192 rows. An optional timestamp may come first.</p>
+        <p id="formatCopy" class="format-copy" hidden>One channel routes to broad variable-speed anomaly screening and needs at least 2,048 samples. Four synchronized sensor columns unlock the narrower specialist and need at least 8,192 rows. Every screen requires measured operating RPM; an optional timestamp may come first.</p>
         <label class="dropzone" id="dropzone">
           <input id="fileInput" type="file" accept=".csv,text/csv">
           <span class="upload-mark" aria-hidden="true">↗</span>
@@ -50,12 +50,12 @@
           </fieldset>
         </div>
         <details class="measurement-context">
-          <summary>Add measurement context <span>optional · travels with receipt</span></summary>
+          <summary>Measurement context <span>RPM required · identity optional</span></summary>
           <div class="context-grid">
             <label>Machine ID<input id="machineId" value="demo-pump-7" maxlength="64" pattern="[A-Za-z0-9._-]+"></label>
             <label>Measurement point<input id="measurementPoint" value="drive-end-bearing" maxlength="64"></label>
             <label>Sensor axis<select id="sensorAxis"><option value="unknown">Unknown</option><option value="radial-horizontal" selected>Radial horizontal</option><option value="radial-vertical">Radial vertical</option><option value="axial">Axial</option></select></label>
-            <label>Operating RPM<input id="operatingRpm" type="number" min="0" max="120000" value="1800"></label>
+            <label>Operating RPM<input id="operatingRpm" type="number" min="1" max="120000" required placeholder="Measured RPM"></label>
             <label>Load %<input id="loadPercent" type="number" min="0" max="100" value="74"></label>
           </div>
         </details>
@@ -139,7 +139,7 @@
 
     <section class="underhood">
       <span class="step">ARM</span>
-      <div><h2>A real compiler, exercised by a real 297,078-MAC head.</h2><p>The variable-speed model preserves two temporal windows, cuts learned bytes by 74.22%, and keeps full-bank FP32/INT8 label parity. Exact Arm receipts separate end-to-end model-call timing from a native 16-to-16,384-MAC kernel sweep that removes JS/Wasm dispatch from the measurement.</p><p><a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/workflows/native-arm64.yml" target="_blank" rel="noreferrer">Inspect exact native Arm runs</a></p></div>
+      <div><h2>A real compiler, exercised by a real 297,078-MAC head.</h2><p>The variable-speed model preserves two temporal windows, cuts learned bytes by 74.22%, and keeps full-bank FP32/INT8 label parity. Product inference runs through WebAssembly SIMD. A separate native Arm <code>vdotq_s32</code> witness—never loaded or invoked by the product—isolates compute scaling without JS/Wasm dispatch.</p><p><a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/workflows/native-arm64.yml" target="_blank" rel="noreferrer">Inspect exact native Arm runs</a></p></div>
       <div class="weight-stat"><strong>74.22%</strong><span>weight-byte reduction</span><small style="display:block;margin-top:5px;color:#9db5a8;font:700 8px ui-monospace,monospace;text-transform:uppercase">Memory footprint · not latency</small></div>
     </section>
     <section class="compiler-lane" aria-labelledby="compilerHeading">

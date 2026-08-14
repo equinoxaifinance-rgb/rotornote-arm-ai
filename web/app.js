@@ -14,6 +14,15 @@ let lastWaveform = null;
 let lastResult = null;
 let lastWorkOrder = null;
 
+function hasValidRpm() {
+  const rpm = Number(elements.operatingRpm.value);
+  return Number.isFinite(rpm) && rpm > 0 && rpm <= 120000;
+}
+
+function updateAnalyzeAvailability() {
+  elements.analyzeButton.disabled = !selectedCsv || !hasValidRpm();
+}
+
 function message(text, error = false) {
   elements.inputMessage.textContent = text;
   elements.inputMessage.classList.toggle("error", error);
@@ -48,7 +57,7 @@ async function loadSamples() {
       selectedName = sample.title;
       elements.sampleRate.value = sample.sampleRate;
       elements.operatingRpm.value = sample.operatingRpm;
-      elements.analyzeButton.disabled = false;
+      updateAnalyzeAvailability();
       message(`${sample.title} ready`);
     });
     return button;
@@ -62,9 +71,9 @@ function setFile(file) {
   reader.addEventListener("load", () => {
     selectedCsv = String(reader.result);
     selectedName = file.name;
-    elements.analyzeButton.disabled = false;
+    updateAnalyzeAvailability();
     document.querySelectorAll(".sample").forEach((item) => item.classList.remove("active"));
-    message(`${file.name} ready · ${(file.size / 1024).toFixed(1)} KiB`);
+    message(`${file.name} ready · ${(file.size / 1024).toFixed(1)} KiB · verify sample rate and enter measured RPM`);
   });
   reader.addEventListener("error", () => message("The file could not be read.", true));
   reader.readAsText(file);
@@ -96,12 +105,13 @@ function drawWaveform(values) {
   context.stroke();
 }
 
-function render(result, workOrder) {
+function render(result, workOrder, route) {
   lastResult = result;
   lastWorkOrder = workOrder;
   elements.emptyState.hidden = true;
   elements.reportContent.hidden = false;
-  elements.engineBadge.textContent = result.engine === "optimized" ? "INT8 · WASM SIMD" : "FP32 · JS baseline";
+  const routeLabel = route === "variable_speed_anomaly" ? "broad anomaly route" : "four-sensor specialist";
+  elements.engineBadge.textContent = `${result.engine === "optimized" ? "INT8 · WASM SIMD" : "FP32 · JS baseline"} · ${routeLabel}`;
   elements.timing.textContent = `${result.timing.totalMs.toFixed(1)} ms total`;
   elements.severity.textContent = result.guidance.severity;
   elements.severity.className = `severity ${result.guidance.severity}`;
@@ -192,13 +202,18 @@ elements.copyMaintenanceNote.addEventListener("click", async () => {
 
 async function analyze() {
   if (!selectedCsv) return;
+  if (!hasValidRpm()) {
+    message("Enter the measured operating RPM before screening.", true);
+    elements.operatingRpm.focus();
+    return;
+  }
   const engine = document.querySelector('input[name="engine"]:checked').value;
   elements.report.setAttribute("aria-busy", "true");
   elements.analyzeButton.disabled = true;
   elements.analyzeButton.querySelector("span").textContent = "Listening…";
   message(`Screening ${selectedName}`);
   try {
-    const response = await fetch(`/api/analyze?engine=${engine}`, {
+    const response = await fetch(`/api/screen?engine=${engine}`, {
       method: "POST",
       headers: {
         "content-type": "text/csv",
@@ -206,21 +221,21 @@ async function analyze() {
         "x-machine-id": elements.machineId.value || "unassigned",
         "x-measurement-point": elements.measurementPoint.value || "unspecified",
         "x-sensor-axis": elements.sensorAxis.value,
-        ...(elements.operatingRpm.value ? { "x-operating-rpm": elements.operatingRpm.value } : {}),
+        "x-operating-rpm": elements.operatingRpm.value,
         ...(elements.loadPercent.value ? { "x-load-percent": elements.loadPercent.value } : {}),
       },
       body: selectedCsv,
     });
     const payload = await response.json();
     if (!response.ok) throw new Error(payload.message || payload.error || "Analysis failed");
-    render(payload.result, payload.workOrder);
-    message(`${selectedName} screened with ${engine}`);
+    render(payload.result, payload.workOrder, payload.route);
+    message(`${selectedName} screened through ${payload.route.replaceAll("_", " ")}`);
     elements.report.scrollIntoView({ behavior: "smooth", block: "start" });
   } catch (error) {
     message(error.message, true);
   } finally {
     elements.report.setAttribute("aria-busy", "false");
-    elements.analyzeButton.disabled = false;
+    updateAnalyzeAvailability();
     elements.analyzeButton.querySelector("span").textContent = "Screen recording";
   }
 }
@@ -234,6 +249,7 @@ elements.formatHelp.addEventListener("click", () => {
   elements.formatHelp.setAttribute("aria-expanded", String(!elements.formatCopy.hidden));
 });
 elements.analyzeButton.addEventListener("click", analyze);
+elements.operatingRpm.addEventListener("input", updateAnalyzeAvailability);
 window.addEventListener("resize", () => drawWaveform(lastWaveform));
 
 await Promise.all([checkHealth(), loadSamples()]);

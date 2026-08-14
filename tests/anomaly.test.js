@@ -20,6 +20,12 @@ test("deep anomaly head executes attributed physical data with cross-engine agre
   assert.ok(optimized.validationContext.riskCoverage.length >= 6);
   assert.equal(optimized.engineAgreement, true);
   assert.equal(optimized.signal.featureWindows, 2);
+  assert.equal(optimized.decision.status, "screened");
+  assert.equal(optimized.guidance.severity, "inspect");
+  assert.equal(optimized.signal.waveform.length, 180);
+  assert.ok(optimized.signal.spectrum.peaks.length > 0);
+  assert.equal(optimized.timeline.length, 1);
+  assert.ok(optimized.timing.totalMs >= optimized.timing.inferenceMs);
   assert.equal(model.metadata.architecture[0], 96);
   assert.equal(model.metadata.architecture.at(-1), 8);
   // The shipped graph is pruned strictly from real-bank activation, so guard

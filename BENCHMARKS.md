@@ -43,7 +43,7 @@ The model artifact reduction is deterministic: FP32 is 784 bytes and INT8 is 208
 
 Current-commit runs bind the linear-head FP32, INT8, and WASM hashes on native Arm64 runners and preserve 100% label agreement. The same receipt reports median FP32 and INT8 throughput, paired speedup, and its bootstrap interval for this 192-MAC workload alongside the deep head. Because a 192-MAC call is overhead sensitive, this specialist result is useful as an end-to-end latency receipt, not evidence that the tiny classifier saves meaningful fleet compute by itself.
 
-The separate compiled `vdotq_s32` sweep matches the scalar result exactly at every size. Its kernel-only ratios are reported as compute isolation, not product throughput. GitHub artifact-zip digests differ per run because the archives include timestamps and run receipts; they are not model hashes. The hashes inside each receipt show that the compared FP32, INT8, and WASM files are identical.
+The separate compiled `vdotq_s32` sweep matches the scalar result exactly at every size. It is a standalone compute witness that the product never loads or invokes; its kernel-only ratios are reported as compute isolation, not as a serving backend or product throughput. GitHub artifact-zip digests differ per run because the archives include timestamps and run receipts; they are not model hashes. The hashes inside each receipt show that the compared FP32, INT8, and WASM files are identical.
 
 Earlier receipts under `receipts/native-arm64/` belong to superseded model artifacts. They preserve engineering history but are not current product evidence. Only a workflow receipt whose commit and artifact hashes match the shipped release is current evidence.
 

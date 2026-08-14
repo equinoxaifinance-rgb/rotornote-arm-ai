@@ -20,12 +20,12 @@ const STATIC = new Map([
   ["/examples/dense-compile-input.json", [new URL("../examples/dense-compile-input.json", import.meta.url), "application/json; charset=utf-8"]],
 ]);
 const SAMPLES = new Map([
+  ["real-variable-speed-anomaly", { file: "real-variable-speed-anomaly.csv", title: "Variable-speed anomaly", detail: "held sequence · broad route", sampleRate: 1024, operatingRpm: 2100 }],
   ["real-healthy", { file: "real-healthy.csv", title: "Healthy rig", detail: "1 s · attributed physical test", sampleRate: 25000, operatingRpm: 1238 }],
   ["real-imbalance", { file: "real-imbalance.csv", title: "Rotor imbalance", detail: "1 s · attributed physical test", sampleRate: 25000, operatingRpm: 1238 }],
   ["real-misalignment", { file: "real-misalignment.csv", title: "Shaft misalignment", detail: "1 s · attributed physical test", sampleRate: 25000, operatingRpm: 1238 }],
   ["real-looseness", { file: "real-looseness.csv", title: "Mechanical looseness", detail: "1 s · attributed physical test", sampleRate: 25000, operatingRpm: 1238 }],
 ]);
-const VARIABLE_SAMPLE = { file: "real-variable-speed-anomaly.csv", sampleRate: 1024, operatingRpm: 2100 };
 
 const securityHeaders = {
   "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
@@ -155,10 +155,6 @@ export function createHandler({
       }
       if (request.method === "GET" && url.pathname.startsWith("/samples/")) {
         const id = url.pathname.slice("/samples/".length).replace(/\.csv$/, "");
-        if (id === "real-variable-speed-anomaly") {
-          const csv = await readFile(new URL(`../samples/${VARIABLE_SAMPLE.file}`, import.meta.url));
-          return respond(response, 200, csv, "text/csv; charset=utf-8");
-        }
         const sample = SAMPLES.get(id);
         if (!sample) return respond(response, 404, { error: "sample_not_found", requestId });
         const csv = await readFile(new URL(`../samples/${sample.file}`, import.meta.url));
@@ -190,7 +186,7 @@ export function createHandler({
         const context = parseContext(request.headers);
         if (context.operatingRpm === null || context.operatingRpm <= 0) return respond(response, 422, { error: "operating_rpm_required", message: "A positive operating RPM is required", requestId });
         const model = await getAnomalyModel();
-        const result = analyzeVariableSpeedAnomaly(model, channels[0], sampleRate, context.operatingRpm, engine);
+        const result = analyzeVariableSpeedAnomaly(model, channels[0], sampleRate, context.operatingRpm, engine, context);
         result.receipt = createAnalysisReceipt({ csv: body, sampleRate, engine, model, context, result });
         return respond(response, 200, screeningPayload({ requestId, route: "variable_speed_anomaly", result, context }));
       }
@@ -202,6 +198,7 @@ export function createHandler({
         const body = await readBody(request);
         const { channels, sampleRate } = parseCsv(body, request.headers["x-sample-rate"] || 1024, { minimumSamples: 2048 });
         const context = parseContext(request.headers);
+        if (context.operatingRpm === null || context.operatingRpm <= 0) return respond(response, 422, { error: "operating_rpm_required", message: "A positive operating RPM is required", requestId });
         if (channels.length === 4) {
           if (channels[0].length < 8192) return respond(response, 422, { error: "too_few_samples", message: "The four-sensor specialist requires at least 8,192 synchronized samples", requestId });
           const model = await getModel();
@@ -209,9 +206,8 @@ export function createHandler({
           result.receipt = createAnalysisReceipt({ csv: body, sampleRate, engine, model, context, result });
           return respond(response, 200, screeningPayload({ requestId, route: "four_sensor_specialist", result, context }));
         }
-        if (context.operatingRpm === null || context.operatingRpm <= 0) return respond(response, 422, { error: "operating_rpm_required", message: "A positive operating RPM is required", requestId });
         const model = await getAnomalyModel();
-        const result = analyzeVariableSpeedAnomaly(model, channels[0], sampleRate, context.operatingRpm, engine);
+        const result = analyzeVariableSpeedAnomaly(model, channels[0], sampleRate, context.operatingRpm, engine, context);
         result.receipt = createAnalysisReceipt({ csv: body, sampleRate, engine, model, context, result });
         return respond(response, 200, screeningPayload({ requestId, route: "variable_speed_anomaly", result, context }));
       }

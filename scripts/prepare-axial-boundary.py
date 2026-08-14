@@ -62,7 +62,8 @@ def main() -> None:
             selected = values[start : start + 131072]
             identifier = Path(filename).stem.lower().replace(".", "p").replace("_", "-")
             csv_path = arguments.output / f"{identifier}.csv"
-            csv_path.write_text("amplitude\n" + "\n".join(f"{float(value):.9g}" for value in selected) + "\n", encoding="utf-8")
+            # Hash-bound evidence must be byte-identical on Windows and Linux.
+            csv_path.write_bytes(("amplitude\n" + "\n".join(f"{float(value):.9g}" for value in selected) + "\n").encode("utf-8"))
             records.append({
                 "id": identifier,
                 "file": filename,

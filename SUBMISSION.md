@@ -1,4 +1,4 @@
-# RotorNote submission copy — draft
+# RotorNote — submission copy
 
 RotorNote turns real vibration recordings into an Arm-optimized first-pass
 machine screen, a retest instruction, and a hash-bound evidence object that can
@@ -27,11 +27,12 @@ local x64 timing is not promoted into an Arm claim. The same native receipt
 reports full throughput and paired uncertainty for both this materially
 nonlinear head and the 192-MAC specialist. The latter remains explicitly
 call-overhead sensitive and is not presented as equivalent compute work.
-The native job separately sweeps the pure `vdotq_s32` kernel from 16 through
+The native job separately sweeps a standalone `vdotq_s32` witness from 16 through
 16,384 MACs per call, records nanoseconds per MAC across 31 alternating trials,
 and requires exact equality with a non-vectorized scalar witness at every size.
 That receipt isolates compute scaling by excluding JS, Wasm dispatch, feature
-extraction, orchestration, and softmax; it is not labeled product throughput.
+extraction, orchestration, and softmax. The product never loads or invokes this
+witness; it is neither a serving backend nor labeled product throughput.
 
 The secondary four-fault specialist is a transparent 48->4 linear model over
 four sensors. Its five-fold whole-test validation records 94.0% four-channel balanced

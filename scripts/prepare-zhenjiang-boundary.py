@@ -58,7 +58,8 @@ def main() -> None:
                 resampled = np.interp(np.linspace(0, len(raw) - 1, 2048), np.arange(len(raw)), raw)
                 identifier = f"zj-{file_index}-{selected_index}"
                 csv_path = arguments.output / f"{identifier}.csv"
-                csv_path.write_text("amplitude\n" + "\n".join(f"{float(value):.9g}" for value in resampled) + "\n", encoding="utf-8")
+                # Hash-bound evidence must be byte-identical on Windows and Linux.
+                csv_path.write_bytes(("amplitude\n" + "\n".join(f"{float(value):.9g}" for value in resampled) + "\n").encode("utf-8"))
                 records.append({
                     "id": identifier,
                     "conditionFile": file_index,

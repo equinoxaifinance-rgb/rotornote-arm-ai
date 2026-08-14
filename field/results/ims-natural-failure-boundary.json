@@ -21,7 +21,7 @@
       "3rd_test.rar": "01e9ec83c6c55adc0300a20003a261f9a2ac2b714aae4984050325e589252bc8",
       "Readme Document for IMS Bearing Data.pdf": "cf46d37c21f7f292c11bbbdd4695d876c417ed1d6425e3d87c962ae2182ae6ed"
     },
-    "license": "Public U.S. government data; NASA catalog links the USA.gov government-works notice",
+    "license": "NASA Open Data marks access as public and links the USA.gov government-works notice; original provider is IMS, University of Cincinnati",
     "licenseUrl": "https://www.usa.gov/government-works",
     "acquisition": "Three test-to-failure experiments; four bearings per shaft at 2,000 RPM and 6,000 lb radial load; 20 kHz one-second snapshots; eight accelerometer channels in set 1 and four in sets 2 and 3; documented natural end-state failures in four bearing installations.",
     "use": "Natural run-to-failure, multi-bearing, multi-sensor external fail-closed boundary evaluation only; never production training.",
