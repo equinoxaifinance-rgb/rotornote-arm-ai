@@ -53,6 +53,8 @@ The real classifier is a transparent 48→4 linear discriminant model over the m
 
 The four-sensor specialist remains in the product because its interpretable fault-family output is useful. The exact native receipt reports its median FP32 and INT8 throughput, paired speedup, and bootstrap interval beside the deep head instead of hiding the smaller workload. Its 192-MAC call is explicitly overhead sensitive, so the ratio is an end-to-end latency receipt rather than a claim of meaningful fleet compute savings. Each native run rebuilds the repository, executes the complete test suite, validates the artifact set, scans for secrets, and proves exact NEON `vdotq_s32` agreement. These are workload-specific receipts, not energy, fleet, or universal-device claims. [Inspect the current Arm evidence history](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/workflows/native-arm64.yml).
 
+To separate compute from dispatch, the same native job executes a kernel-only sweep from 16 through 16,384 MACs per call. It records 31 alternating-order trials per size, nanoseconds per MAC, and exact scalar/NEON equality, while excluding JS, Wasm dispatch, feature extraction, orchestration, and softmax. The 16,384-MAC point must prove compute-bound speedup above one. The model-call measurements remain explicitly end-to-end; the kernel sweep is explicitly not product throughput.
+
 ## API boundary
 
 `POST /api/screen?engine=optimized` with `Content-Type: text/csv` is the canonical gateway and product boundary.

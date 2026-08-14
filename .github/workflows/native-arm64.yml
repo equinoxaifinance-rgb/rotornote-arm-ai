@@ -82,7 +82,7 @@ jobs:
       - name: Record artifact hashes
         run: |
           find dist model assets/gallery -type f -print0 | sort -z | xargs -0 sha256sum | tee artifact-sha256.txt
-          sha256sum package-lock.json sbom.spdx.json benchmark/results/native-arm64.json >> artifact-sha256.txt
+          sha256sum package-lock.json sbom.spdx.json benchmark/results/native-arm64.json benchmark/results/anomaly-native-arm64.json arm-dotprod.json >> artifact-sha256.txt
       - name: Upload raw evidence
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
@@ -114,3 +114,4 @@ jobs:
         run: |
           node -e "const r=require('./benchmark/results/native-arm64.json'); if(!r.claims.nativeSpeedupSupported) throw new Error('Current native speedup confidence interval does not exclude 1.0')"
           node -e "const r=require('./benchmark/results/anomaly-native-arm64.json'); if(r.evidenceClass!=='native-arm64'||r.correctness.labelAgreement!==1||r.correctness.maximumProbabilityDelta>=0.08||r.summary.weightByteReduction<0.7) throw new Error('Deep anomaly Arm evidence gate failed')"
+          node -e "const r=require('./arm-dotprod.json'); const p=r.points?.find(x=>x.macs_per_call===16384); if(r.schema!=='rotornote-arm-dotprod-scaling-v2'||!r.all_exact||!p?.correctness.exact_match||!r.compute_bound_gate.speedup_above_one) throw new Error('Compute-bound kernel scaling gate failed')"

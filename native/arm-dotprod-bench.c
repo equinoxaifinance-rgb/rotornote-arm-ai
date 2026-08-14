@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define LENGTH 256
+#define MAX_LENGTH 16384
 #define TRIALS 31
-#define ITERATIONS 20000
+#define TARGET_MACS_PER_TRIAL 1048576
 
 static volatile int64_t sink;
 
@@ -19,16 +19,16 @@ static uint64_t nanos(void) {
 }
 
 __attribute__((noinline, optimize("no-tree-vectorize")))
-static int32_t scalar_dot(const int8_t *left, const int8_t *right) {
+static int32_t scalar_dot(const int8_t *left, const int8_t *right, size_t length) {
   int32_t total = 0;
-  for (size_t index = 0; index < LENGTH; index += 1) total += (int32_t)left[index] * (int32_t)right[index];
+  for (size_t index = 0; index < length; index += 1) total += (int32_t)left[index] * (int32_t)right[index];
   return total;
 }
 
 __attribute__((noinline))
-static int32_t neon_dotprod(const int8_t *left, const int8_t *right) {
+static int32_t neon_dotprod(const int8_t *left, const int8_t *right, size_t length) {
   int32x4_t sum = vdupq_n_s32(0);
-  for (size_t index = 0; index < LENGTH; index += 16) {
+  for (size_t index = 0; index < length; index += 16) {
     sum = vdotq_s32(sum, vld1q_s8(left + index), vld1q_s8(right + index));
   }
   return vaddvq_s32(sum);
@@ -44,60 +44,69 @@ int main(void) {
 #if !defined(__aarch64__) || !defined(__ARM_FEATURE_DOTPROD)
 #error "RotorNote Arm dot-product evidence requires native aarch64 with Arm dot-product support"
 #endif
-  _Alignas(16) int8_t left[LENGTH];
-  _Alignas(16) int8_t right[LENGTH];
+  static const size_t lengths[] = {16, 64, 256, 1024, 4096, 16384};
+  _Alignas(16) int8_t left[MAX_LENGTH];
+  _Alignas(16) int8_t right[MAX_LENGTH];
   uint32_t state = 0x524f544fU;
-  for (size_t index = 0; index < LENGTH; index += 1) {
+  for (size_t index = 0; index < MAX_LENGTH; index += 1) {
     state = state * 1664525U + 1013904223U;
     left[index] = (int8_t)((state >> 24) % 127 - 63);
     state = state * 1664525U + 1013904223U;
     right[index] = (int8_t)((state >> 24) % 127 - 63);
   }
 
-  const int32_t scalar_result = scalar_dot(left, right);
-  const int32_t neon_result = neon_dotprod(left, right);
-  if (scalar_result != neon_result) {
-    fprintf(stderr, "correctness failure: scalar=%d neon=%d\n", scalar_result, neon_result);
-    return 2;
-  }
-
-  double scalar_ns[TRIALS];
-  double neon_ns[TRIALS];
-  for (size_t trial = 0; trial < TRIALS; trial += 1) {
-    uint64_t started;
-    uint64_t elapsed;
-    if (trial % 2 == 0) {
-      started = nanos();
-      for (size_t iteration = 0; iteration < ITERATIONS; iteration += 1) sink += scalar_dot(left, right);
-      elapsed = nanos() - started;
-      scalar_ns[trial] = (double)elapsed / ITERATIONS;
-      started = nanos();
-      for (size_t iteration = 0; iteration < ITERATIONS; iteration += 1) sink += neon_dotprod(left, right);
-      elapsed = nanos() - started;
-      neon_ns[trial] = (double)elapsed / ITERATIONS;
-    } else {
-      started = nanos();
-      for (size_t iteration = 0; iteration < ITERATIONS; iteration += 1) sink += neon_dotprod(left, right);
-      elapsed = nanos() - started;
-      neon_ns[trial] = (double)elapsed / ITERATIONS;
-      started = nanos();
-      for (size_t iteration = 0; iteration < ITERATIONS; iteration += 1) sink += scalar_dot(left, right);
-      elapsed = nanos() - started;
-      scalar_ns[trial] = (double)elapsed / ITERATIONS;
+  printf("{\"schema\":\"rotornote-arm-dotprod-scaling-v2\",\"architecture\":\"aarch64\",\"isa\":\"armv8.2-a+dotprod\",\"kernel\":\"NEON vdotq_s32\",\"measurement\":\"steady-state native kernel only; excludes JS, Wasm dispatch, feature extraction, and model orchestration\",\"trials\":%d,\"points\":[", TRIALS);
+  double largest_speedup = 0.0;
+  for (size_t point = 0; point < sizeof(lengths) / sizeof(lengths[0]); point += 1) {
+    const size_t length = lengths[point];
+    const size_t iterations = TARGET_MACS_PER_TRIAL / length < 64 ? 64 : TARGET_MACS_PER_TRIAL / length;
+    const int32_t scalar_result = scalar_dot(left, right, length);
+    const int32_t neon_result = neon_dotprod(left, right, length);
+    if (scalar_result != neon_result) {
+      fprintf(stderr, "correctness failure at length %zu: scalar=%d neon=%d\n", length, scalar_result, neon_result);
+      return 2;
     }
-  }
 
-  qsort(scalar_ns, TRIALS, sizeof(double), compare_double);
-  qsort(neon_ns, TRIALS, sizeof(double), compare_double);
-  const double scalar_median = scalar_ns[TRIALS / 2];
-  const double neon_median = neon_ns[TRIALS / 2];
-  const double speedup = scalar_median / neon_median;
-  if (speedup <= 1.0) {
-    fprintf(stderr, "Arm dot-product speedup gate failed: %.4f\n", speedup);
+    double scalar_ns[TRIALS];
+    double neon_ns[TRIALS];
+    for (size_t trial = 0; trial < TRIALS; trial += 1) {
+      uint64_t started;
+      uint64_t elapsed;
+      if (trial % 2 == 0) {
+        started = nanos();
+        for (size_t iteration = 0; iteration < iterations; iteration += 1) sink += scalar_dot(left, right, length);
+        elapsed = nanos() - started;
+        scalar_ns[trial] = (double)elapsed / iterations;
+        started = nanos();
+        for (size_t iteration = 0; iteration < iterations; iteration += 1) sink += neon_dotprod(left, right, length);
+        elapsed = nanos() - started;
+        neon_ns[trial] = (double)elapsed / iterations;
+      } else {
+        started = nanos();
+        for (size_t iteration = 0; iteration < iterations; iteration += 1) sink += neon_dotprod(left, right, length);
+        elapsed = nanos() - started;
+        neon_ns[trial] = (double)elapsed / iterations;
+        started = nanos();
+        for (size_t iteration = 0; iteration < iterations; iteration += 1) sink += scalar_dot(left, right, length);
+        elapsed = nanos() - started;
+        scalar_ns[trial] = (double)elapsed / iterations;
+      }
+    }
+
+    qsort(scalar_ns, TRIALS, sizeof(double), compare_double);
+    qsort(neon_ns, TRIALS, sizeof(double), compare_double);
+    const double scalar_median = scalar_ns[TRIALS / 2];
+    const double neon_median = neon_ns[TRIALS / 2];
+    const double speedup = scalar_median / neon_median;
+    if (point == sizeof(lengths) / sizeof(lengths[0]) - 1) largest_speedup = speedup;
+    printf("%s{\"macs_per_call\":%zu,\"iterations_per_trial\":%zu,\"correctness\":{\"scalar\":%d,\"neon\":%d,\"exact_match\":true},\"median_ns\":{\"scalar\":%.4f,\"neon_dotprod\":%.4f},\"median_ns_per_mac\":{\"scalar\":%.8f,\"neon_dotprod\":%.8f},\"median_speedup\":%.4f}",
+      point == 0 ? "" : ",", length, iterations, scalar_result, neon_result, scalar_median, neon_median, scalar_median / length, neon_median / length, speedup);
+  }
+  printf("],\"compute_bound_gate\":{\"largest_macs_per_call\":%d,\"largest_speedup\":%.4f,\"speedup_above_one\":%s},\"all_exact\":true}\n",
+    MAX_LENGTH, largest_speedup, largest_speedup > 1.0 ? "true" : "false");
+  if (largest_speedup <= 1.0) {
+    fprintf(stderr, "compute-bound Arm dot-product speedup gate failed: %.4f\n", largest_speedup);
     return 3;
   }
-
-  printf("{\"schema\":\"rotornote-arm-dotprod-v1\",\"architecture\":\"aarch64\",\"isa\":\"armv8.2-a+dotprod\",\"kernel\":\"NEON vdotq_s32\",\"length\":%d,\"trials\":%d,\"iterations_per_trial\":%d,\"correctness\":{\"scalar\":%d,\"neon\":%d,\"exact_match\":true},\"median_ns\":{\"scalar\":%.4f,\"neon_dotprod\":%.4f},\"median_speedup\":%.4f}\n",
-    LENGTH, TRIALS, ITERATIONS, scalar_result, neon_result, scalar_median, neon_median, speedup);
   return sink == 0x7fffffffffffffffLL ? 4 : 0;
 }
