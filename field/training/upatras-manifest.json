@@ -20,6 +20,10 @@
   },
   "sourceInnerArchiveSha256": "ef67eab64164ee23ebb584375c734d817d110f722229d6f1db6c5afa74767bfb",
   "sampleRateHz": 1024,
+  "operatingRpmRange": [
+    2100,
+    2988
+  ],
   "sourceSamplesPerSignal": 3500,
   "featureWindowsPerSignal": 2,
   "featureWindowSamples": 2048,

@@ -31,6 +31,7 @@ const groups = new Uint8Array(files.length * signalsPerSequence);
 const sourceFiles = [];
 let featureOffset = 0;
 let signalOffset = 0;
+const observedRpms = [];
 const familyFor = (state) => state === "Healthy" ? "healthy" : state.startsWith("Unbalance") ? "unbalance" : state.startsWith("Bolt") ? "looseness" : "coupler_wear";
 
 for (let groupIndex = 0; groupIndex < files.length; groupIndex += 1) {
@@ -54,6 +55,7 @@ for (let groupIndex = 0; groupIndex < files.length; groupIndex += 1) {
     const match = /^speed_(\d+)_(\d+)_Hz$/.exec(header[column + 2]);
     if (!match) throw new Error(`Unexpected speed header ${header[column + 2]}`);
     const speedHz = Number(`${match[1]}.${match[2]}`);
+    observedRpms.push(speedHz * 60);
     for (const start of [0, 3500 - 2048]) {
       const row = extractFeatures(columns[column].subarray(start, start + 2048), 1024, speedHz * 60);
       features.set(row, featureOffset);
@@ -75,6 +77,7 @@ const manifest = {
   sourceDataset: source,
   sourceInnerArchiveSha256: archiveSha256,
   sampleRateHz: 1024,
+  operatingRpmRange: [Math.min(...observedRpms), Math.max(...observedRpms)],
   sourceSamplesPerSignal: 3500,
   featureWindowsPerSignal: featureRowsPerSignal,
   featureWindowSamples: 2048,

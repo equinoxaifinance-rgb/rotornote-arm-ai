@@ -1,7 +1,7 @@
 {
   "format": "rotornote-upatras-grouped-anomaly-v1",
-  "executedAt": "2026-08-13T12:54:17.086392+00:00",
-  "modelSpecification": "standard scaling plus 48-to-256-to-128-to-8 ReLU multilayer perceptron; eight observed experimental conditions preserve anomaly heterogeneity, while the product boundary collapses them to healthy-versus-anomaly; class-balanced sample weighting; fixed 220-epoch maximum schedule; post-fit removal of units never activated by any of 2,925 real training-bank signals",
+  "executedAt": "2026-08-13T14:25:39.406749+00:00",
+  "modelSpecification": "standard scaling plus 96-to-768-to-384-to-128-to-8 ReLU multilayer perceptron over an ordered pair of measured temporal windows; eight observed experimental conditions preserve anomaly heterogeneity, while the product boundary collapses them to healthy-versus-anomaly; class-balanced sample weighting; fixed 220-epoch maximum schedule; post-fit removal of units never activated by any of 2,925 real training-bank signals",
   "source": {
     "title": "UPATRAS Rotating Machinery Vibration Dataset for Incipient Fault Diagnosis under Varying Rotating Speeds",
     "authors": [
@@ -17,11 +17,11 @@
     "license": "CC BY 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
     "acquisition": "39 independent measurement sequences; 2,925 single-axis vibration signals; 1,024 Hz; 75 rotating speeds from 35.0 to 49.8 Hz; healthy plus seven incipient fault states.",
-    "use": "Production variable-speed healthy-versus-anomaly neural head and whole-measurement-sequence grouped validation.",
-    "changes": "Two deterministic 2,048-sample windows per signal and RotorNote 48-feature vectors; binary labels preserve healthy versus observed anomaly without inventing unsupported fault equivalence."
+    "use": "Production variable-speed neural head with an eight-condition learned representation, a healthy-versus-anomaly product boundary, and whole-measurement-sequence grouped validation.",
+    "changes": "Two deterministic 2,048-sample windows per signal and RotorNote 48-feature vectors. Source sequence names preserve all eight observed laboratory conditions for representation learning; the product output collapses them to healthy versus observed anomaly without presenting laboratory condition names as field diagnoses."
   },
   "sourceFeatureSha256": "5a68fc21c72bd0e5fd7935a64e86763f5c17c28437506aa6305de05a2f37bc2d",
-  "modelExportSha256": "9b029224ab864638558fb25dbc08b6eec35762d3282b6d107d5ebf78888443dc",
+  "modelExportSha256": "2c45b47ad8fa60451e7d83a0a1709ed15358658c86034e9b31bc6c63f429ed46",
   "folds": [
     {
       "fold": 1,
@@ -40,8 +40,8 @@
       "conditionBalancedAccuracy": 0.9966666666666667,
       "conditionConfusionMatrix": [
         [
-          75,
-          0,
+          74,
+          1,
           0,
           0,
           0,
@@ -50,8 +50,8 @@
           0
         ],
         [
-          4,
-          146,
+          2,
+          148,
           0,
           0,
           0,
@@ -744,11 +744,11 @@
     }
   ],
   "aggregate": {
-    "conditionBalancedAccuracy": 0.998,
+    "conditionBalancedAccuracy": 0.9983333333333333,
     "conditionConfusionMatrix": [
       [
-        375,
-        0,
+        374,
+        1,
         0,
         0,
         0,
@@ -757,8 +757,8 @@
         0
       ],
       [
-        5,
-        370,
+        3,
+        372,
         0,
         0,
         0,
@@ -874,29 +874,29 @@
       },
       {
         "minimumConfidence": 0.95,
-        "coverage": 0.9989743589743589,
-        "acceptedSignals": 2922,
+        "coverage": 0.9986324786324786,
+        "acceptedSignals": 2921,
         "selectiveAccuracy": 1.0,
         "selectiveBalancedAccuracy": 1.0
       },
       {
         "minimumConfidence": 0.99,
-        "coverage": 0.9688888888888889,
-        "acceptedSignals": 2834,
+        "coverage": 0.987008547008547,
+        "acceptedSignals": 2887,
         "selectiveAccuracy": 1.0,
         "selectiveBalancedAccuracy": 1.0
       },
       {
         "minimumConfidence": 0.995,
-        "coverage": 0.9131623931623931,
-        "acceptedSignals": 2671,
+        "coverage": 0.9623931623931624,
+        "acceptedSignals": 2815,
         "selectiveAccuracy": 1.0,
         "selectiveBalancedAccuracy": 1.0
       },
       {
         "minimumConfidence": 0.999,
-        "coverage": 0.7381196581196581,
-        "acceptedSignals": 2159,
+        "coverage": 0.8164102564102564,
+        "acceptedSignals": 2388,
         "selectiveAccuracy": 1.0,
         "selectiveBalancedAccuracy": 1.0
       }

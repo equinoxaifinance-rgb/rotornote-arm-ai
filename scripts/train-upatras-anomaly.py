@@ -25,7 +25,11 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "field" / "training"
 RESULTS = ROOT / "field" / "results"
 SEED = 5246534
-TRAINING_ARCHITECTURE = [48, 256, 128, 8]
+WINDOW_FEATURES = 48
+FEATURE_WINDOWS = 2
+INPUT_FEATURES = WINDOW_FEATURES * FEATURE_WINDOWS
+HIDDEN_LAYERS = (768, 384, 128)
+TRAINING_ARCHITECTURE = [INPUT_FEATURES, *HIDDEN_LAYERS, 8]
 
 
 def wilson_interval(successes, total, z=1.959963984540054):
@@ -39,7 +43,7 @@ def wilson_interval(successes, total, z=1.959963984540054):
 def fit_model(features, labels):
     scaler = StandardScaler().fit(features)
     model = MLPClassifier(
-        hidden_layer_sizes=(256, 128),
+        hidden_layer_sizes=HIDDEN_LAYERS,
         activation="relu",
         solver="adam",
         alpha=0.2,
@@ -62,7 +66,11 @@ def fit_model(features, labels):
 def main():
     manifest = json.loads((DATA / "upatras-manifest.json").read_text(encoding="utf-8"))
     feature_rows = np.fromfile(DATA / "upatras-features.f32", dtype="<f4").reshape(manifest["signals"], manifest["featureWindowsPerSignal"], manifest["featureCount"])
-    features = feature_rows.mean(axis=1)
+    if feature_rows.shape[1:] != (FEATURE_WINDOWS, WINDOW_FEATURES):
+        raise RuntimeError(f"Unexpected UPATRAS feature shape: {feature_rows.shape}")
+    # Preserve the two measured temporal windows instead of averaging away
+    # within-signal evolution. The order is deterministic: first window, then last.
+    features = feature_rows.reshape(manifest["signals"], INPUT_FEATURES)
     broad_labels = np.fromfile(DATA / "upatras-labels.u8", dtype=np.uint8)
     groups = np.fromfile(DATA / "upatras-groups.u8", dtype=np.uint8)
     group_state = {row["group"]: row["state"] for row in manifest["sourceFiles"]}
@@ -118,31 +126,36 @@ def main():
 
     production_scaler, production_model = fit_model(features, labels)
     scaled_features = production_scaler.transform(features)
-    first_activations = np.maximum(0, scaled_features @ production_model.coefs_[0] + production_model.intercepts_[0])
-    keep_first = np.flatnonzero(np.any(first_activations > 0, axis=0))
-    second_activations = np.maximum(0, first_activations @ production_model.coefs_[1] + production_model.intercepts_[1])
-    keep_second = np.flatnonzero(np.any(second_activations > 0, axis=0))
-    pruned_coefs = [
-        production_model.coefs_[0][:, keep_first],
-        production_model.coefs_[1][keep_first, :][:, keep_second],
-        production_model.coefs_[2][keep_second, :],
-    ]
-    pruned_intercepts = [
-        production_model.intercepts_[0][keep_first],
-        production_model.intercepts_[1][keep_second],
-        production_model.intercepts_[2],
-    ]
-    original_logits = second_activations @ production_model.coefs_[2] + production_model.intercepts_[2]
-    pruned_first = np.maximum(0, scaled_features @ pruned_coefs[0] + pruned_intercepts[0])
-    pruned_second = np.maximum(0, pruned_first @ pruned_coefs[1] + pruned_intercepts[1])
-    pruned_logits = pruned_second @ pruned_coefs[2] + pruned_intercepts[2]
+    activations = scaled_features
+    hidden_activations = []
+    keep_hidden = []
+    for weights, bias in zip(production_model.coefs_[:-1], production_model.intercepts_[:-1]):
+        activations = np.maximum(0, activations @ weights + bias)
+        hidden_activations.append(activations)
+        keep_hidden.append(np.flatnonzero(np.any(activations > 0, axis=0)))
+    original_logits = hidden_activations[-1] @ production_model.coefs_[-1] + production_model.intercepts_[-1]
+
+    pruned_coefs = []
+    pruned_intercepts = []
+    previous_keep = np.arange(INPUT_FEATURES)
+    for layer, keep in enumerate(keep_hidden):
+        pruned_coefs.append(production_model.coefs_[layer][previous_keep, :][:, keep])
+        pruned_intercepts.append(production_model.intercepts_[layer][keep])
+        previous_keep = keep
+    pruned_coefs.append(production_model.coefs_[-1][previous_keep, :])
+    pruned_intercepts.append(production_model.intercepts_[-1])
+
+    pruned_values = scaled_features
+    for weights, bias in zip(pruned_coefs[:-1], pruned_intercepts[:-1]):
+        pruned_values = np.maximum(0, pruned_values @ weights + bias)
+    pruned_logits = pruned_values @ pruned_coefs[-1] + pruned_intercepts[-1]
     maximum_pruning_logit_delta = float(np.max(np.abs(original_logits - pruned_logits)))
     if maximum_pruning_logit_delta > 1e-5:
         raise RuntimeError(f"Inactive-unit pruning changed fitted-bank logits: {maximum_pruning_logit_delta}")
-    architecture = [48, len(keep_first), len(keep_second), len(states)]
+    architecture = [INPUT_FEATURES, *[len(keep) for keep in keep_hidden], len(states)]
     coefs = [matrix.T for matrix in pruned_coefs]
     intercepts = [vector for vector in pruned_intercepts]
-    if coefs[-1].shape != (len(states), len(keep_second)):
+    if coefs[-1].shape != (len(states), len(keep_hidden[-1])):
         raise RuntimeError(f"Unexpected multi-condition MLP output shape: {coefs[-1].shape}")
     export = {
         "format": "rotornote-upatras-mlp-export-v1",
@@ -150,12 +163,12 @@ def main():
         "labels": states,
         "broadOutput": {"labels": manifest["labels"], "healthyConditionIndex": healthy_index, "anomalyConditionIndices": [index for index in range(len(states)) if index != healthy_index]},
         "architecture": architecture,
-        "recordingRepresentation": "mean of two deterministic 2,048-sample feature windows from one 3,500-sample speed signal",
+        "recordingRepresentation": "ordered concatenation of the first and last deterministic 2,048-sample feature windows from one 3,500-sample speed signal",
         "normalization": {"means": production_scaler.mean_.tolist(), "deviations": production_scaler.scale_.tolist()},
         "layers": [{"weights": matrix.tolist(), "bias": bias.tolist()} for matrix, bias in zip(coefs, intercepts)],
         "sourceFeatureSha256": manifest["featuresSha256"],
         "fitMeasurementSequences": sorted(set(groups.tolist())),
-        "training": {"epochs": int(production_model.n_iter_), "finalLoss": float(production_model.loss_), "fixedMaximumEpochs": 220, "alpha": 0.2, "solver": "adam", "trainingArchitecture": TRAINING_ARCHITECTURE, "exportArchitecture": architecture, "inactiveUnitsPruned": [256 - len(keep_first), 128 - len(keep_second)], "maximumTrainingBankLogitDeltaAfterPruning": maximum_pruning_logit_delta},
+        "training": {"epochs": int(production_model.n_iter_), "finalLoss": float(production_model.loss_), "fixedMaximumEpochs": 220, "alpha": 0.2, "solver": "adam", "trainingArchitecture": TRAINING_ARCHITECTURE, "exportArchitecture": architecture, "inactiveUnitsPruned": [size - len(keep) for size, keep in zip(HIDDEN_LAYERS, keep_hidden)], "maximumTrainingBankLogitDeltaAfterPruning": maximum_pruning_logit_delta},
         "validationProtocol": "four-fold stratified whole-measurement-sequence cross-validation; no speed signal or feature window from a held sequence is used in training",
     }
     export_bytes = (json.dumps(export, indent=2) + "\n").encode()
@@ -165,7 +178,7 @@ def main():
     receipt = {
         "format": "rotornote-upatras-grouped-anomaly-v1",
         "executedAt": datetime.now(timezone.utc).isoformat(),
-        "modelSpecification": "standard scaling plus 48-to-256-to-128-to-8 ReLU multilayer perceptron; eight observed experimental conditions preserve anomaly heterogeneity, while the product boundary collapses them to healthy-versus-anomaly; class-balanced sample weighting; fixed 220-epoch maximum schedule; post-fit removal of units never activated by any of 2,925 real training-bank signals",
+        "modelSpecification": "standard scaling plus 96-to-768-to-384-to-128-to-8 ReLU multilayer perceptron over an ordered pair of measured temporal windows; eight observed experimental conditions preserve anomaly heterogeneity, while the product boundary collapses them to healthy-versus-anomaly; class-balanced sample weighting; fixed 220-epoch maximum schedule; post-fit removal of units never activated by any of 2,925 real training-bank signals",
         "source": manifest["sourceDataset"],
         "sourceFeatureSha256": manifest["featuresSha256"],
         "modelExportSha256": hashlib.sha256(export_bytes).hexdigest(),

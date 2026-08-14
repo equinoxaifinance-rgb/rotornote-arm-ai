@@ -4,7 +4,7 @@ const elements = Object.fromEntries([
   "verdictTitle", "primaryLabel", "confidence", "confidenceMeter", "duration", "waveform", "timeline", "action",
   "details", "disclaimer", "machineId", "measurementPoint", "sensorAxis", "operatingRpm", "loadPercent",
   "decisionBadge", "assurance", "machineContext", "receiptId", "downloadEvidence", "copyMaintenanceNote",
-  "anomalyDemo", "anomalyResult",
+  "anomalyDemo", "anomalyResult", "compileDemo", "compileResult", "compileDownloads", "downloadFp32", "downloadInt8",
 ].map((id) => [id, document.getElementById(id)]));
 
 let selectedCsv = "";
@@ -234,5 +234,28 @@ elements.anomalyDemo.addEventListener("click", async () => {
     elements.anomalyResult.textContent = error.message;
   } finally {
     elements.anomalyDemo.disabled = false;
+  }
+});
+
+elements.compileDemo.addEventListener("click", async () => {
+  elements.compileDemo.disabled = true;
+  elements.compileResult.textContent = "Compiling and checking FP32/INT8 parity…";
+  try {
+    const source = await (await fetch("/examples/dense-compile-input.json")).text();
+    const response = await fetch("/api/compile", { method: "POST", headers: { "content-type": "application/json" }, body: source });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.message || result.error || "Compilation failed");
+    elements.compileResult.textContent = `${result.architecture.join("→")} · ${result.multiplyAccumulates.toLocaleString()} MACs · ${Math.round(result.learnedByteReduction * 100)}% fewer learned bytes · ${Math.round(result.parity.labelAgreement * 100)}% parity`;
+    for (const [element, artifact] of [[elements.downloadFp32, result.artifacts.fp32], [elements.downloadInt8, result.artifacts.int8]]) {
+      const bytes = Uint8Array.from(atob(artifact.base64), (character) => character.charCodeAt(0));
+      if (element.href.startsWith("blob:")) URL.revokeObjectURL(element.href);
+      element.href = URL.createObjectURL(new Blob([bytes], { type: "application/octet-stream" }));
+      element.title = `${artifact.bytes.toLocaleString()} bytes · SHA-256 ${artifact.sha256}`;
+    }
+    elements.compileDownloads.hidden = false;
+  } catch (error) {
+    elements.compileResult.textContent = error.message;
+  } finally {
+    elements.compileDemo.disabled = false;
   }
 });

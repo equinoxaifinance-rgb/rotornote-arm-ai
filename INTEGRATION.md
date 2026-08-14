@@ -8,6 +8,10 @@ machine → calibrated sensors → gateway CSV → RotorNote → evidence/note �
 
 It never writes to a PLC or triggers shutdown.
 
+The separate `POST /api/compile` JSON route is a developer tool, not a machine
+decision route. It creates deterministic FP32 and INT8 dense-ReLU artifacts
+under strict shape, size, and parity bounds; see `ARM-INT8-KIT.md`.
+
 ## CSV contract
 
 - One channel: `amplitude` or `timestamp,amplitude`

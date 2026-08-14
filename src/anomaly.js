@@ -5,11 +5,13 @@ const argmax = (values) => values.reduce((best, value, index) => value > values[
 export function analyzeVariableSpeedAnomaly(model, values, sampleRate, operatingRpm, engine = "optimized") {
   if (values.length < 2048) throw new Error("Variable-speed anomaly screening needs at least 2,048 samples");
   if (!Number.isFinite(operatingRpm) || operatingRpm <= 0) throw new Error("Operating RPM is required for variable-speed anomaly screening");
-  const offsets = values.length === 2048 ? [0] : [0, values.length - 2048];
+  const offsets = [0, Math.max(0, values.length - 2048)];
   const features = new Float32Array(model.metadata.inputFeatures);
-  for (const offset of offsets) {
+  for (let window = 0; window < offsets.length; window += 1) {
+    const offset = offsets[window];
     const row = extractFeatures(values.subarray(offset, offset + 2048), sampleRate, operatingRpm);
-    for (let feature = 0; feature < features.length; feature += 1) features[feature] += row[feature] / offsets.length;
+    if (row.length * offsets.length !== features.length) throw new Error("Anomaly model temporal feature contract mismatch");
+    features.set(row, window * row.length);
   }
   const baseline = model.infer(features, "baseline");
   const optimized = model.infer(features, "optimized");
@@ -25,6 +27,8 @@ export function analyzeVariableSpeedAnomaly(model, values, sampleRate, operating
   const distribution = model.assessDistribution(features);
   const reasons = [];
   if (baselineLabel !== optimizedLabel) reasons.push("engine_disagreement");
+  const [minimumRpm, maximumRpm] = model.metadata.training.operatingRpmRange;
+  if (operatingRpm < minimumRpm || operatingRpm > maximumRpm) reasons.push("outside_operating_envelope");
   if (!distribution.inDistribution) reasons.push("outside_training_envelope");
   if (confidence < model.metadata.decisionPolicy.minimumConfidence) reasons.push("low_model_confidence");
   const status = reasons.length ? "review_required" : "screened";
@@ -38,7 +42,7 @@ export function analyzeVariableSpeedAnomaly(model, values, sampleRate, operating
     probabilities: Object.fromEntries(model.metadata.broadOutput.labels.map((label, index) => [label, Number(selected[index].toFixed(6))])),
     distribution,
     reasons,
-    signal: { samples: values.length, sampleRate, operatingRpm, featureWindows: offsets.length },
+    signal: { samples: values.length, sampleRate, operatingRpm, featureWindows: offsets.length, temporalAggregation: "ordered_concatenation" },
     model: { format: model.metadata.format, architecture: model.metadata.architecture, learnedExperimentalConditions: model.metadata.labels.length, source: model.metadata.training.source.title },
     note: "The learned representation preserves eight observed experimental conditions, but this product boundary emits healthy-versus-anomaly only. It does not identify a field fault family, estimate severity, or replace a qualified vibration review.",
   };

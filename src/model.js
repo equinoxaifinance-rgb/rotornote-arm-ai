@@ -52,7 +52,6 @@ export async function loadModel({ modelUrl = MODEL_URL, wasmUrl = WASM_URL } = {
   ]);
   const instance = await WebAssembly.instantiate(wasmBuffer);
   const { memory, dense } = instance.instance.exports;
-  const memoryBytes = new Uint8Array(memory.buffer);
   const align16 = (value) => (value + 15) & ~15;
   let memoryCursor = 0;
   const int8WeightAddresses = metadata.int8.layers.map((layer) => {
@@ -70,6 +69,11 @@ export async function loadModel({ modelUrl = MODEL_URL, wasmUrl = WASM_URL } = {
     memoryCursor = address + layer.outputs * 4;
     return address;
   });
+  if (memoryCursor > memory.buffer.byteLength) {
+    const missingPages = Math.ceil((memoryCursor - memory.buffer.byteLength) / 65536);
+    memory.grow(missingPages);
+  }
+  const memoryBytes = new Uint8Array(memory.buffer);
   if (memoryCursor > memoryBytes.length) throw new Error(`Model needs ${memoryCursor} WASM bytes; kernel exposes ${memoryBytes.length}`);
   for (let index = 0; index < metadata.int8.layers.length; index += 1) {
     const descriptor = metadata.int8.layers[index].weights;

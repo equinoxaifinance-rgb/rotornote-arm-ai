@@ -20,20 +20,15 @@ const validation = JSON.parse(validationBytes);
 if (manifest.format !== "rotornote-upatras-features-v1" || exported.format !== "rotornote-upatras-mlp-export-v1") throw new Error("UPATRAS model source contract mismatch");
 if (sha256(featureBuffer) !== manifest.featuresSha256 || sha256(labelBuffer) !== manifest.labelsSha256 || sha256(groupBuffer) !== manifest.groupsSha256) throw new Error("UPATRAS source artifact integrity failed");
 if (exported.sourceFeatureSha256 !== manifest.featuresSha256 || validation.modelExportSha256 !== sha256(Buffer.from(exportText))) throw new Error("UPATRAS export receipt binding failed");
-if (exported.architecture[0] !== 48 || exported.architecture.at(-1) !== exported.labels.length || exported.architecture.length < 4 || exported.broadOutput?.labels?.length !== 2) throw new Error("UPATRAS network architecture mismatch");
+const inputFeatures = manifest.featureCount * manifest.featureWindowsPerSignal;
+if (exported.architecture[0] !== inputFeatures || exported.architecture.at(-1) !== exported.labels.length || exported.architecture.length < 4 || exported.broadOutput?.labels?.length !== 2) throw new Error("UPATRAS network architecture mismatch");
 
-const signalFeatures = new Float32Array(manifest.signals * manifest.featureCount);
 const featureRows = new Float32Array(featureBuffer.buffer, featureBuffer.byteOffset, featureBuffer.byteLength / 4);
-for (let signal = 0; signal < manifest.signals; signal += 1) {
-  for (let window = 0; window < manifest.featureWindowsPerSignal; window += 1) {
-    const sourceOffset = (signal * manifest.featureWindowsPerSignal + window) * manifest.featureCount;
-    for (let feature = 0; feature < manifest.featureCount; feature += 1) signalFeatures[signal * manifest.featureCount + feature] += featureRows[sourceOffset + feature] / manifest.featureWindowsPerSignal;
-  }
-}
+const signalFeatures = featureRows;
 const labels = new Uint8Array(labelBuffer.buffer, labelBuffer.byteOffset, labelBuffer.byteLength);
 const means = Float32Array.from(exported.normalization.means);
 const deviations = Float32Array.from(exported.normalization.deviations);
-const normalizedRows = Array.from({ length: manifest.signals }, (_, signal) => Float32Array.from(signalFeatures.subarray(signal * manifest.featureCount, (signal + 1) * manifest.featureCount), (value, feature) => (value - means[feature]) / deviations[feature]));
+const normalizedRows = Array.from({ length: manifest.signals }, (_, signal) => Float32Array.from(signalFeatures.subarray(signal * inputFeatures, (signal + 1) * inputFeatures), (value, feature) => (value - means[feature]) / deviations[feature]));
 const layers = exported.layers.map((layer, index) => ({
   name: index === exported.layers.length - 1 ? "anomaly_logits" : `relu_${index + 1}`,
   inputs: exported.architecture[index],
@@ -138,14 +133,14 @@ const labelAgreement = agreement / normalizedRows.length;
 const p99ProbabilityDelta = probabilityDeltas[Math.floor((probabilityDeltas.length - 1) * 0.99)];
 if (labelAgreement !== 1 || p99ProbabilityDelta >= 0.05 || maximumProbabilityDelta >= 0.2) throw new Error(`UPATRAS INT8 parity failed: agreement=${labelAgreement}, p99=${p99ProbabilityDelta}, max=${maximumProbabilityDelta}`);
 
-const centroids = Array.from({ length: 2 }, () => new Float64Array(manifest.featureCount));
+const centroids = Array.from({ length: 2 }, () => new Float64Array(inputFeatures));
 const counts = new Uint32Array(2);
 for (let row = 0; row < normalizedRows.length; row += 1) {
   const label = labels[row];
   counts[label] += 1;
-  for (let feature = 0; feature < manifest.featureCount; feature += 1) centroids[label][feature] += normalizedRows[row][feature];
+  for (let feature = 0; feature < inputFeatures; feature += 1) centroids[label][feature] += normalizedRows[row][feature];
 }
-for (let label = 0; label < 2; label += 1) for (let feature = 0; feature < manifest.featureCount; feature += 1) centroids[label][feature] /= counts[label];
+for (let label = 0; label < 2; label += 1) for (let feature = 0; feature < inputFeatures; feature += 1) centroids[label][feature] /= counts[label];
 const distance = (values, centroid) => values.reduce((total, value, index) => total + (value - centroid[index]) ** 2, 0) / values.length;
 const distances = normalizedRows.map((row, index) => distance(row, centroids[labels[index]])).sort((left, right) => left - right);
 const oodQuantile = 0.995;
@@ -202,10 +197,10 @@ const metadata = {
   seed: exported.seed,
   labels: exported.labels,
   broadOutput: exported.broadOutput,
-  inputFeatures: manifest.featureCount,
+  inputFeatures,
   architecture: exported.architecture,
   training: {
-    method: `class-balanced ${exported.architecture.join("-to-")} ReLU MLP over mean features from two real vibration windows per speed signal; inactive production units pruned with zero fitted-bank logit drift`,
+    method: `class-balanced ${exported.architecture.join("-to-")} ReLU MLP over an ordered pair of measured temporal feature windows per speed signal; inactive production units pruned with zero fitted-bank logit drift`,
     pruning: exported.training,
     dataKind: "real experimental vibration only",
     source: manifest.sourceDataset,
@@ -221,6 +216,7 @@ const metadata = {
     broadAnomalyBalancedAccuracy: validation.aggregate.broadAnomalyBalancedAccuracy,
     measurementSequenceAccuracy: validation.aggregate.measurementSequenceAccuracy,
     measurementSequenceAccuracyWilson95: validation.aggregate.measurementSequenceAccuracyWilson95,
+    operatingRpmRange: manifest.operatingRpmRange,
     engineLabelAgreement: labelAgreement,
     p99ProbabilityDelta,
     maximumProbabilityDelta,

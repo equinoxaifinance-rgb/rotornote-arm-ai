@@ -1,0 +1,3971 @@
+{
+  "schema": "rotornote-zhenjiang-bearing-boundary-v1",
+  "createdAt": "2026-08-14T06:21:57.342Z",
+  "source": {
+    "title": "Zhenjiang bearing dataset",
+    "authors": [
+      "Weiwei Qian"
+    ],
+    "version": 1,
+    "doi": "10.17632/xfj9t7cprb.1",
+    "recordUrl": "https://data.mendeley.com/datasets/xfj9t7cprb/1",
+    "archiveUrl": "https://data.mendeley.com/public-api/zip/xfj9t7cprb/download/1",
+    "archiveSha256": "ff58f977d2c3f7bd3f0dadfa51b4934bcd989590a10ddb7b0efcdd4f42a769fd",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "acquisition": "Separate physical bearing rig; 25.6 kHz; five numbered condition files (healthy, inner race, outer race, ball, ball-plus-outer-race); seven documented speeds from 900 to 1500 RPM; 1,800 samples per time-domain trace.",
+    "use": "Second-rig external fail-closed challenge through the canonical one-channel anomaly route only; never production training.",
+    "documentedRpms": [
+      900,
+      1000,
+      1100,
+      1200,
+      1300,
+      1400,
+      1500
+    ],
+    "expectedConditionFiles": 5,
+    "selectedColumnsPerFile": 7
+  },
+  "route": "canonical one-channel variable-speed anomaly head",
+  "selection": "Seven evenly spaced column indices from every numbered condition matrix, fixed before inference. Because the archive does not machine-map columns to RPM, each prepared trace is challenged at every documented RPM.",
+  "transform": "Deterministic linear interpolation from 1,800 to 2,048 samples; no generated signals, labels, or noise.",
+  "archiveSha256": "ff58f977d2c3f7bd3f0dadfa51b4934bcd989590a10ddb7b0efcdd4f42a769fd",
+  "claim": "Second-rig fail-closed challenge across 35 predeclared physical traces and every documented RPM; not a bearing-accuracy estimate.",
+  "cases": [
+    {
+      "id": "zj-1-1-900rpm",
+      "sourceSignal": "zj-1-1",
+      "condition": "healthy",
+      "sourceColumn": 0,
+      "testedRpm": 900,
+      "preparedSha256": "01a01d14474c20bbaee6a9a02935b1889feb7fcd3231067caea7d570cd045148",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-1-1-1000rpm",
+      "sourceSignal": "zj-1-1",
+      "condition": "healthy",
+      "sourceColumn": 0,
+      "testedRpm": 1000,
+      "preparedSha256": "01a01d14474c20bbaee6a9a02935b1889feb7fcd3231067caea7d570cd045148",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-1-1100rpm",
+      "sourceSignal": "zj-1-1",
+      "condition": "healthy",
+      "sourceColumn": 0,
+      "testedRpm": 1100,
+      "preparedSha256": "01a01d14474c20bbaee6a9a02935b1889feb7fcd3231067caea7d570cd045148",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-1-1200rpm",
+      "sourceSignal": "zj-1-1",
+      "condition": "healthy",
+      "sourceColumn": 0,
+      "testedRpm": 1200,
+      "preparedSha256": "01a01d14474c20bbaee6a9a02935b1889feb7fcd3231067caea7d570cd045148",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-1-1300rpm",
+      "sourceSignal": "zj-1-1",
+      "condition": "healthy",
+      "sourceColumn": 0,
+      "testedRpm": 1300,
+      "preparedSha256": "01a01d14474c20bbaee6a9a02935b1889feb7fcd3231067caea7d570cd045148",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-1-1400rpm",
+      "sourceSignal": "zj-1-1",
+      "condition": "healthy",
+      "sourceColumn": 0,
+      "testedRpm": 1400,
+      "preparedSha256": "01a01d14474c20bbaee6a9a02935b1889feb7fcd3231067caea7d570cd045148",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-1-1500rpm",
+      "sourceSignal": "zj-1-1",
+      "condition": "healthy",
+      "sourceColumn": 0,
+      "testedRpm": 1500,
+      "preparedSha256": "01a01d14474c20bbaee6a9a02935b1889feb7fcd3231067caea7d570cd045148",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-1-2-900rpm",
+      "sourceSignal": "zj-1-2",
+      "condition": "healthy",
+      "sourceColumn": 314,
+      "testedRpm": 900,
+      "preparedSha256": "b35bcef650fd494b1b3bb3e531d8195778522e14369fdfe002d4e5732ba5a773",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-2-1000rpm",
+      "sourceSignal": "zj-1-2",
+      "condition": "healthy",
+      "sourceColumn": 314,
+      "testedRpm": 1000,
+      "preparedSha256": "b35bcef650fd494b1b3bb3e531d8195778522e14369fdfe002d4e5732ba5a773",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-2-1100rpm",
+      "sourceSignal": "zj-1-2",
+      "condition": "healthy",
+      "sourceColumn": 314,
+      "testedRpm": 1100,
+      "preparedSha256": "b35bcef650fd494b1b3bb3e531d8195778522e14369fdfe002d4e5732ba5a773",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-2-1200rpm",
+      "sourceSignal": "zj-1-2",
+      "condition": "healthy",
+      "sourceColumn": 314,
+      "testedRpm": 1200,
+      "preparedSha256": "b35bcef650fd494b1b3bb3e531d8195778522e14369fdfe002d4e5732ba5a773",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-2-1300rpm",
+      "sourceSignal": "zj-1-2",
+      "condition": "healthy",
+      "sourceColumn": 314,
+      "testedRpm": 1300,
+      "preparedSha256": "b35bcef650fd494b1b3bb3e531d8195778522e14369fdfe002d4e5732ba5a773",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-2-1400rpm",
+      "sourceSignal": "zj-1-2",
+      "condition": "healthy",
+      "sourceColumn": 314,
+      "testedRpm": 1400,
+      "preparedSha256": "b35bcef650fd494b1b3bb3e531d8195778522e14369fdfe002d4e5732ba5a773",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-2-1500rpm",
+      "sourceSignal": "zj-1-2",
+      "condition": "healthy",
+      "sourceColumn": 314,
+      "testedRpm": 1500,
+      "preparedSha256": "b35bcef650fd494b1b3bb3e531d8195778522e14369fdfe002d4e5732ba5a773",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-3-900rpm",
+      "sourceSignal": "zj-1-3",
+      "condition": "healthy",
+      "sourceColumn": 629,
+      "testedRpm": 900,
+      "preparedSha256": "ff9ac8d6a402ed2c39f6c02d53e2f6e840d062591ef9d00514261feb69c4b873",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-3-1000rpm",
+      "sourceSignal": "zj-1-3",
+      "condition": "healthy",
+      "sourceColumn": 629,
+      "testedRpm": 1000,
+      "preparedSha256": "ff9ac8d6a402ed2c39f6c02d53e2f6e840d062591ef9d00514261feb69c4b873",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-3-1100rpm",
+      "sourceSignal": "zj-1-3",
+      "condition": "healthy",
+      "sourceColumn": 629,
+      "testedRpm": 1100,
+      "preparedSha256": "ff9ac8d6a402ed2c39f6c02d53e2f6e840d062591ef9d00514261feb69c4b873",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-3-1200rpm",
+      "sourceSignal": "zj-1-3",
+      "condition": "healthy",
+      "sourceColumn": 629,
+      "testedRpm": 1200,
+      "preparedSha256": "ff9ac8d6a402ed2c39f6c02d53e2f6e840d062591ef9d00514261feb69c4b873",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-3-1300rpm",
+      "sourceSignal": "zj-1-3",
+      "condition": "healthy",
+      "sourceColumn": 629,
+      "testedRpm": 1300,
+      "preparedSha256": "ff9ac8d6a402ed2c39f6c02d53e2f6e840d062591ef9d00514261feb69c4b873",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-3-1400rpm",
+      "sourceSignal": "zj-1-3",
+      "condition": "healthy",
+      "sourceColumn": 629,
+      "testedRpm": 1400,
+      "preparedSha256": "ff9ac8d6a402ed2c39f6c02d53e2f6e840d062591ef9d00514261feb69c4b873",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-3-1500rpm",
+      "sourceSignal": "zj-1-3",
+      "condition": "healthy",
+      "sourceColumn": 629,
+      "testedRpm": 1500,
+      "preparedSha256": "ff9ac8d6a402ed2c39f6c02d53e2f6e840d062591ef9d00514261feb69c4b873",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-1-4-900rpm",
+      "sourceSignal": "zj-1-4",
+      "condition": "healthy",
+      "sourceColumn": 944,
+      "testedRpm": 900,
+      "preparedSha256": "b3e32aa868446f9216c06325d2b44657761305895b3e37a271dc4382a9ea22ea",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-4-1000rpm",
+      "sourceSignal": "zj-1-4",
+      "condition": "healthy",
+      "sourceColumn": 944,
+      "testedRpm": 1000,
+      "preparedSha256": "b3e32aa868446f9216c06325d2b44657761305895b3e37a271dc4382a9ea22ea",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-4-1100rpm",
+      "sourceSignal": "zj-1-4",
+      "condition": "healthy",
+      "sourceColumn": 944,
+      "testedRpm": 1100,
+      "preparedSha256": "b3e32aa868446f9216c06325d2b44657761305895b3e37a271dc4382a9ea22ea",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-4-1200rpm",
+      "sourceSignal": "zj-1-4",
+      "condition": "healthy",
+      "sourceColumn": 944,
+      "testedRpm": 1200,
+      "preparedSha256": "b3e32aa868446f9216c06325d2b44657761305895b3e37a271dc4382a9ea22ea",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-4-1300rpm",
+      "sourceSignal": "zj-1-4",
+      "condition": "healthy",
+      "sourceColumn": 944,
+      "testedRpm": 1300,
+      "preparedSha256": "b3e32aa868446f9216c06325d2b44657761305895b3e37a271dc4382a9ea22ea",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-4-1400rpm",
+      "sourceSignal": "zj-1-4",
+      "condition": "healthy",
+      "sourceColumn": 944,
+      "testedRpm": 1400,
+      "preparedSha256": "b3e32aa868446f9216c06325d2b44657761305895b3e37a271dc4382a9ea22ea",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-1-4-1500rpm",
+      "sourceSignal": "zj-1-4",
+      "condition": "healthy",
+      "sourceColumn": 944,
+      "testedRpm": 1500,
+      "preparedSha256": "b3e32aa868446f9216c06325d2b44657761305895b3e37a271dc4382a9ea22ea",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-5-900rpm",
+      "sourceSignal": "zj-1-5",
+      "condition": "healthy",
+      "sourceColumn": 1259,
+      "testedRpm": 900,
+      "preparedSha256": "853d5221e992a5925d0899220d9c893da1b7f2f618cac005c7a55a3891132b3a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-5-1000rpm",
+      "sourceSignal": "zj-1-5",
+      "condition": "healthy",
+      "sourceColumn": 1259,
+      "testedRpm": 1000,
+      "preparedSha256": "853d5221e992a5925d0899220d9c893da1b7f2f618cac005c7a55a3891132b3a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-5-1100rpm",
+      "sourceSignal": "zj-1-5",
+      "condition": "healthy",
+      "sourceColumn": 1259,
+      "testedRpm": 1100,
+      "preparedSha256": "853d5221e992a5925d0899220d9c893da1b7f2f618cac005c7a55a3891132b3a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-5-1200rpm",
+      "sourceSignal": "zj-1-5",
+      "condition": "healthy",
+      "sourceColumn": 1259,
+      "testedRpm": 1200,
+      "preparedSha256": "853d5221e992a5925d0899220d9c893da1b7f2f618cac005c7a55a3891132b3a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-5-1300rpm",
+      "sourceSignal": "zj-1-5",
+      "condition": "healthy",
+      "sourceColumn": 1259,
+      "testedRpm": 1300,
+      "preparedSha256": "853d5221e992a5925d0899220d9c893da1b7f2f618cac005c7a55a3891132b3a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-5-1400rpm",
+      "sourceSignal": "zj-1-5",
+      "condition": "healthy",
+      "sourceColumn": 1259,
+      "testedRpm": 1400,
+      "preparedSha256": "853d5221e992a5925d0899220d9c893da1b7f2f618cac005c7a55a3891132b3a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-5-1500rpm",
+      "sourceSignal": "zj-1-5",
+      "condition": "healthy",
+      "sourceColumn": 1259,
+      "testedRpm": 1500,
+      "preparedSha256": "853d5221e992a5925d0899220d9c893da1b7f2f618cac005c7a55a3891132b3a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-6-900rpm",
+      "sourceSignal": "zj-1-6",
+      "condition": "healthy",
+      "sourceColumn": 1574,
+      "testedRpm": 900,
+      "preparedSha256": "c76349d6272283c1b7e6313ce484749b13860a4154c858950fec887158122d56",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-1-6-1000rpm",
+      "sourceSignal": "zj-1-6",
+      "condition": "healthy",
+      "sourceColumn": 1574,
+      "testedRpm": 1000,
+      "preparedSha256": "c76349d6272283c1b7e6313ce484749b13860a4154c858950fec887158122d56",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-6-1100rpm",
+      "sourceSignal": "zj-1-6",
+      "condition": "healthy",
+      "sourceColumn": 1574,
+      "testedRpm": 1100,
+      "preparedSha256": "c76349d6272283c1b7e6313ce484749b13860a4154c858950fec887158122d56",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-6-1200rpm",
+      "sourceSignal": "zj-1-6",
+      "condition": "healthy",
+      "sourceColumn": 1574,
+      "testedRpm": 1200,
+      "preparedSha256": "c76349d6272283c1b7e6313ce484749b13860a4154c858950fec887158122d56",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-6-1300rpm",
+      "sourceSignal": "zj-1-6",
+      "condition": "healthy",
+      "sourceColumn": 1574,
+      "testedRpm": 1300,
+      "preparedSha256": "c76349d6272283c1b7e6313ce484749b13860a4154c858950fec887158122d56",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-6-1400rpm",
+      "sourceSignal": "zj-1-6",
+      "condition": "healthy",
+      "sourceColumn": 1574,
+      "testedRpm": 1400,
+      "preparedSha256": "c76349d6272283c1b7e6313ce484749b13860a4154c858950fec887158122d56",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-6-1500rpm",
+      "sourceSignal": "zj-1-6",
+      "condition": "healthy",
+      "sourceColumn": 1574,
+      "testedRpm": 1500,
+      "preparedSha256": "c76349d6272283c1b7e6313ce484749b13860a4154c858950fec887158122d56",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-7-900rpm",
+      "sourceSignal": "zj-1-7",
+      "condition": "healthy",
+      "sourceColumn": 1889,
+      "testedRpm": 900,
+      "preparedSha256": "0ff748403c27659245b4b61441d02f90600de0b22bd8e6564c5d764b933a29e7",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-7-1000rpm",
+      "sourceSignal": "zj-1-7",
+      "condition": "healthy",
+      "sourceColumn": 1889,
+      "testedRpm": 1000,
+      "preparedSha256": "0ff748403c27659245b4b61441d02f90600de0b22bd8e6564c5d764b933a29e7",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-7-1100rpm",
+      "sourceSignal": "zj-1-7",
+      "condition": "healthy",
+      "sourceColumn": 1889,
+      "testedRpm": 1100,
+      "preparedSha256": "0ff748403c27659245b4b61441d02f90600de0b22bd8e6564c5d764b933a29e7",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-7-1200rpm",
+      "sourceSignal": "zj-1-7",
+      "condition": "healthy",
+      "sourceColumn": 1889,
+      "testedRpm": 1200,
+      "preparedSha256": "0ff748403c27659245b4b61441d02f90600de0b22bd8e6564c5d764b933a29e7",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-7-1300rpm",
+      "sourceSignal": "zj-1-7",
+      "condition": "healthy",
+      "sourceColumn": 1889,
+      "testedRpm": 1300,
+      "preparedSha256": "0ff748403c27659245b4b61441d02f90600de0b22bd8e6564c5d764b933a29e7",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-7-1400rpm",
+      "sourceSignal": "zj-1-7",
+      "condition": "healthy",
+      "sourceColumn": 1889,
+      "testedRpm": 1400,
+      "preparedSha256": "0ff748403c27659245b4b61441d02f90600de0b22bd8e6564c5d764b933a29e7",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-1-7-1500rpm",
+      "sourceSignal": "zj-1-7",
+      "condition": "healthy",
+      "sourceColumn": 1889,
+      "testedRpm": 1500,
+      "preparedSha256": "0ff748403c27659245b4b61441d02f90600de0b22bd8e6564c5d764b933a29e7",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-1-900rpm",
+      "sourceSignal": "zj-2-1",
+      "condition": "inner_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 900,
+      "preparedSha256": "a1f4d890009f7e1a398124a8d5444c421ba6e4cf1d296b22a2c3fd92dd1904d8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-1-1000rpm",
+      "sourceSignal": "zj-2-1",
+      "condition": "inner_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1000,
+      "preparedSha256": "a1f4d890009f7e1a398124a8d5444c421ba6e4cf1d296b22a2c3fd92dd1904d8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-1-1100rpm",
+      "sourceSignal": "zj-2-1",
+      "condition": "inner_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1100,
+      "preparedSha256": "a1f4d890009f7e1a398124a8d5444c421ba6e4cf1d296b22a2c3fd92dd1904d8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-1-1200rpm",
+      "sourceSignal": "zj-2-1",
+      "condition": "inner_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1200,
+      "preparedSha256": "a1f4d890009f7e1a398124a8d5444c421ba6e4cf1d296b22a2c3fd92dd1904d8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-1-1300rpm",
+      "sourceSignal": "zj-2-1",
+      "condition": "inner_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1300,
+      "preparedSha256": "a1f4d890009f7e1a398124a8d5444c421ba6e4cf1d296b22a2c3fd92dd1904d8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-1-1400rpm",
+      "sourceSignal": "zj-2-1",
+      "condition": "inner_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1400,
+      "preparedSha256": "a1f4d890009f7e1a398124a8d5444c421ba6e4cf1d296b22a2c3fd92dd1904d8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-1-1500rpm",
+      "sourceSignal": "zj-2-1",
+      "condition": "inner_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1500,
+      "preparedSha256": "a1f4d890009f7e1a398124a8d5444c421ba6e4cf1d296b22a2c3fd92dd1904d8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-2-900rpm",
+      "sourceSignal": "zj-2-2",
+      "condition": "inner_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 900,
+      "preparedSha256": "719798e8c7d6d608b5c5ff9b1496c788eabe119c227eca5e70028f4869b72107",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-2-1000rpm",
+      "sourceSignal": "zj-2-2",
+      "condition": "inner_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1000,
+      "preparedSha256": "719798e8c7d6d608b5c5ff9b1496c788eabe119c227eca5e70028f4869b72107",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-2-1100rpm",
+      "sourceSignal": "zj-2-2",
+      "condition": "inner_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1100,
+      "preparedSha256": "719798e8c7d6d608b5c5ff9b1496c788eabe119c227eca5e70028f4869b72107",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-2-1200rpm",
+      "sourceSignal": "zj-2-2",
+      "condition": "inner_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1200,
+      "preparedSha256": "719798e8c7d6d608b5c5ff9b1496c788eabe119c227eca5e70028f4869b72107",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-2-1300rpm",
+      "sourceSignal": "zj-2-2",
+      "condition": "inner_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1300,
+      "preparedSha256": "719798e8c7d6d608b5c5ff9b1496c788eabe119c227eca5e70028f4869b72107",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-2-1400rpm",
+      "sourceSignal": "zj-2-2",
+      "condition": "inner_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1400,
+      "preparedSha256": "719798e8c7d6d608b5c5ff9b1496c788eabe119c227eca5e70028f4869b72107",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-2-1500rpm",
+      "sourceSignal": "zj-2-2",
+      "condition": "inner_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1500,
+      "preparedSha256": "719798e8c7d6d608b5c5ff9b1496c788eabe119c227eca5e70028f4869b72107",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-3-900rpm",
+      "sourceSignal": "zj-2-3",
+      "condition": "inner_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 900,
+      "preparedSha256": "5038214d0354879098bdbe67e9a3c93da6fa668436471530606695b0a9202e91",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-3-1000rpm",
+      "sourceSignal": "zj-2-3",
+      "condition": "inner_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1000,
+      "preparedSha256": "5038214d0354879098bdbe67e9a3c93da6fa668436471530606695b0a9202e91",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-3-1100rpm",
+      "sourceSignal": "zj-2-3",
+      "condition": "inner_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1100,
+      "preparedSha256": "5038214d0354879098bdbe67e9a3c93da6fa668436471530606695b0a9202e91",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-3-1200rpm",
+      "sourceSignal": "zj-2-3",
+      "condition": "inner_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1200,
+      "preparedSha256": "5038214d0354879098bdbe67e9a3c93da6fa668436471530606695b0a9202e91",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-3-1300rpm",
+      "sourceSignal": "zj-2-3",
+      "condition": "inner_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1300,
+      "preparedSha256": "5038214d0354879098bdbe67e9a3c93da6fa668436471530606695b0a9202e91",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-3-1400rpm",
+      "sourceSignal": "zj-2-3",
+      "condition": "inner_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1400,
+      "preparedSha256": "5038214d0354879098bdbe67e9a3c93da6fa668436471530606695b0a9202e91",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-3-1500rpm",
+      "sourceSignal": "zj-2-3",
+      "condition": "inner_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1500,
+      "preparedSha256": "5038214d0354879098bdbe67e9a3c93da6fa668436471530606695b0a9202e91",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-4-900rpm",
+      "sourceSignal": "zj-2-4",
+      "condition": "inner_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 900,
+      "preparedSha256": "5b4ce52e25f704479bf8301e40635ed95afd915552a1cb3e7e0dc828f496e1fd",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-4-1000rpm",
+      "sourceSignal": "zj-2-4",
+      "condition": "inner_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1000,
+      "preparedSha256": "5b4ce52e25f704479bf8301e40635ed95afd915552a1cb3e7e0dc828f496e1fd",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-4-1100rpm",
+      "sourceSignal": "zj-2-4",
+      "condition": "inner_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1100,
+      "preparedSha256": "5b4ce52e25f704479bf8301e40635ed95afd915552a1cb3e7e0dc828f496e1fd",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-4-1200rpm",
+      "sourceSignal": "zj-2-4",
+      "condition": "inner_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1200,
+      "preparedSha256": "5b4ce52e25f704479bf8301e40635ed95afd915552a1cb3e7e0dc828f496e1fd",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-4-1300rpm",
+      "sourceSignal": "zj-2-4",
+      "condition": "inner_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1300,
+      "preparedSha256": "5b4ce52e25f704479bf8301e40635ed95afd915552a1cb3e7e0dc828f496e1fd",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-4-1400rpm",
+      "sourceSignal": "zj-2-4",
+      "condition": "inner_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1400,
+      "preparedSha256": "5b4ce52e25f704479bf8301e40635ed95afd915552a1cb3e7e0dc828f496e1fd",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-4-1500rpm",
+      "sourceSignal": "zj-2-4",
+      "condition": "inner_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1500,
+      "preparedSha256": "5b4ce52e25f704479bf8301e40635ed95afd915552a1cb3e7e0dc828f496e1fd",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-5-900rpm",
+      "sourceSignal": "zj-2-5",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 900,
+      "preparedSha256": "81c81b802e0980e14b3baca90bce04ae2d3acc0b8019f4d4ee13540bdadd0a39",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-5-1000rpm",
+      "sourceSignal": "zj-2-5",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1000,
+      "preparedSha256": "81c81b802e0980e14b3baca90bce04ae2d3acc0b8019f4d4ee13540bdadd0a39",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-5-1100rpm",
+      "sourceSignal": "zj-2-5",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1100,
+      "preparedSha256": "81c81b802e0980e14b3baca90bce04ae2d3acc0b8019f4d4ee13540bdadd0a39",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-5-1200rpm",
+      "sourceSignal": "zj-2-5",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1200,
+      "preparedSha256": "81c81b802e0980e14b3baca90bce04ae2d3acc0b8019f4d4ee13540bdadd0a39",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-5-1300rpm",
+      "sourceSignal": "zj-2-5",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1300,
+      "preparedSha256": "81c81b802e0980e14b3baca90bce04ae2d3acc0b8019f4d4ee13540bdadd0a39",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-5-1400rpm",
+      "sourceSignal": "zj-2-5",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1400,
+      "preparedSha256": "81c81b802e0980e14b3baca90bce04ae2d3acc0b8019f4d4ee13540bdadd0a39",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-5-1500rpm",
+      "sourceSignal": "zj-2-5",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1500,
+      "preparedSha256": "81c81b802e0980e14b3baca90bce04ae2d3acc0b8019f4d4ee13540bdadd0a39",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-2-6-900rpm",
+      "sourceSignal": "zj-2-6",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 900,
+      "preparedSha256": "28273abebd9ed1a900e4eefb730fc8b050911be78977a3e63ecc3b008e2b1752",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-6-1000rpm",
+      "sourceSignal": "zj-2-6",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1000,
+      "preparedSha256": "28273abebd9ed1a900e4eefb730fc8b050911be78977a3e63ecc3b008e2b1752",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-6-1100rpm",
+      "sourceSignal": "zj-2-6",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1100,
+      "preparedSha256": "28273abebd9ed1a900e4eefb730fc8b050911be78977a3e63ecc3b008e2b1752",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-6-1200rpm",
+      "sourceSignal": "zj-2-6",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1200,
+      "preparedSha256": "28273abebd9ed1a900e4eefb730fc8b050911be78977a3e63ecc3b008e2b1752",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-6-1300rpm",
+      "sourceSignal": "zj-2-6",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1300,
+      "preparedSha256": "28273abebd9ed1a900e4eefb730fc8b050911be78977a3e63ecc3b008e2b1752",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-6-1400rpm",
+      "sourceSignal": "zj-2-6",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1400,
+      "preparedSha256": "28273abebd9ed1a900e4eefb730fc8b050911be78977a3e63ecc3b008e2b1752",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-6-1500rpm",
+      "sourceSignal": "zj-2-6",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1500,
+      "preparedSha256": "28273abebd9ed1a900e4eefb730fc8b050911be78977a3e63ecc3b008e2b1752",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-7-900rpm",
+      "sourceSignal": "zj-2-7",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 900,
+      "preparedSha256": "d9b267a2100e11cb03c3fd85a0a477340a5a24a2668428062087ae92174ba672",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-7-1000rpm",
+      "sourceSignal": "zj-2-7",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1000,
+      "preparedSha256": "d9b267a2100e11cb03c3fd85a0a477340a5a24a2668428062087ae92174ba672",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-7-1100rpm",
+      "sourceSignal": "zj-2-7",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1100,
+      "preparedSha256": "d9b267a2100e11cb03c3fd85a0a477340a5a24a2668428062087ae92174ba672",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-7-1200rpm",
+      "sourceSignal": "zj-2-7",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1200,
+      "preparedSha256": "d9b267a2100e11cb03c3fd85a0a477340a5a24a2668428062087ae92174ba672",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-7-1300rpm",
+      "sourceSignal": "zj-2-7",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1300,
+      "preparedSha256": "d9b267a2100e11cb03c3fd85a0a477340a5a24a2668428062087ae92174ba672",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-7-1400rpm",
+      "sourceSignal": "zj-2-7",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1400,
+      "preparedSha256": "d9b267a2100e11cb03c3fd85a0a477340a5a24a2668428062087ae92174ba672",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-2-7-1500rpm",
+      "sourceSignal": "zj-2-7",
+      "condition": "inner_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1500,
+      "preparedSha256": "d9b267a2100e11cb03c3fd85a0a477340a5a24a2668428062087ae92174ba672",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-1-900rpm",
+      "sourceSignal": "zj-3-1",
+      "condition": "outer_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 900,
+      "preparedSha256": "e395fabd3dbe6ee58b68393cbb4531b1d76ec92d61c70d3f2b64a71b092af9f5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-1-1000rpm",
+      "sourceSignal": "zj-3-1",
+      "condition": "outer_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1000,
+      "preparedSha256": "e395fabd3dbe6ee58b68393cbb4531b1d76ec92d61c70d3f2b64a71b092af9f5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-1-1100rpm",
+      "sourceSignal": "zj-3-1",
+      "condition": "outer_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1100,
+      "preparedSha256": "e395fabd3dbe6ee58b68393cbb4531b1d76ec92d61c70d3f2b64a71b092af9f5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-1-1200rpm",
+      "sourceSignal": "zj-3-1",
+      "condition": "outer_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1200,
+      "preparedSha256": "e395fabd3dbe6ee58b68393cbb4531b1d76ec92d61c70d3f2b64a71b092af9f5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-1-1300rpm",
+      "sourceSignal": "zj-3-1",
+      "condition": "outer_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1300,
+      "preparedSha256": "e395fabd3dbe6ee58b68393cbb4531b1d76ec92d61c70d3f2b64a71b092af9f5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-1-1400rpm",
+      "sourceSignal": "zj-3-1",
+      "condition": "outer_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1400,
+      "preparedSha256": "e395fabd3dbe6ee58b68393cbb4531b1d76ec92d61c70d3f2b64a71b092af9f5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-1-1500rpm",
+      "sourceSignal": "zj-3-1",
+      "condition": "outer_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1500,
+      "preparedSha256": "e395fabd3dbe6ee58b68393cbb4531b1d76ec92d61c70d3f2b64a71b092af9f5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-2-900rpm",
+      "sourceSignal": "zj-3-2",
+      "condition": "outer_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 900,
+      "preparedSha256": "108a5329982a4e1c8f37bcbf25bbb29eee567f412464ce8c803f9eed30f13345",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-2-1000rpm",
+      "sourceSignal": "zj-3-2",
+      "condition": "outer_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1000,
+      "preparedSha256": "108a5329982a4e1c8f37bcbf25bbb29eee567f412464ce8c803f9eed30f13345",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-2-1100rpm",
+      "sourceSignal": "zj-3-2",
+      "condition": "outer_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1100,
+      "preparedSha256": "108a5329982a4e1c8f37bcbf25bbb29eee567f412464ce8c803f9eed30f13345",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-2-1200rpm",
+      "sourceSignal": "zj-3-2",
+      "condition": "outer_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1200,
+      "preparedSha256": "108a5329982a4e1c8f37bcbf25bbb29eee567f412464ce8c803f9eed30f13345",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-2-1300rpm",
+      "sourceSignal": "zj-3-2",
+      "condition": "outer_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1300,
+      "preparedSha256": "108a5329982a4e1c8f37bcbf25bbb29eee567f412464ce8c803f9eed30f13345",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-2-1400rpm",
+      "sourceSignal": "zj-3-2",
+      "condition": "outer_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1400,
+      "preparedSha256": "108a5329982a4e1c8f37bcbf25bbb29eee567f412464ce8c803f9eed30f13345",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-2-1500rpm",
+      "sourceSignal": "zj-3-2",
+      "condition": "outer_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1500,
+      "preparedSha256": "108a5329982a4e1c8f37bcbf25bbb29eee567f412464ce8c803f9eed30f13345",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-3-900rpm",
+      "sourceSignal": "zj-3-3",
+      "condition": "outer_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 900,
+      "preparedSha256": "6502bb8ea06360e771d31455f4d68102296db2b3088df3e3fc24e2d9c8569d4a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-3-1000rpm",
+      "sourceSignal": "zj-3-3",
+      "condition": "outer_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1000,
+      "preparedSha256": "6502bb8ea06360e771d31455f4d68102296db2b3088df3e3fc24e2d9c8569d4a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-3-1100rpm",
+      "sourceSignal": "zj-3-3",
+      "condition": "outer_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1100,
+      "preparedSha256": "6502bb8ea06360e771d31455f4d68102296db2b3088df3e3fc24e2d9c8569d4a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-3-1200rpm",
+      "sourceSignal": "zj-3-3",
+      "condition": "outer_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1200,
+      "preparedSha256": "6502bb8ea06360e771d31455f4d68102296db2b3088df3e3fc24e2d9c8569d4a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-3-1300rpm",
+      "sourceSignal": "zj-3-3",
+      "condition": "outer_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1300,
+      "preparedSha256": "6502bb8ea06360e771d31455f4d68102296db2b3088df3e3fc24e2d9c8569d4a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-3-1400rpm",
+      "sourceSignal": "zj-3-3",
+      "condition": "outer_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1400,
+      "preparedSha256": "6502bb8ea06360e771d31455f4d68102296db2b3088df3e3fc24e2d9c8569d4a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-3-1500rpm",
+      "sourceSignal": "zj-3-3",
+      "condition": "outer_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1500,
+      "preparedSha256": "6502bb8ea06360e771d31455f4d68102296db2b3088df3e3fc24e2d9c8569d4a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-4-900rpm",
+      "sourceSignal": "zj-3-4",
+      "condition": "outer_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 900,
+      "preparedSha256": "b8b0b600680a74132aebdbba35c9660ae9ec9e12fb94519380adc6528742f6d8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-4-1000rpm",
+      "sourceSignal": "zj-3-4",
+      "condition": "outer_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1000,
+      "preparedSha256": "b8b0b600680a74132aebdbba35c9660ae9ec9e12fb94519380adc6528742f6d8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-4-1100rpm",
+      "sourceSignal": "zj-3-4",
+      "condition": "outer_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1100,
+      "preparedSha256": "b8b0b600680a74132aebdbba35c9660ae9ec9e12fb94519380adc6528742f6d8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-4-1200rpm",
+      "sourceSignal": "zj-3-4",
+      "condition": "outer_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1200,
+      "preparedSha256": "b8b0b600680a74132aebdbba35c9660ae9ec9e12fb94519380adc6528742f6d8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-4-1300rpm",
+      "sourceSignal": "zj-3-4",
+      "condition": "outer_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1300,
+      "preparedSha256": "b8b0b600680a74132aebdbba35c9660ae9ec9e12fb94519380adc6528742f6d8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-4-1400rpm",
+      "sourceSignal": "zj-3-4",
+      "condition": "outer_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1400,
+      "preparedSha256": "b8b0b600680a74132aebdbba35c9660ae9ec9e12fb94519380adc6528742f6d8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-4-1500rpm",
+      "sourceSignal": "zj-3-4",
+      "condition": "outer_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1500,
+      "preparedSha256": "b8b0b600680a74132aebdbba35c9660ae9ec9e12fb94519380adc6528742f6d8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-5-900rpm",
+      "sourceSignal": "zj-3-5",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 900,
+      "preparedSha256": "114d038c522f91e3686d7258dbba79623fdb440ac453d7168ff22d6faa0bfb52",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-5-1000rpm",
+      "sourceSignal": "zj-3-5",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1000,
+      "preparedSha256": "114d038c522f91e3686d7258dbba79623fdb440ac453d7168ff22d6faa0bfb52",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-5-1100rpm",
+      "sourceSignal": "zj-3-5",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1100,
+      "preparedSha256": "114d038c522f91e3686d7258dbba79623fdb440ac453d7168ff22d6faa0bfb52",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-5-1200rpm",
+      "sourceSignal": "zj-3-5",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1200,
+      "preparedSha256": "114d038c522f91e3686d7258dbba79623fdb440ac453d7168ff22d6faa0bfb52",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-5-1300rpm",
+      "sourceSignal": "zj-3-5",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1300,
+      "preparedSha256": "114d038c522f91e3686d7258dbba79623fdb440ac453d7168ff22d6faa0bfb52",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-5-1400rpm",
+      "sourceSignal": "zj-3-5",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1400,
+      "preparedSha256": "114d038c522f91e3686d7258dbba79623fdb440ac453d7168ff22d6faa0bfb52",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-5-1500rpm",
+      "sourceSignal": "zj-3-5",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1500,
+      "preparedSha256": "114d038c522f91e3686d7258dbba79623fdb440ac453d7168ff22d6faa0bfb52",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-6-900rpm",
+      "sourceSignal": "zj-3-6",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 900,
+      "preparedSha256": "41370f2e6f09ba8677056603c1d7eb6a2a34152708a1e6b98a77d4d5b499921f",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-6-1000rpm",
+      "sourceSignal": "zj-3-6",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1000,
+      "preparedSha256": "41370f2e6f09ba8677056603c1d7eb6a2a34152708a1e6b98a77d4d5b499921f",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-6-1100rpm",
+      "sourceSignal": "zj-3-6",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1100,
+      "preparedSha256": "41370f2e6f09ba8677056603c1d7eb6a2a34152708a1e6b98a77d4d5b499921f",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-6-1200rpm",
+      "sourceSignal": "zj-3-6",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1200,
+      "preparedSha256": "41370f2e6f09ba8677056603c1d7eb6a2a34152708a1e6b98a77d4d5b499921f",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-6-1300rpm",
+      "sourceSignal": "zj-3-6",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1300,
+      "preparedSha256": "41370f2e6f09ba8677056603c1d7eb6a2a34152708a1e6b98a77d4d5b499921f",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-6-1400rpm",
+      "sourceSignal": "zj-3-6",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1400,
+      "preparedSha256": "41370f2e6f09ba8677056603c1d7eb6a2a34152708a1e6b98a77d4d5b499921f",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-6-1500rpm",
+      "sourceSignal": "zj-3-6",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1500,
+      "preparedSha256": "41370f2e6f09ba8677056603c1d7eb6a2a34152708a1e6b98a77d4d5b499921f",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-7-900rpm",
+      "sourceSignal": "zj-3-7",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 900,
+      "preparedSha256": "52bae4309ab73dbf5224c4ca7f98c7b17a11dd39cc1fb4d47435054defcd41f5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-7-1000rpm",
+      "sourceSignal": "zj-3-7",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1000,
+      "preparedSha256": "52bae4309ab73dbf5224c4ca7f98c7b17a11dd39cc1fb4d47435054defcd41f5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-7-1100rpm",
+      "sourceSignal": "zj-3-7",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1100,
+      "preparedSha256": "52bae4309ab73dbf5224c4ca7f98c7b17a11dd39cc1fb4d47435054defcd41f5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-7-1200rpm",
+      "sourceSignal": "zj-3-7",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1200,
+      "preparedSha256": "52bae4309ab73dbf5224c4ca7f98c7b17a11dd39cc1fb4d47435054defcd41f5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-7-1300rpm",
+      "sourceSignal": "zj-3-7",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1300,
+      "preparedSha256": "52bae4309ab73dbf5224c4ca7f98c7b17a11dd39cc1fb4d47435054defcd41f5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-7-1400rpm",
+      "sourceSignal": "zj-3-7",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1400,
+      "preparedSha256": "52bae4309ab73dbf5224c4ca7f98c7b17a11dd39cc1fb4d47435054defcd41f5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-3-7-1500rpm",
+      "sourceSignal": "zj-3-7",
+      "condition": "outer_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1500,
+      "preparedSha256": "52bae4309ab73dbf5224c4ca7f98c7b17a11dd39cc1fb4d47435054defcd41f5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-1-900rpm",
+      "sourceSignal": "zj-4-1",
+      "condition": "ball_fault",
+      "sourceColumn": 0,
+      "testedRpm": 900,
+      "preparedSha256": "184039212ee0e960b120474ae9af61ce597c855fa038b2112598d1db92a4dc52",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-1-1000rpm",
+      "sourceSignal": "zj-4-1",
+      "condition": "ball_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1000,
+      "preparedSha256": "184039212ee0e960b120474ae9af61ce597c855fa038b2112598d1db92a4dc52",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-1-1100rpm",
+      "sourceSignal": "zj-4-1",
+      "condition": "ball_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1100,
+      "preparedSha256": "184039212ee0e960b120474ae9af61ce597c855fa038b2112598d1db92a4dc52",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-1-1200rpm",
+      "sourceSignal": "zj-4-1",
+      "condition": "ball_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1200,
+      "preparedSha256": "184039212ee0e960b120474ae9af61ce597c855fa038b2112598d1db92a4dc52",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-1-1300rpm",
+      "sourceSignal": "zj-4-1",
+      "condition": "ball_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1300,
+      "preparedSha256": "184039212ee0e960b120474ae9af61ce597c855fa038b2112598d1db92a4dc52",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-1-1400rpm",
+      "sourceSignal": "zj-4-1",
+      "condition": "ball_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1400,
+      "preparedSha256": "184039212ee0e960b120474ae9af61ce597c855fa038b2112598d1db92a4dc52",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-1-1500rpm",
+      "sourceSignal": "zj-4-1",
+      "condition": "ball_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1500,
+      "preparedSha256": "184039212ee0e960b120474ae9af61ce597c855fa038b2112598d1db92a4dc52",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-2-900rpm",
+      "sourceSignal": "zj-4-2",
+      "condition": "ball_fault",
+      "sourceColumn": 314,
+      "testedRpm": 900,
+      "preparedSha256": "7e35ecdfaf903527adf2fe0b59633b13be7824a2d7db9750ae02aaa91fa57245",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-2-1000rpm",
+      "sourceSignal": "zj-4-2",
+      "condition": "ball_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1000,
+      "preparedSha256": "7e35ecdfaf903527adf2fe0b59633b13be7824a2d7db9750ae02aaa91fa57245",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-2-1100rpm",
+      "sourceSignal": "zj-4-2",
+      "condition": "ball_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1100,
+      "preparedSha256": "7e35ecdfaf903527adf2fe0b59633b13be7824a2d7db9750ae02aaa91fa57245",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-2-1200rpm",
+      "sourceSignal": "zj-4-2",
+      "condition": "ball_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1200,
+      "preparedSha256": "7e35ecdfaf903527adf2fe0b59633b13be7824a2d7db9750ae02aaa91fa57245",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-2-1300rpm",
+      "sourceSignal": "zj-4-2",
+      "condition": "ball_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1300,
+      "preparedSha256": "7e35ecdfaf903527adf2fe0b59633b13be7824a2d7db9750ae02aaa91fa57245",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-2-1400rpm",
+      "sourceSignal": "zj-4-2",
+      "condition": "ball_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1400,
+      "preparedSha256": "7e35ecdfaf903527adf2fe0b59633b13be7824a2d7db9750ae02aaa91fa57245",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-2-1500rpm",
+      "sourceSignal": "zj-4-2",
+      "condition": "ball_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1500,
+      "preparedSha256": "7e35ecdfaf903527adf2fe0b59633b13be7824a2d7db9750ae02aaa91fa57245",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-3-900rpm",
+      "sourceSignal": "zj-4-3",
+      "condition": "ball_fault",
+      "sourceColumn": 629,
+      "testedRpm": 900,
+      "preparedSha256": "b7ae8687d1e364d02236840daa00acef8772c91ca4cfd2da212d99dee39ca6f2",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-3-1000rpm",
+      "sourceSignal": "zj-4-3",
+      "condition": "ball_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1000,
+      "preparedSha256": "b7ae8687d1e364d02236840daa00acef8772c91ca4cfd2da212d99dee39ca6f2",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-3-1100rpm",
+      "sourceSignal": "zj-4-3",
+      "condition": "ball_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1100,
+      "preparedSha256": "b7ae8687d1e364d02236840daa00acef8772c91ca4cfd2da212d99dee39ca6f2",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-3-1200rpm",
+      "sourceSignal": "zj-4-3",
+      "condition": "ball_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1200,
+      "preparedSha256": "b7ae8687d1e364d02236840daa00acef8772c91ca4cfd2da212d99dee39ca6f2",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-3-1300rpm",
+      "sourceSignal": "zj-4-3",
+      "condition": "ball_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1300,
+      "preparedSha256": "b7ae8687d1e364d02236840daa00acef8772c91ca4cfd2da212d99dee39ca6f2",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-3-1400rpm",
+      "sourceSignal": "zj-4-3",
+      "condition": "ball_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1400,
+      "preparedSha256": "b7ae8687d1e364d02236840daa00acef8772c91ca4cfd2da212d99dee39ca6f2",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-3-1500rpm",
+      "sourceSignal": "zj-4-3",
+      "condition": "ball_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1500,
+      "preparedSha256": "b7ae8687d1e364d02236840daa00acef8772c91ca4cfd2da212d99dee39ca6f2",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-4-900rpm",
+      "sourceSignal": "zj-4-4",
+      "condition": "ball_fault",
+      "sourceColumn": 944,
+      "testedRpm": 900,
+      "preparedSha256": "3aa3c4c7837cae3001788cf0eac5ad58361e7927f1739a17f1c912b06ef24c17",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-4-1000rpm",
+      "sourceSignal": "zj-4-4",
+      "condition": "ball_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1000,
+      "preparedSha256": "3aa3c4c7837cae3001788cf0eac5ad58361e7927f1739a17f1c912b06ef24c17",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-4-1100rpm",
+      "sourceSignal": "zj-4-4",
+      "condition": "ball_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1100,
+      "preparedSha256": "3aa3c4c7837cae3001788cf0eac5ad58361e7927f1739a17f1c912b06ef24c17",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-4-4-1200rpm",
+      "sourceSignal": "zj-4-4",
+      "condition": "ball_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1200,
+      "preparedSha256": "3aa3c4c7837cae3001788cf0eac5ad58361e7927f1739a17f1c912b06ef24c17",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-4-4-1300rpm",
+      "sourceSignal": "zj-4-4",
+      "condition": "ball_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1300,
+      "preparedSha256": "3aa3c4c7837cae3001788cf0eac5ad58361e7927f1739a17f1c912b06ef24c17",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-4-1400rpm",
+      "sourceSignal": "zj-4-4",
+      "condition": "ball_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1400,
+      "preparedSha256": "3aa3c4c7837cae3001788cf0eac5ad58361e7927f1739a17f1c912b06ef24c17",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-4-1500rpm",
+      "sourceSignal": "zj-4-4",
+      "condition": "ball_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1500,
+      "preparedSha256": "3aa3c4c7837cae3001788cf0eac5ad58361e7927f1739a17f1c912b06ef24c17",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-5-900rpm",
+      "sourceSignal": "zj-4-5",
+      "condition": "ball_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 900,
+      "preparedSha256": "5e03b382d42433b64f5204fb7b3a3721666f89016de97dba29b399f8d85af3b5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-5-1000rpm",
+      "sourceSignal": "zj-4-5",
+      "condition": "ball_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1000,
+      "preparedSha256": "5e03b382d42433b64f5204fb7b3a3721666f89016de97dba29b399f8d85af3b5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-5-1100rpm",
+      "sourceSignal": "zj-4-5",
+      "condition": "ball_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1100,
+      "preparedSha256": "5e03b382d42433b64f5204fb7b3a3721666f89016de97dba29b399f8d85af3b5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-5-1200rpm",
+      "sourceSignal": "zj-4-5",
+      "condition": "ball_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1200,
+      "preparedSha256": "5e03b382d42433b64f5204fb7b3a3721666f89016de97dba29b399f8d85af3b5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-5-1300rpm",
+      "sourceSignal": "zj-4-5",
+      "condition": "ball_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1300,
+      "preparedSha256": "5e03b382d42433b64f5204fb7b3a3721666f89016de97dba29b399f8d85af3b5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-5-1400rpm",
+      "sourceSignal": "zj-4-5",
+      "condition": "ball_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1400,
+      "preparedSha256": "5e03b382d42433b64f5204fb7b3a3721666f89016de97dba29b399f8d85af3b5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-5-1500rpm",
+      "sourceSignal": "zj-4-5",
+      "condition": "ball_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1500,
+      "preparedSha256": "5e03b382d42433b64f5204fb7b3a3721666f89016de97dba29b399f8d85af3b5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-6-900rpm",
+      "sourceSignal": "zj-4-6",
+      "condition": "ball_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 900,
+      "preparedSha256": "ce01713653ca8ca07215d897f6cfab4c727be64d31caf69933213507314082ab",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-6-1000rpm",
+      "sourceSignal": "zj-4-6",
+      "condition": "ball_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1000,
+      "preparedSha256": "ce01713653ca8ca07215d897f6cfab4c727be64d31caf69933213507314082ab",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-6-1100rpm",
+      "sourceSignal": "zj-4-6",
+      "condition": "ball_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1100,
+      "preparedSha256": "ce01713653ca8ca07215d897f6cfab4c727be64d31caf69933213507314082ab",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-6-1200rpm",
+      "sourceSignal": "zj-4-6",
+      "condition": "ball_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1200,
+      "preparedSha256": "ce01713653ca8ca07215d897f6cfab4c727be64d31caf69933213507314082ab",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-6-1300rpm",
+      "sourceSignal": "zj-4-6",
+      "condition": "ball_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1300,
+      "preparedSha256": "ce01713653ca8ca07215d897f6cfab4c727be64d31caf69933213507314082ab",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-6-1400rpm",
+      "sourceSignal": "zj-4-6",
+      "condition": "ball_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1400,
+      "preparedSha256": "ce01713653ca8ca07215d897f6cfab4c727be64d31caf69933213507314082ab",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-6-1500rpm",
+      "sourceSignal": "zj-4-6",
+      "condition": "ball_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1500,
+      "preparedSha256": "ce01713653ca8ca07215d897f6cfab4c727be64d31caf69933213507314082ab",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-7-900rpm",
+      "sourceSignal": "zj-4-7",
+      "condition": "ball_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 900,
+      "preparedSha256": "34f2931ca3877fe5a870c61082846c3219e91132bfbb265cab277144428dbee3",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-7-1000rpm",
+      "sourceSignal": "zj-4-7",
+      "condition": "ball_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1000,
+      "preparedSha256": "34f2931ca3877fe5a870c61082846c3219e91132bfbb265cab277144428dbee3",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-7-1100rpm",
+      "sourceSignal": "zj-4-7",
+      "condition": "ball_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1100,
+      "preparedSha256": "34f2931ca3877fe5a870c61082846c3219e91132bfbb265cab277144428dbee3",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-7-1200rpm",
+      "sourceSignal": "zj-4-7",
+      "condition": "ball_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1200,
+      "preparedSha256": "34f2931ca3877fe5a870c61082846c3219e91132bfbb265cab277144428dbee3",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-7-1300rpm",
+      "sourceSignal": "zj-4-7",
+      "condition": "ball_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1300,
+      "preparedSha256": "34f2931ca3877fe5a870c61082846c3219e91132bfbb265cab277144428dbee3",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-7-1400rpm",
+      "sourceSignal": "zj-4-7",
+      "condition": "ball_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1400,
+      "preparedSha256": "34f2931ca3877fe5a870c61082846c3219e91132bfbb265cab277144428dbee3",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-4-7-1500rpm",
+      "sourceSignal": "zj-4-7",
+      "condition": "ball_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1500,
+      "preparedSha256": "34f2931ca3877fe5a870c61082846c3219e91132bfbb265cab277144428dbee3",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-1-900rpm",
+      "sourceSignal": "zj-5-1",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 900,
+      "preparedSha256": "84f9625aa19d43757cb72b7bd427c59806f5bd288ea1d28c12c13bbdb0c87cb3",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-1-1000rpm",
+      "sourceSignal": "zj-5-1",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1000,
+      "preparedSha256": "84f9625aa19d43757cb72b7bd427c59806f5bd288ea1d28c12c13bbdb0c87cb3",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-1-1100rpm",
+      "sourceSignal": "zj-5-1",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1100,
+      "preparedSha256": "84f9625aa19d43757cb72b7bd427c59806f5bd288ea1d28c12c13bbdb0c87cb3",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-1-1200rpm",
+      "sourceSignal": "zj-5-1",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1200,
+      "preparedSha256": "84f9625aa19d43757cb72b7bd427c59806f5bd288ea1d28c12c13bbdb0c87cb3",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-1-1300rpm",
+      "sourceSignal": "zj-5-1",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1300,
+      "preparedSha256": "84f9625aa19d43757cb72b7bd427c59806f5bd288ea1d28c12c13bbdb0c87cb3",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-5-1-1400rpm",
+      "sourceSignal": "zj-5-1",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1400,
+      "preparedSha256": "84f9625aa19d43757cb72b7bd427c59806f5bd288ea1d28c12c13bbdb0c87cb3",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-1-1500rpm",
+      "sourceSignal": "zj-5-1",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 0,
+      "testedRpm": 1500,
+      "preparedSha256": "84f9625aa19d43757cb72b7bd427c59806f5bd288ea1d28c12c13bbdb0c87cb3",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-2-900rpm",
+      "sourceSignal": "zj-5-2",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 900,
+      "preparedSha256": "0161f5d7555fc84c9d0f237aa90b382db64382eafeb48ef271999fb9daa6d5f8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-2-1000rpm",
+      "sourceSignal": "zj-5-2",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1000,
+      "preparedSha256": "0161f5d7555fc84c9d0f237aa90b382db64382eafeb48ef271999fb9daa6d5f8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-2-1100rpm",
+      "sourceSignal": "zj-5-2",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1100,
+      "preparedSha256": "0161f5d7555fc84c9d0f237aa90b382db64382eafeb48ef271999fb9daa6d5f8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-2-1200rpm",
+      "sourceSignal": "zj-5-2",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1200,
+      "preparedSha256": "0161f5d7555fc84c9d0f237aa90b382db64382eafeb48ef271999fb9daa6d5f8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-2-1300rpm",
+      "sourceSignal": "zj-5-2",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1300,
+      "preparedSha256": "0161f5d7555fc84c9d0f237aa90b382db64382eafeb48ef271999fb9daa6d5f8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-2-1400rpm",
+      "sourceSignal": "zj-5-2",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1400,
+      "preparedSha256": "0161f5d7555fc84c9d0f237aa90b382db64382eafeb48ef271999fb9daa6d5f8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-2-1500rpm",
+      "sourceSignal": "zj-5-2",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 314,
+      "testedRpm": 1500,
+      "preparedSha256": "0161f5d7555fc84c9d0f237aa90b382db64382eafeb48ef271999fb9daa6d5f8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-3-900rpm",
+      "sourceSignal": "zj-5-3",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 900,
+      "preparedSha256": "39e32ba467260660a4cac84a81f993eee8672db1890d9f6cd3bf0b37b9302407",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-3-1000rpm",
+      "sourceSignal": "zj-5-3",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1000,
+      "preparedSha256": "39e32ba467260660a4cac84a81f993eee8672db1890d9f6cd3bf0b37b9302407",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-3-1100rpm",
+      "sourceSignal": "zj-5-3",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1100,
+      "preparedSha256": "39e32ba467260660a4cac84a81f993eee8672db1890d9f6cd3bf0b37b9302407",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-3-1200rpm",
+      "sourceSignal": "zj-5-3",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1200,
+      "preparedSha256": "39e32ba467260660a4cac84a81f993eee8672db1890d9f6cd3bf0b37b9302407",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-3-1300rpm",
+      "sourceSignal": "zj-5-3",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1300,
+      "preparedSha256": "39e32ba467260660a4cac84a81f993eee8672db1890d9f6cd3bf0b37b9302407",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-3-1400rpm",
+      "sourceSignal": "zj-5-3",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1400,
+      "preparedSha256": "39e32ba467260660a4cac84a81f993eee8672db1890d9f6cd3bf0b37b9302407",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-5-3-1500rpm",
+      "sourceSignal": "zj-5-3",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 629,
+      "testedRpm": 1500,
+      "preparedSha256": "39e32ba467260660a4cac84a81f993eee8672db1890d9f6cd3bf0b37b9302407",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-4-900rpm",
+      "sourceSignal": "zj-5-4",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 900,
+      "preparedSha256": "636fdc1bc4f96705b966cc2783a7badfffab0bf6a9cc7ab67c974d249b3d9a35",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-4-1000rpm",
+      "sourceSignal": "zj-5-4",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1000,
+      "preparedSha256": "636fdc1bc4f96705b966cc2783a7badfffab0bf6a9cc7ab67c974d249b3d9a35",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-4-1100rpm",
+      "sourceSignal": "zj-5-4",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1100,
+      "preparedSha256": "636fdc1bc4f96705b966cc2783a7badfffab0bf6a9cc7ab67c974d249b3d9a35",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-4-1200rpm",
+      "sourceSignal": "zj-5-4",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1200,
+      "preparedSha256": "636fdc1bc4f96705b966cc2783a7badfffab0bf6a9cc7ab67c974d249b3d9a35",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-4-1300rpm",
+      "sourceSignal": "zj-5-4",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1300,
+      "preparedSha256": "636fdc1bc4f96705b966cc2783a7badfffab0bf6a9cc7ab67c974d249b3d9a35",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-4-1400rpm",
+      "sourceSignal": "zj-5-4",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1400,
+      "preparedSha256": "636fdc1bc4f96705b966cc2783a7badfffab0bf6a9cc7ab67c974d249b3d9a35",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-4-1500rpm",
+      "sourceSignal": "zj-5-4",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 944,
+      "testedRpm": 1500,
+      "preparedSha256": "636fdc1bc4f96705b966cc2783a7badfffab0bf6a9cc7ab67c974d249b3d9a35",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-5-900rpm",
+      "sourceSignal": "zj-5-5",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 900,
+      "preparedSha256": "2a771036d97cc036d3fa9d7403dd16e25e75a078e68b3b56c19f09ea2f43ac81",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-5-1000rpm",
+      "sourceSignal": "zj-5-5",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1000,
+      "preparedSha256": "2a771036d97cc036d3fa9d7403dd16e25e75a078e68b3b56c19f09ea2f43ac81",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-5-1100rpm",
+      "sourceSignal": "zj-5-5",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1100,
+      "preparedSha256": "2a771036d97cc036d3fa9d7403dd16e25e75a078e68b3b56c19f09ea2f43ac81",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-5-1200rpm",
+      "sourceSignal": "zj-5-5",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1200,
+      "preparedSha256": "2a771036d97cc036d3fa9d7403dd16e25e75a078e68b3b56c19f09ea2f43ac81",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-5-5-1300rpm",
+      "sourceSignal": "zj-5-5",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1300,
+      "preparedSha256": "2a771036d97cc036d3fa9d7403dd16e25e75a078e68b3b56c19f09ea2f43ac81",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-5-1400rpm",
+      "sourceSignal": "zj-5-5",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1400,
+      "preparedSha256": "2a771036d97cc036d3fa9d7403dd16e25e75a078e68b3b56c19f09ea2f43ac81",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-5-1500rpm",
+      "sourceSignal": "zj-5-5",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1259,
+      "testedRpm": 1500,
+      "preparedSha256": "2a771036d97cc036d3fa9d7403dd16e25e75a078e68b3b56c19f09ea2f43ac81",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-6-900rpm",
+      "sourceSignal": "zj-5-6",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 900,
+      "preparedSha256": "8ada99b5b01409b022717dd0c8ecd5c8471e98448ca2f7dffbe437ab5e878fa8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-6-1000rpm",
+      "sourceSignal": "zj-5-6",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1000,
+      "preparedSha256": "8ada99b5b01409b022717dd0c8ecd5c8471e98448ca2f7dffbe437ab5e878fa8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-6-1100rpm",
+      "sourceSignal": "zj-5-6",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1100,
+      "preparedSha256": "8ada99b5b01409b022717dd0c8ecd5c8471e98448ca2f7dffbe437ab5e878fa8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-6-1200rpm",
+      "sourceSignal": "zj-5-6",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1200,
+      "preparedSha256": "8ada99b5b01409b022717dd0c8ecd5c8471e98448ca2f7dffbe437ab5e878fa8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-6-1300rpm",
+      "sourceSignal": "zj-5-6",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1300,
+      "preparedSha256": "8ada99b5b01409b022717dd0c8ecd5c8471e98448ca2f7dffbe437ab5e878fa8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-6-1400rpm",
+      "sourceSignal": "zj-5-6",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1400,
+      "preparedSha256": "8ada99b5b01409b022717dd0c8ecd5c8471e98448ca2f7dffbe437ab5e878fa8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-6-1500rpm",
+      "sourceSignal": "zj-5-6",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1574,
+      "testedRpm": 1500,
+      "preparedSha256": "8ada99b5b01409b022717dd0c8ecd5c8471e98448ca2f7dffbe437ab5e878fa8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-7-900rpm",
+      "sourceSignal": "zj-5-7",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 900,
+      "preparedSha256": "e5cd027215375db67af1ec6390388512f70ae9f0b554048c7b8a5cd55e43acbe",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "zj-5-7-1000rpm",
+      "sourceSignal": "zj-5-7",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1000,
+      "preparedSha256": "e5cd027215375db67af1ec6390388512f70ae9f0b554048c7b8a5cd55e43acbe",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-5-7-1100rpm",
+      "sourceSignal": "zj-5-7",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1100,
+      "preparedSha256": "e5cd027215375db67af1ec6390388512f70ae9f0b554048c7b8a5cd55e43acbe",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-5-7-1200rpm",
+      "sourceSignal": "zj-5-7",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1200,
+      "preparedSha256": "e5cd027215375db67af1ec6390388512f70ae9f0b554048c7b8a5cd55e43acbe",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-5-7-1300rpm",
+      "sourceSignal": "zj-5-7",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1300,
+      "preparedSha256": "e5cd027215375db67af1ec6390388512f70ae9f0b554048c7b8a5cd55e43acbe",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-5-7-1400rpm",
+      "sourceSignal": "zj-5-7",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1400,
+      "preparedSha256": "e5cd027215375db67af1ec6390388512f70ae9f0b554048c7b8a5cd55e43acbe",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "zj-5-7-1500rpm",
+      "sourceSignal": "zj-5-7",
+      "condition": "ball_plus_outer_race_fault",
+      "sourceColumn": 1889,
+      "testedRpm": 1500,
+      "preparedSha256": "e5cd027215375db67af1ec6390388512f70ae9f0b554048c7b8a5cd55e43acbe",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    }
+  ],
+  "summary": {
+    "physicalSignals": 35,
+    "rpmChallenges": 245,
+    "automaticConclusions": 0,
+    "abstentionRate": 1,
+    "broadEngineAgreement": 1,
+    "broadEngineDisagreements": 0,
+    "uncontainedEngineDisagreements": 0
+  },
+  "limitations": [
+    "One additional laboratory rig does not establish fleet or field generalization.",
+    "Faults are seeded and the archive does not machine-map individual matrix columns to RPM; every selected trace is therefore challenged at every documented RPM.",
+    "Linear interpolation only satisfies the model's 2,048-sample feature contract and is disclosed; no accuracy claim is computed from these cases."
+  ]
+}

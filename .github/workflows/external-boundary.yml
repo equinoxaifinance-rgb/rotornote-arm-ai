@@ -8,6 +8,8 @@ on:
       - "model/**"
       - "scripts/prepare-axial-boundary.py"
       - "scripts/evaluate-axial-boundary.js"
+      - "scripts/prepare-zhenjiang-boundary.py"
+      - "scripts/evaluate-zhenjiang-boundary.js"
       - "field/open-data-sources.json"
       - ".github/workflows/external-boundary.yml"
 
@@ -35,6 +37,7 @@ jobs:
         run: |
           mkdir -p .field-work/open-real
           curl --fail --location --retry 3 --output .field-work/open-real/axial-bearing-v2.zip https://data.mendeley.com/public-api/zip/chwhh9n3bf/download/2
+          curl --fail --location --retry 3 --output .field-work/open-real/zhenjiang-v1.zip https://data.mendeley.com/public-api/zip/xfj9t7cprb/download/1
       - run: npm run build:kernel
       - run: npm run build:model
       - run: npm run build:anomaly
@@ -42,4 +45,6 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: rotornote-external-boundary-evidence
-          path: field/results/axial-bearing-boundary.json
+          path: |
+            field/results/axial-bearing-boundary.json
+            field/results/zhenjiang-bearing-boundary.json

@@ -17,7 +17,12 @@ test("deep anomaly head executes attributed physical data with cross-engine agre
   assert.equal(optimized.primary, "anomaly");
   assert.equal(optimized.engineAgreement, true);
   assert.equal(optimized.signal.featureWindows, 2);
-  assert.deepEqual(model.metadata.architecture, [48, 253, 126, 8]);
+  assert.equal(model.metadata.architecture[0], 96);
+  assert.equal(model.metadata.architecture.at(-1), 8);
+  // The shipped graph is pruned strictly from real-bank activation, so guard
+  // against regression to the former toy-sized head without rewarding dead
+  // units that exist only to inflate a benchmark number.
+  assert.ok(model.metadata.compiler.multiplyAccumulatesPerInference >= 250000);
 });
 
 test("deep anomaly model fails closed if its quantized bytes are changed", async () => {

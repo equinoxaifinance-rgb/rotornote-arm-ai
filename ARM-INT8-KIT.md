@@ -34,6 +34,20 @@ descriptors, so supported dense stacks are not hard-coded to RotorNote's layer
 count. The SIMD kernel is `kernel/dense.wat`; the native Arm receipt separately
 proves the equivalent Armv8.2-A `vdotq_s32` instruction path.
 
+## Local compiler API
+
+The running product exposes the same compiler at `POST /api/compile` with
+`Content-Type: application/json`. The request is the contract above. The
+response returns architecture, parameters, MACs, learned-byte reduction,
+calibration-row parity, utilization, SHA-256 values, and downloadable FP32 and
+INT8 bytes encoded as base64. The customer UI executes this route and exposes
+both artifacts; it is not a static calculator.
+
+The service bounds requests to six layers, width 1,024, one million parameters,
+128 calibration rows, and the global 8 MiB body limit. User-supplied parity
+threshold overrides are ignored at this boundary so a caller cannot weaken the
+compiler gate. Malformed, oversized, and parity-failing inputs fail closed.
+
 ## Evidence boundary
 
 The kit optimizes dense ReLU inference. It does not decide whether a model is

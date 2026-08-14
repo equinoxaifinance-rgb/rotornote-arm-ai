@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { analyzeChannels } from "./analyze.js";
 import { analyzeVariableSpeedAnomaly } from "./anomaly.js";
 import { InputError, MAX_UPLOAD_BYTES, parseCsv } from "./csv.js";
+import { compileDenseModel } from "./dense-compiler.js";
 import { createAnalysisReceipt } from "./evidence.js";
 import { loadInferenceModel, loadModel } from "./model.js";
 
@@ -14,6 +15,8 @@ const STATIC = new Map([
   ["/styles.css", [new URL("../web/styles.css", import.meta.url), "text/css; charset=utf-8"]],
   ["/actions.css", [new URL("../web/actions.css", import.meta.url), "text/css; charset=utf-8"]],
   ["/anomaly.css", [new URL("../web/anomaly.css", import.meta.url), "text/css; charset=utf-8"]],
+  ["/compiler.css", [new URL("../web/compiler.css", import.meta.url), "text/css; charset=utf-8"]],
+  ["/examples/dense-compile-input.json", [new URL("../examples/dense-compile-input.json", import.meta.url), "application/json; charset=utf-8"]],
 ]);
 const SAMPLES = new Map([
   ["real-healthy", { file: "real-healthy.csv", title: "Healthy rig", detail: "1 s · attributed physical test", sampleRate: 25000, operatingRpm: 1238 }],
@@ -48,6 +51,22 @@ function parseContext(headers) {
   if (operatingRpm !== null && (!Number.isFinite(operatingRpm) || operatingRpm < 0 || operatingRpm > 120000)) throw new InputError("Operating RPM must be between 0 and 120000", "invalid_context");
   if (loadPercent !== null && (!Number.isFinite(loadPercent) || loadPercent < 0 || loadPercent > 100)) throw new InputError("Load percent must be between 0 and 100", "invalid_context");
   return { machineId, measurementPoint, sensorAxis, operatingRpm, loadPercent };
+}
+
+function parseCompileRequest(body) {
+  let source;
+  try { source = JSON.parse(body); } catch { throw new InputError("Compiler input must be valid JSON", "invalid_compile_input"); }
+  if (source?.format !== "rotornote-dense-compile-input-v1") throw new InputError("Unknown compiler input format", "invalid_compile_input");
+  const architecture = source.architecture;
+  if (!Array.isArray(architecture) || architecture.length < 2 || architecture.length > 6 || architecture.some((value) => !Number.isInteger(value) || value < 1 || value > 1024)) {
+    throw new InputError("Architecture must contain 2–6 positive layer sizes no wider than 1,024", "invalid_compile_input");
+  }
+  const parameters = architecture.slice(1).reduce((total, outputs, index) => total + architecture[index] * outputs + outputs, 0);
+  if (parameters > 1_000_000) throw new InputError("Compiler requests are limited to 1,000,000 parameters", "compile_limit_exceeded");
+  if (!Array.isArray(source.calibrationRows) || source.calibrationRows.length < 1 || source.calibrationRows.length > 128) {
+    throw new InputError("Provide 1–128 real calibration rows", "invalid_compile_input");
+  }
+  return { architecture, layers: source.layers, calibrationRows: source.calibrationRows };
 }
 
 async function readBody(request) {
@@ -106,6 +125,28 @@ export function createHandler({
       }
       if (request.method === "GET" && url.pathname === "/api/samples") {
         return respond(response, 200, { samples: Array.from(SAMPLES, ([id, value]) => ({ id, ...value, file: undefined })) });
+      }
+      if (request.method === "POST" && url.pathname === "/api/compile") {
+        const contentType = request.headers["content-type"] || "";
+        if (!contentType.toLowerCase().startsWith("application/json")) return respond(response, 415, { error: "content_type_must_be_application_json", requestId });
+        const source = parseCompileRequest(await readBody(request));
+        let compiled;
+        try { compiled = compileDenseModel(source); } catch { throw new InputError("Compiler rejected model shape, values, or parity", "compile_rejected"); }
+        return respond(response, 200, {
+          requestId,
+          compiler: "rotornote-dense-int8-v1",
+          architecture: source.architecture,
+          parameters: compiled.compute.parameters,
+          multiplyAccumulates: compiled.compute.multiplyAccumulates,
+          learnedByteReduction: 1 - compiled.int8Buffer.length / compiled.floatBuffer.length,
+          parity: compiled.parity,
+          utilization: compiled.utilization,
+          artifacts: {
+            fp32: { bytes: compiled.floatBuffer.length, sha256: compiled.float.sha256, base64: compiled.floatBuffer.toString("base64") },
+            int8: { bytes: compiled.int8Buffer.length, sha256: compiled.int8.sha256, base64: compiled.int8Buffer.toString("base64") },
+          },
+          boundary: "Compilation proves deterministic artifact generation and calibration-row parity; it does not validate model accuracy or fitness for deployment.",
+        });
       }
       if (request.method === "GET" && url.pathname.startsWith("/samples/")) {
         const id = url.pathname.slice("/samples/".length).replace(/\.csv$/, "");

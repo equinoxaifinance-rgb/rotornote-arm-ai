@@ -49,5 +49,21 @@
     "expectedRecords": 28,
     "expectedHealthyRecords": 4,
     "expectedFaultRecords": 24
+  },
+  "zhenjiangBoundaryEvaluation": {
+    "title": "Zhenjiang bearing dataset",
+    "authors": ["Weiwei Qian"],
+    "version": 1,
+    "doi": "10.17632/xfj9t7cprb.1",
+    "recordUrl": "https://data.mendeley.com/datasets/xfj9t7cprb/1",
+    "archiveUrl": "https://data.mendeley.com/public-api/zip/xfj9t7cprb/download/1",
+    "archiveSha256": "ff58f977d2c3f7bd3f0dadfa51b4934bcd989590a10ddb7b0efcdd4f42a769fd",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "acquisition": "Separate physical bearing rig; 25.6 kHz; five numbered condition files (healthy, inner race, outer race, ball, ball-plus-outer-race); seven documented speeds from 900 to 1500 RPM; 1,800 samples per time-domain trace.",
+    "use": "Second-rig external fail-closed challenge through the canonical one-channel anomaly route only; never production training.",
+    "documentedRpms": [900, 1000, 1100, 1200, 1300, 1400, 1500],
+    "expectedConditionFiles": 5,
+    "selectedColumnsPerFile": 7
   }
 }

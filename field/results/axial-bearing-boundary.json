@@ -1,6 +1,6 @@
 {
   "schema": "rotornote-axial-bearing-boundary-v2",
-  "createdAt": "2026-08-13T13:50:02.190Z",
+  "createdAt": "2026-08-14T06:21:53.417Z",
   "source": {
     "title": "Vibration Data for Axial Ball Bearings and Spall Faults",
     "authors": [
@@ -39,11 +39,12 @@
       "preparedSha256": "457bfecc6559c56463ccd30531d81066f9cafd8c875ecdf5f44f47e8931a83e1",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 3049.504052,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 2183.126213,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -58,11 +59,12 @@
       "preparedSha256": "0daf5c6b82e38eedf62fda78e77183f668465d87878b7b93b1d1a3a824dd2c84",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 376.39148,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 374.120131,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -77,11 +79,12 @@
       "preparedSha256": "e41c81076124ccae5817301699d308549a266e0c61a59bd5176b59d6d245f5bb",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 367.306804,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 278.170913,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -96,11 +99,12 @@
       "preparedSha256": "0d35cf6573e8c02fe24a8d70bea510373a3ce562f67c812f249e2957ea978745",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 472.198306,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 366.127786,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -115,11 +119,12 @@
       "preparedSha256": "3ab3fbf9cf2c3f03d8bd490421f6d7cc1d9a7b274ad45fcf876bc893599db3ed",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 952.005744,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 971.732808,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -134,11 +139,12 @@
       "preparedSha256": "dd1f6788f0d58af0b69b6cac763641960a1cbcf4eb3a430fe6e55e95f92c1e4f",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 321.098278,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 302.248493,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -153,11 +159,12 @@
       "preparedSha256": "b5fa3bfc673335b4d72766763759a3941ee476e5654a00c918ccca2a2486af4e",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 2165.811475,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 2022.198267,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -172,11 +179,12 @@
       "preparedSha256": "0a63dd276e3ca730f814750b8d2ba4ff18de3d9c266752ccd7703b02ce0acf68",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 26942.074655,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 19422.994163,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -191,11 +199,12 @@
       "preparedSha256": "d1c2274151455c676adff4e7daa72f2a064a2906800ee5eee2474cb577ee1d79",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 11600.962484,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 8789.236387,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -210,11 +219,12 @@
       "preparedSha256": "c67358fdd486ecd1c88f14cac40a2b5ca43040d23bc883a0094f3641d7225ec7",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 9838.756669,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 6798.957929,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -229,11 +239,12 @@
       "preparedSha256": "5c444640af6cb8c76ae20a88889551cf34a91c64e053f3ddac5fce3d370233db",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 13026.107588,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 8901.615992,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -248,11 +259,12 @@
       "preparedSha256": "e5668329b1ebf3d1c620f0f0fe69c442da6457c87a683b1a35fa886c61241b0a",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 24546.107725,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 17618.05187,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -267,11 +279,12 @@
       "preparedSha256": "2d77fc609cc4216f3f1b44cafff9c9d1e9b09f16c37d4e652350f8a975fa22f0",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 14097.077702,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 11226.045254,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -286,14 +299,14 @@
       "preparedSha256": "160e45d136e5b7a03bc386ec3c13ed0dc718266187908760be7c98ccc3655e8b",
       "status": "review_required",
       "reasons": [
-        "engine_disagreement",
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 9537.077561,
-      "distributionThreshold": 5.209225,
-      "engineAgreement": false,
-      "conditionRepresentationAgreement": false
+      "distributionDistance": 6449.676975,
+      "distributionThreshold": 4.506265,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
     },
     {
       "id": "n8p8k-500-0p0",
@@ -306,11 +319,12 @@
       "preparedSha256": "f64072ccad4fa5cfb282fbfda8533f579d54d2d6d61937bb25b02fcccfd4ee25",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 5823.284473,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 4178.415011,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -325,11 +339,12 @@
       "preparedSha256": "cafd956481878a5e8944a54236ab6f295c5aa33a6f5055559c9cea0bcc1afd54",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 1121.473834,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 791.503602,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -344,11 +359,12 @@
       "preparedSha256": "234066d42698588d47de7c5a8303834ae59777ce4a0f93dfe27e0247f20204ba",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 601.65744,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 455.840743,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -363,11 +379,12 @@
       "preparedSha256": "aea9007d212720ebbd76f1068a6fb508bf7e64a32171c946bab08158f7dedfbb",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 1805.939568,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 1337.601336,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -382,11 +399,12 @@
       "preparedSha256": "bc37d5a5b39e50f728e4c7d940fc3142515eacf35788c2cdd554d71bd9416d15",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 3240.676946,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 2349.682497,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -401,11 +419,12 @@
       "preparedSha256": "1acb26263204cbcef3d68b421b5c9d72a507a32ba5f2515c7afd433cea66e109",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 245.437064,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 233.073549,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -420,11 +439,12 @@
       "preparedSha256": "618494e6ef570aa1c98fc7beaebe9a75cb9771a048faede6f707adc203d2872f",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 1357.447765,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 1486.245492,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -439,11 +459,12 @@
       "preparedSha256": "d7b52359241c5c77b148723de8d4a1f21fbdaf21d370c8bc28ce83b1eea0e914",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 14596.476264,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 10445.109896,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -458,11 +479,12 @@
       "preparedSha256": "a934146270f48dc61503f55e2e2015bce3024ede1fc18de286f04c9d57648c51",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 9295.889805,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 6382.94212,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -477,15 +499,14 @@
       "preparedSha256": "e841e1a6542b85d99ddf541793c0335afc3c9c42e514c8972320e8119801ea70",
       "status": "review_required",
       "reasons": [
-        "engine_disagreement",
-        "outside_training_envelope",
-        "low_model_confidence"
+        "outside_operating_envelope",
+        "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 7956.084076,
-      "distributionThreshold": 5.209225,
-      "engineAgreement": false,
-      "conditionRepresentationAgreement": false
+      "distributionDistance": 6270.084312,
+      "distributionThreshold": 4.506265,
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
     },
     {
       "id": "n8p8k-60-2p1-inner",
@@ -498,11 +519,12 @@
       "preparedSha256": "daae07014756e6e9ae10994365f188f98f57e34aa26d818bbf4d9f9252fc51af",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 14366.528108,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 9812.366075,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -517,11 +539,12 @@
       "preparedSha256": "4ed8910aebdad7d90ca6dff79c6dc897a887c1ad7c058fa1d81ba039a49b3f1e",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 21794.645158,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 15306.735833,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -536,11 +559,12 @@
       "preparedSha256": "75b4f1f4682df1799a111d98eda69a8f0ea9246409a02583a2b960d28610a0d2",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 42718.063144,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 32240.928193,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
       "conditionRepresentationAgreement": true
     },
@@ -555,22 +579,23 @@
       "preparedSha256": "96cb4ad97860aff6a7d8a215cd37697e5cc8a424e0450eb5d1e5f4a96f066fa0",
       "status": "review_required",
       "reasons": [
+        "outside_operating_envelope",
         "outside_training_envelope"
       ],
       "candidateInsideSupportedScope": "review_required",
-      "distributionDistance": 7163.170256,
-      "distributionThreshold": 5.209225,
+      "distributionDistance": 4785.242041,
+      "distributionThreshold": 4.506265,
       "engineAgreement": true,
-      "conditionRepresentationAgreement": false
+      "conditionRepresentationAgreement": true
     }
   ],
   "summary": {
     "records": 28,
     "automaticConclusions": 0,
     "abstentionRate": 1,
-    "broadEngineAgreement": 0.9285714285714286,
-    "broadEngineDisagreements": 2,
-    "internalEightConditionRepresentationDisagreements": 3,
+    "broadEngineAgreement": 1,
+    "broadEngineDisagreements": 0,
+    "internalEightConditionRepresentationDisagreements": 0,
     "uncontainedEngineDisagreements": 0
   },
   "limitations": [

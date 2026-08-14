@@ -96,6 +96,32 @@ test("unified screen route selects the honest model contract and emits receipts"
   });
 });
 
+test("developer compiler API emits deterministic downloadable artifacts and enforces bounds", async () => {
+  await withServer(createHandler(), async (url) => {
+    const source = await readFile(new URL("../examples/dense-compile-input.json", import.meta.url), "utf8");
+    const first = await fetch(`${url}/api/compile`, { method: "POST", headers: { "content-type": "application/json" }, body: source });
+    assert.equal(first.status, 200);
+    const compiled = await first.json();
+    assert.equal(compiled.compiler, "rotornote-dense-int8-v1");
+    assert.deepEqual(compiled.architecture, [16, 2]);
+    assert.equal(compiled.parity.labelAgreement, 1);
+    assert.ok(compiled.artifacts.int8.bytes < compiled.artifacts.fp32.bytes);
+    assert.equal(Buffer.from(compiled.artifacts.fp32.base64, "base64").length, compiled.artifacts.fp32.bytes);
+    const repeated = await (await fetch(`${url}/api/compile`, { method: "POST", headers: { "content-type": "application/json" }, body: source })).json();
+    assert.equal(repeated.artifacts.fp32.sha256, compiled.artifacts.fp32.sha256);
+    assert.equal(repeated.artifacts.int8.sha256, compiled.artifacts.int8.sha256);
+
+    const oversized = JSON.stringify({ format: "rotornote-dense-compile-input-v1", architecture: [1024, 1024], layers: [], calibrationRows: [[0]] });
+    const rejected = await fetch(`${url}/api/compile`, { method: "POST", headers: { "content-type": "application/json" }, body: oversized });
+    assert.equal(rejected.status, 422);
+    assert.equal((await rejected.json()).error, "compile_limit_exceeded");
+    const malformed = JSON.stringify({ format: "rotornote-dense-compile-input-v1", architecture: [2, 2], layers: [], calibrationRows: [[0, 1]] });
+    const malformedResponse = await fetch(`${url}/api/compile`, { method: "POST", headers: { "content-type": "application/json" }, body: malformed });
+    assert.equal(malformedResponse.status, 422);
+    assert.equal((await malformedResponse.json()).error, "compile_rejected");
+  });
+});
+
 test("variable-speed anomaly path rejects missing RPM and multi-sensor input", async () => {
   await withServer(createHandler(), async (url) => {
     const sample = await (await fetch(`${url}/samples/real-variable-speed-anomaly.csv`)).text();

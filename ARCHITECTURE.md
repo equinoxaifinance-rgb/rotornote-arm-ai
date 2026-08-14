@@ -30,9 +30,9 @@ The native Arm64 workflow also builds the production container on an `aarch64` r
 ```text
 one 3,500-sample uniaxial signal + RPM
   -> two deterministic 2,048-sample windows
-  -> mean 48-feature representation
+  -> ordered 96-feature temporal representation (48 per window)
   -> standard scaling
-  -> FP32 48->253->126->8 ReLU MLP (five inactive fitted units pruned)
+  -> FP32 96->609->326->120->8 ReLU MLP (real-bank-inactive units pruned)
   -> collapse eight observed laboratory-condition probabilities to healthy | anomaly
        <-> exact alternate-engine witness
      dynamic-input/per-output-weight INT8 WASM SIMD
@@ -41,5 +41,7 @@ one 3,500-sample uniaxial signal + RPM
 ```
 
 This second head deliberately answers a broader but shallower question. It was trained on 2,925 real UPATRAS speed signals across 39 complete physical measurement sequences. Four-fold validation holds out whole sequences, so neither another speed nor another window from a held sequence can leak into training. It never maps those states onto RotorNote's four fault-family labels and never estimates severity.
+
+The compiler is also an executable product boundary. `POST /api/compile` accepts a bounded dense ReLU graph plus calibration rows, validates shape and parameter limits, ignores caller attempts to weaken parity policy, then returns deterministic FP32 and SIMD-row-padded INT8 artifacts with hashes, utilization, compute, and calibration parity. The browser calls this route and exposes the returned artifact bytes for download.
 
 `POST /api/screen` makes the two heads one bounded cascade. A single uniaxial capture routes to the broad variable-speed screen. Four synchronized channels route to the specialist. Both paths run FP32 and INT8 witnesses, apply their own training envelope, and emit a hash-bound analysis passport; the server returns the chosen route so no consumer has to infer which claim was made.

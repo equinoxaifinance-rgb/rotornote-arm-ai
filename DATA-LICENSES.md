@@ -19,3 +19,9 @@ Changes: RotorNote hash-verifies the publisher archive, reads 39 complete measur
 Mohamed Ismail, Jens Windelberg, Andreas Bierig, Iñaki Bravo-imaz, and Aitor Arnaiz, *Vibration Data for Axial Ball Bearings and Spall Faults*, version 2, DOI [`10.17632/chwhh9n3bf.2`](https://data.mendeley.com/datasets/chwhh9n3bf/2), licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 Changes: the complete 164,430,658-byte publisher archive is SHA-256 verified (`d22e5a569c8e675348f59c8024b2fb1037211619b68a390bd98409143961b927`) before any record is selected. RotorNote enumerates all 28 MATLAB records, rejects an unexpected filename or condition count, converts a deterministic centered 131,072-sample segment from every record to CSV, and tests fail-closed behavior through the canonical one-channel anomaly route. These records never enter production training.
+
+## Second external bearing boundary
+
+Weiwei Qian, *Zhenjiang bearing dataset*, version 1, DOI [`10.17632/xfj9t7cprb.1`](https://data.mendeley.com/datasets/xfj9t7cprb/1), licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+Changes: the complete 89,447,761-byte publisher archive is SHA-256 verified (`ff58f977d2c3f7bd3f0dadfa51b4934bcd989590a10ddb7b0efcdd4f42a769fd`). RotorNote selects seven evenly spaced physical traces from each of five documented condition files, linearly resamples each 1,800-sample trace to the product's 2,048-sample minimum, and challenges every trace at all seven documented operating speeds because the archive does not machine-map columns to speeds. The resulting 245 boundary executions never enter training and are not treated as an accuracy estimate.

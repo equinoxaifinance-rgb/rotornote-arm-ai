@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/styles.css?v=20260813b">
   <link rel="stylesheet" href="/actions.css?v=20260813a">
   <link rel="stylesheet" href="/anomaly.css?v=20260813b">
+  <link rel="stylesheet" href="/compiler.css?v=20260813a">
 </head>
 <body>
   <header class="topbar">
@@ -118,8 +119,13 @@
 
     <section class="underhood">
       <span class="step">ARM</span>
-      <div><h2>Two measured Arm workloads. Two honest scopes.</h2><p>The 45,030-MAC variable-speed neural head cuts learned bytes by 74.14% and measures about 1.27× native end-to-end speedup. The 192-MAC four-sensor specialist measures about 3.23×, disclosed separately as a runtime micro-workload. Both retain FP32/INT8 agreement gates; neither number is an energy or universal-device claim.</p><p><a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/workflows/native-arm64.yml" target="_blank" rel="noreferrer">Inspect raw native Arm runs</a></p></div>
-      <div class="weight-stat"><strong>74.14%</strong><span>weight-byte reduction</span></div>
+      <div><h2>A real compiler, exercised by a real 297,078-MAC head.</h2><p>The variable-speed model preserves two temporal windows, cuts learned bytes by 74.22%, and keeps full-bank FP32/INT8 label parity. The same bounded compiler is available below; native timing remains tied to exact-commit Arm receipts rather than a universal speed claim.</p><p><a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/workflows/native-arm64.yml" target="_blank" rel="noreferrer">Inspect exact native Arm runs</a></p></div>
+      <div class="weight-stat"><strong>74.22%</strong><span>weight-byte reduction</span></div>
+    </section>
+    <section class="compiler-lane" aria-labelledby="compilerHeading">
+      <div><span class="step">KIT</span><span class="kicker">Reusable Arm developer path</span></div>
+      <div><h2 id="compilerHeading">Bring a dense ReLU head. Leave with two hash-bound artifacts.</h2><p>The same deterministic compiler that builds RotorNote is exposed as a bounded local API. It emits FP32 and row-padded INT8 artifacts, measures parity on your supplied calibration rows, and never confuses compiler correctness with model accuracy.</p></div>
+      <div class="compiler-action"><button id="compileDemo" type="button">Compile example head <span aria-hidden="true">→</span></button><p id="compileResult" role="status">No account, cloud model, or API key required.</p><div id="compileDownloads" class="compile-downloads" hidden><a id="downloadFp32" download="dense-fp32.bin">FP32 artifact</a><a id="downloadInt8" download="dense-int8.bin">INT8 artifact</a></div><a href="https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/blob/main/ARM-INT8-KIT.md" target="_blank" rel="noreferrer">Open developer contract</a></div>
     </section>
     <section class="proof-rail" aria-labelledby="proofHeading">
       <div class="proof-intro"><span class="kicker">Executed evidence</span><h2 id="proofHeading">Proof, not posture.</h2><p>Every number opens to raw, reproducible receipts. The unknown stays unknown.</p></div>

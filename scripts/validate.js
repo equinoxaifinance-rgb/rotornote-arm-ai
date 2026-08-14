@@ -11,12 +11,12 @@ const required = [
   "package.json", "package-lock.json", "Dockerfile", ".dockerignore", "compose.yaml", ".github/workflows/native-arm64.yml",
   ".github/workflows/external-boundary.yml", ".github/workflows/independent-supply-chain.yml", "requirements-field.txt", "native/arm-dotprod-bench.c", "ARM-INT8-KIT.md", "src/dense-compiler.js", "scripts/compile-dense-model.js", "examples/dense-compile-input.json",
   "scripts/prepare-open-training.py", "scripts/build-open-features.js", "scripts/train-real-crossval.py",
-  "scripts/prepare-axial-boundary.py", "scripts/evaluate-axial-boundary.js", "field/open-data-sources.json",
-  "field/results/open-grouped-cross-validation.json", "field/results/axial-bearing-boundary.json",
+  "scripts/prepare-axial-boundary.py", "scripts/evaluate-axial-boundary.js", "scripts/prepare-zhenjiang-boundary.py", "scripts/evaluate-zhenjiang-boundary.js", "field/open-data-sources.json",
+  "field/results/open-grouped-cross-validation.json", "field/results/axial-bearing-boundary.json", "field/results/zhenjiang-bearing-boundary.json",
   "field/training/mechanical-manifest.json", "field/training/mechanical-features.f32",
   "field/training/mechanical-labels.u8", "field/training/mechanical-groups.u8", "field/training/linear-export.json",
   "scripts/prepare-upatras-features.mjs", "scripts/prepare-upatras-demo.mjs", "scripts/train-upatras-anomaly.py",
-  "scripts/build-anomaly-model.js", "benchmark/run-anomaly.js", "src/anomaly.js", "web/anomaly.css",
+  "scripts/build-anomaly-model.js", "benchmark/run-anomaly.js", "src/anomaly.js", "web/anomaly.css", "web/compiler.css",
   "field/results/upatras-grouped-anomaly.json", "field/training/upatras-manifest.json",
   "field/training/upatras-features.f32", "field/training/upatras-labels.u8", "field/training/upatras-groups.u8",
   "field/training/upatras-deep-export.json", "model/anomaly-model.json", "model/rotornote-anomaly-fp32.bin",
@@ -46,8 +46,9 @@ for (const label of model.metadata.labels) {
   assert.equal(baseline.primary, optimized.primary, `${file} engine disagreement`);
 }
 const anomalyModel = await loadInferenceModel(new URL("../model/anomaly-model.json", import.meta.url));
-assert.deepEqual(anomalyModel.metadata.architecture, [48, 253, 126, 8]);
-assert.deepEqual(anomalyModel.metadata.training.pruning.inactiveUnitsPruned, [3, 2]);
+assert.equal(anomalyModel.metadata.architecture[0], 96);
+assert.equal(anomalyModel.metadata.architecture.at(-1), 8);
+assert.equal(anomalyModel.metadata.training.pruning.inactiveUnitsPruned.length, 3);
 assert.ok(anomalyModel.metadata.training.pruning.maximumTrainingBankLogitDeltaAfterPruning <= 1e-5);
 assert.equal(anomalyModel.metadata.training.dataKind, "real experimental vibration only");
 assert.ok(anomalyModel.metadata.training.conditionBalancedAccuracy >= 0.998);
@@ -57,7 +58,7 @@ assert.equal(anomalyModel.metadata.training.measurementSequences, 39);
 assert.ok(anomalyModel.metadata.training.measurementSequenceAccuracyWilson95[0] >= 0.9);
 assert.equal(anomalyModel.metadata.training.engineLabelAgreement, 1);
 assert.equal(anomalyModel.metadata.compiler.deterministicArtifactCrossCheck, true);
-assert.equal(anomalyModel.metadata.compiler.multiplyAccumulatesPerInference, 45030);
+assert.ok(anomalyModel.metadata.compiler.multiplyAccumulatesPerInference >= 250000);
 assert.ok(anomalyModel.metadata.int8.bytes <= anomalyModel.metadata.float.bytes * 0.27);
 assert.ok(anomalyModel.metadata.utilization.hiddenLayers.every((layer) => layer.activeUnits === layer.units));
 assert.ok(anomalyModel.metadata.utilization.hiddenLayers.every((layer) => layer.rowsBelowMaximumWeight1e6 === 0));
@@ -81,8 +82,14 @@ assert.equal(boundary.summary.abstentionRate, 1);
 assert.equal(boundary.summary.automaticConclusions, 0);
 assert.equal(boundary.summary.records, 28);
 assert.equal(boundary.route, "canonical one-channel variable-speed anomaly head");
-assert.equal(boundary.summary.broadEngineDisagreements, 2);
+assert.equal(boundary.summary.broadEngineDisagreements, 0);
 assert.equal(boundary.summary.uncontainedEngineDisagreements, 0);
+const secondBoundary = JSON.parse(await readFile(new URL("../field/results/zhenjiang-bearing-boundary.json", import.meta.url), "utf8"));
+assert.equal(secondBoundary.summary.physicalSignals, 35);
+assert.equal(secondBoundary.summary.rpmChallenges, 245);
+assert.equal(secondBoundary.summary.automaticConclusions, 0);
+assert.equal(secondBoundary.summary.broadEngineDisagreements, 0);
+assert.equal(secondBoundary.summary.uncontainedEngineDisagreements, 0);
 const grouped = JSON.parse(await readFile(new URL("../field/results/open-grouped-cross-validation.json", import.meta.url), "utf8"));
 assert.equal(grouped.physicalTests.length, 20);
 assert.ok(grouped.aggregate.fourChannelRecording.balancedAccuracy >= 0.93);
