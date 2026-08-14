@@ -37,7 +37,6 @@ const representationDisagreements = cases.filter((entry) => !entry.conditionRepr
 const uncontainedEngineDisagreements = cases.filter((entry) => !entry.engineAgreement && entry.status !== "review_required").length;
 const receipt = {
   schema: "rotornote-axial-bearing-boundary-v2",
-  createdAt: new Date().toISOString(),
   source: manifest.source,
   route: "canonical one-channel variable-speed anomaly head",
   selection: manifest.selection,

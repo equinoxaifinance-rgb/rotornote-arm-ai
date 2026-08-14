@@ -33,7 +33,6 @@ const engineDisagreements = cases.filter((entry) => !entry.engineAgreement).leng
 const uncontainedEngineDisagreements = cases.filter((entry) => !entry.engineAgreement && entry.status !== "review_required").length;
 const receipt = {
   schema: "rotornote-zhenjiang-bearing-boundary-v1",
-  createdAt: new Date().toISOString(),
   source: manifest.source,
   route: "canonical one-channel variable-speed anomaly head",
   selection: manifest.selection,
