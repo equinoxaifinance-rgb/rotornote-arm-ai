@@ -88,6 +88,11 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=ROOT / ".field-work/open-real/ims-prepared")
     parser.add_argument("--seven-zip", default="7z")
     arguments = parser.parse_args()
+    work_root = (ROOT / ".field-work").resolve()
+    arguments.output = arguments.output.resolve()
+    if arguments.output == work_root or work_root not in arguments.output.parents:
+        raise ValueError(f"--output must be a child of {work_root}")
+
     source = json.loads((ROOT / "field/open-data-sources.json").read_text(encoding="utf-8"))["imsNaturalFailureBoundary"]
     archive_hash = digest_file(arguments.archive)
     if archive_hash != source["archiveSha256"]:
