@@ -115,7 +115,65 @@
       "acceptedSignals": 2924,
       "selectiveAccuracy": 1,
       "selectiveBalancedAccuracy": 1
-    }
+    },
+    "riskCoverage": [
+      {
+        "minimumConfidence": 0.5,
+        "coverage": 1,
+        "acceptedSignals": 2925,
+        "selectiveAccuracy": 1,
+        "selectiveBalancedAccuracy": 1
+      },
+      {
+        "minimumConfidence": 0.7,
+        "coverage": 1,
+        "acceptedSignals": 2925,
+        "selectiveAccuracy": 1,
+        "selectiveBalancedAccuracy": 1
+      },
+      {
+        "minimumConfidence": 0.8,
+        "coverage": 1,
+        "acceptedSignals": 2925,
+        "selectiveAccuracy": 1,
+        "selectiveBalancedAccuracy": 1
+      },
+      {
+        "minimumConfidence": 0.9,
+        "coverage": 0.9996581196581197,
+        "acceptedSignals": 2924,
+        "selectiveAccuracy": 1,
+        "selectiveBalancedAccuracy": 1
+      },
+      {
+        "minimumConfidence": 0.95,
+        "coverage": 0.9986324786324786,
+        "acceptedSignals": 2921,
+        "selectiveAccuracy": 1,
+        "selectiveBalancedAccuracy": 1
+      },
+      {
+        "minimumConfidence": 0.99,
+        "coverage": 0.987008547008547,
+        "acceptedSignals": 2887,
+        "selectiveAccuracy": 1,
+        "selectiveBalancedAccuracy": 1
+      },
+      {
+        "minimumConfidence": 0.995,
+        "coverage": 0.9623931623931624,
+        "acceptedSignals": 2815,
+        "selectiveAccuracy": 1,
+        "selectiveBalancedAccuracy": 1
+      },
+      {
+        "minimumConfidence": 0.999,
+        "coverage": 0.8164102564102564,
+        "acceptedSignals": 2388,
+        "selectiveAccuracy": 1,
+        "selectiveBalancedAccuracy": 1
+      }
+    ]
   },
   "normalization": {
     "means": [

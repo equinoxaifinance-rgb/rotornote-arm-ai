@@ -225,6 +225,7 @@ const metadata = {
     minimumConfidence: 0.9,
     basis: "conservative observed grouped-CV floor; output scores are not field-calibrated failure probabilities",
     groupedValidation: validation.aggregate.riskCoverage.find((row) => row.minimumConfidence === 0.9),
+    riskCoverage: validation.aggregate.riskCoverage,
   },
   normalization: { means: Array.from(means), deviations: Array.from(deviations) },
   ood: { method: "mean squared normalized-feature distance to nearest real-training broad class centroid", labels: exported.broadOutput.labels, trainingQuantile: oodQuantile, threshold: oodThreshold, centroids: centroids.map((centroid) => Array.from(centroid)) },

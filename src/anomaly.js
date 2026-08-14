@@ -42,6 +42,13 @@ export function analyzeVariableSpeedAnomaly(model, values, sampleRate, operating
     probabilities: Object.fromEntries(model.metadata.broadOutput.labels.map((label, index) => [label, Number(selected[index].toFixed(6))])),
     distribution,
     reasons,
+    validationContext: {
+      independenceUnit: "complete measurement sequence",
+      heldOutUnits: model.metadata.training.measurementSequences,
+      operatingPoint: model.metadata.decisionPolicy.groupedValidation,
+      riskCoverage: model.metadata.decisionPolicy.riskCoverage,
+      interpretation: "Observed grouped laboratory risk/coverage only; model scores are not calibrated field-failure probabilities.",
+    },
     signal: { samples: values.length, sampleRate, operatingRpm, featureWindows: offsets.length, temporalAggregation: "ordered_concatenation" },
     model: { format: model.metadata.format, architecture: model.metadata.architecture, learnedExperimentalConditions: model.metadata.labels.length, source: model.metadata.training.source.title },
     note: "The learned representation preserves eight observed experimental conditions, but this product boundary emits healthy-versus-anomaly only. It does not identify a field fault family, estimate severity, or replace a qualified vibration review.",

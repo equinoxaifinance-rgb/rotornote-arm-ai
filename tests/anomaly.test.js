@@ -15,6 +15,9 @@ test("deep anomaly head executes attributed physical data with cross-engine agre
   const optimized = analyzeVariableSpeedAnomaly(model, parsed.values, 1024, 2100, "optimized");
   assert.equal(baseline.primary, "anomaly");
   assert.equal(optimized.primary, "anomaly");
+  assert.equal(optimized.validationContext.independenceUnit, "complete measurement sequence");
+  assert.equal(optimized.validationContext.heldOutUnits, 39);
+  assert.ok(optimized.validationContext.riskCoverage.length >= 6);
   assert.equal(optimized.engineAgreement, true);
   assert.equal(optimized.signal.featureWindows, 2);
   assert.equal(model.metadata.architecture[0], 96);

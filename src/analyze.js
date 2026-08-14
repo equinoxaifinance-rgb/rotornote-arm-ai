@@ -131,6 +131,14 @@ export function analyzeSignal(model, values, sampleRate, engine = "optimized", {
       quality,
       policy: `Abstain when confidence is below ${model.metadata.decisionPolicy.minimumConfidence}, signal quality fails, most windows leave the fitted envelope, or FP32 and INT8 labels disagree.`,
     },
+    validationContext: {
+      independenceUnit: "complete physical test",
+      heldOutUnits: model.metadata.training.physicalTests.length,
+      operatingPoint: model.metadata.decisionPolicy.groupedValidation,
+      riskCoverage: model.metadata.decisionPolicy.riskCoverage,
+      nestedPolicyTargetMet: model.metadata.decisionPolicy.nestedValidation.aggregate.calibrationTargetMetAllFolds,
+      interpretation: "Observed grouped laboratory risk/coverage only; the nested audit did not establish a calibrated probability guarantee.",
+    },
     context,
     signal: {
       samples: values.length,

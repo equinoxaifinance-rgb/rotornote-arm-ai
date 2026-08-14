@@ -98,6 +98,122 @@
         0.9427402862985685
       ]
     },
+    "riskCoverage": [
+      {
+        "minimumConfidence": 0.5,
+        "coverage": 1,
+        "acceptedRecordings": 2000,
+        "selectiveAccuracy": 0.94,
+        "selectiveBalancedAccuracy": 0.9400000000000001,
+        "acceptedByClass": [
+          500,
+          500,
+          500,
+          500
+        ],
+        "classConditionalAccuracy": [
+          0.986,
+          1,
+          0.844,
+          0.93
+        ]
+      },
+      {
+        "minimumConfidence": 0.7,
+        "coverage": 0.9915,
+        "acceptedRecordings": 1983,
+        "selectiveAccuracy": 0.9440242057488654,
+        "selectiveBalancedAccuracy": 0.943377768669631,
+        "acceptedByClass": [
+          500,
+          500,
+          486,
+          497
+        ],
+        "classConditionalAccuracy": [
+          0.986,
+          1,
+          0.8539094650205762,
+          0.9336016096579477
+        ]
+      },
+      {
+        "minimumConfidence": 0.8,
+        "coverage": 0.986,
+        "acceptedRecordings": 1972,
+        "selectiveAccuracy": 0.9467545638945233,
+        "selectiveBalancedAccuracy": 0.9458309712322297,
+        "acceptedByClass": [
+          499,
+          500,
+          479,
+          494
+        ],
+        "classConditionalAccuracy": [
+          0.9879759519038076,
+          1,
+          0.860125260960334,
+          0.9352226720647774
+        ]
+      },
+      {
+        "minimumConfidence": 0.9,
+        "coverage": 0.9755,
+        "acceptedRecordings": 1951,
+        "selectiveAccuracy": 0.9513070220399795,
+        "selectiveBalancedAccuracy": 0.9497546352256434,
+        "acceptedByClass": [
+          498,
+          500,
+          462,
+          491
+        ],
+        "classConditionalAccuracy": [
+          0.9879518072289156,
+          1,
+          0.8701298701298701,
+          0.9409368635437881
+        ]
+      },
+      {
+        "minimumConfidence": 0.95,
+        "coverage": 0.97,
+        "acceptedRecordings": 1940,
+        "selectiveAccuracy": 0.9551546391752578,
+        "selectiveBalancedAccuracy": 0.9533880782294792,
+        "acceptedByClass": [
+          498,
+          500,
+          452,
+          490
+        ],
+        "classConditionalAccuracy": [
+          0.9879518072289156,
+          1,
+          0.8827433628318584,
+          0.9428571428571428
+        ]
+      },
+      {
+        "minimumConfidence": 0.99,
+        "coverage": 0.9615,
+        "acceptedRecordings": 1923,
+        "selectiveAccuracy": 0.9583983359334374,
+        "selectiveBalancedAccuracy": 0.9563511734490465,
+        "acceptedByClass": [
+          497,
+          500,
+          437,
+          489
+        ],
+        "classConditionalAccuracy": [
+          0.9879275653923542,
+          1,
+          0.8947368421052632,
+          0.9427402862985685
+        ]
+      }
+    ],
     "nestedValidation": {
       "method": "Calibration audit only: for each outer fold, inner grouped CV on the other 16 physical tests searched a predeclared grid spanning 0.50 through 0.9999 and recorded the complete trace. If the 95% target was not met inside, that outer fold accepted nothing. This audit does not justify a calibrated-probability claim.",
       "receipt": "field/results/open-grouped-cross-validation.json",

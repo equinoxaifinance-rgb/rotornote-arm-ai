@@ -36,6 +36,9 @@ test("happy path serves UI, health, sample, and optimized analysis", async () =>
     assert.equal(payload.result.primary, "imbalance");
     assert.equal(payload.result.signal.windows, 5);
     assert.equal(payload.result.decision.status, "screened");
+    assert.equal(payload.result.validationContext.independenceUnit, "complete physical test");
+    assert.equal(payload.result.validationContext.nestedPolicyTargetMet, false);
+    assert.ok(payload.result.validationContext.riskCoverage.length >= 6);
     assert.equal(payload.result.decision.engineAgreement, 1);
     assert.match(payload.result.receipt.evidenceId, /^[a-f0-9]{20}$/);
     const repeated = await fetch(`${url}/api/analyze?engine=optimized`, {

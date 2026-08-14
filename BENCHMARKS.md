@@ -1,10 +1,11 @@
 # Benchmarks and evidence gates
 
 RotorNote compares FP32 and INT8 implementations for two real-data workloads.
-The primary optimization claim is the reusable deterministic compiler exercised by
-the materially nonlinear 96→609→326→120→8 variable-speed head (297,078 MACs
-per inference). The 48→4 specialist is retained for product utility and parity
-coverage, but its 192-MAC timing is not a top-level performance claim.
+The exact native receipt reports both scopes side by side: the materially
+nonlinear 96→609→326→120→8 variable-speed screen (297,078 MACs per inference)
+and the interpretable 48→4 specialist (192 MACs). Their throughput and paired
+ratios are both visible, but they are never compared as if the workloads were
+equivalent; the small specialist is explicitly call-overhead sensitive.
 
 Both compare:
 
@@ -19,7 +20,7 @@ npm run benchmark -- --output benchmark/results/local-x64-real.json --repetition
 
 The JSON records raw alternating-order samples, checksums, medians, p95, paired speed ratios, a deterministic 10,000-resample confidence interval, machine identity, and artifact hashes.
 
-## Primary current evidence
+## Variable-speed broad-screen evidence
 
 `npm run benchmark:anomaly` measures the fitted-unit-pruned 96->609->326->120->8
 network. The production fit starts at 96->768->384->128->8 and removes only units
@@ -34,11 +35,11 @@ agreement with 0.000874 p99 and 0.007802 maximum probability drift. Exact native
 timing belongs to the frozen current-commit Arm64 workflow and is reported
 alongside the specialist result with its different compute scope.
 
-## Secondary specialist evidence
+## Four-sensor specialist evidence
 
 The model artifact reduction is deterministic: FP32 is 784 bytes and INT8 is 208 bytes, a 73.4694% reduction. Across all 2,000 real four-channel recording representations, build-time parity is 100% by production label; p99 probability drift is 2.80e-10 and the disclosed maximum isolated drift is 0.01996.
 
-Current-commit runs bind the linear-head FP32, INT8, and WASM hashes on native Arm64 runners and preserve 100% label agreement. The network performs only 192 MACs, so its runtime ratio is quarantined inside the raw receipt and excluded from headline optimization evidence. The materially nonlinear head and reusable compiler carry the performance claim.
+Current-commit runs bind the linear-head FP32, INT8, and WASM hashes on native Arm64 runners and preserve 100% label agreement. The same receipt reports median FP32 and INT8 throughput, paired speedup, and its bootstrap interval for this 192-MAC workload alongside the deep head. Because a 192-MAC call is overhead sensitive, this specialist result is useful as an end-to-end latency receipt, not evidence that the tiny classifier saves meaningful fleet compute by itself.
 
 The separate compiled `vdotq_s32` witnesses matched the scalar result exactly. Their kernel-only ratios are not presented as product throughput. GitHub artifact-zip digests differ per run because the archives include timestamps and run receipts; they are not model hashes. The hashes inside each receipt show that the compared FP32, INT8, and WASM files are identical.
 

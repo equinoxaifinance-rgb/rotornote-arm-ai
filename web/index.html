@@ -78,6 +78,14 @@
           <h2 id="verdictTitle"></h2>
           <div class="confidence"><div><span><span id="primaryLabel"></span> · model score, not calibrated probability</span><strong id="confidence"></strong></div><div class="meter"><i id="confidenceMeter"></i></div></div>
           <div class="assurance-strip"><span id="decisionBadge"></span><span id="assurance"></span></div>
+          <details class="validation-evidence">
+            <summary>Observed lab risk / coverage <span>decision context</span></summary>
+            <p id="validationSummary"></p>
+            <table class="risk-coverage" aria-label="Observed grouped validation risk and coverage">
+              <thead><tr><th>Score rule</th><th>Coverage</th><th>Accepted accuracy</th></tr></thead>
+              <tbody id="riskCoverage"></tbody>
+            </table>
+          </details>
           <div class="chart-card">
             <div class="chart-label"><span>Vibration trace</span><span id="duration"></span></div>
             <canvas id="waveform" width="760" height="180" aria-label="Downsampled vibration waveform"></canvas>

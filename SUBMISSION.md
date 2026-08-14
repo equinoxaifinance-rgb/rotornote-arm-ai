@@ -23,9 +23,10 @@ holds out whole sequences and observes 99.8% eight-condition balanced accuracy,
 SIMD-row-padded INT8 reduces learned bytes from 1,192,564 to 307,484 (74.22%)
 while preserving 100% eight-condition label agreement over the complete signal
 bank. The exact-commit native Arm64 workflow rebuilds and measures this graph;
-local x64 timing is not promoted into an Arm claim. This materially nonlinear
-head carries the performance claim; the specialist's tiny runtime is excluded
-from headline optimization evidence.
+local x64 timing is not promoted into an Arm claim. The same native receipt
+reports full throughput and paired uncertainty for both this materially
+nonlinear head and the 192-MAC specialist. The latter remains explicitly
+call-overhead sensitive and is not presented as equivalent compute work.
 
 The secondary four-fault specialist is a transparent 48->4 linear model over
 four sensors. Its five-fold whole-test validation records 94.0% four-channel balanced
@@ -44,6 +45,10 @@ uncontained engine disagreements. This is natural-failure abstention evidence,
 not a sensitivity claim. A nested audit did not establish a
 calibrated selective-accuracy claim, so the confidence floors remain
 conservative engineering rules rather than field probabilities.
+The result UI therefore exposes the complete observed grouped risk/coverage
+curve at the decision surface, including the current operating point and the
+failed nested-calibration status, rather than leaving a bare confidence score
+for the operator to overinterpret.
 
 RotorNote exposes its deterministic compiler, parity gate, utilization report,
 and layer-count-independent WASM memory planner as a working developer kit.

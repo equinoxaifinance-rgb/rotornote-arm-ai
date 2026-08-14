@@ -55,6 +55,7 @@ const files = [
   "scripts/evaluate-ims-boundary.js",
   "benchmark/run.js",
   "benchmark/run-anomaly.js",
+  "benchmark/machine.js",
   "tests/anomaly.test.js",
   "tests/csv.test.js",
   "tests/dense-compiler.test.js",

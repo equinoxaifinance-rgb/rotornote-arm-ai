@@ -36,6 +36,7 @@ assert.equal(model.metadata.training.recordingEngineAgreement, 1);
 assert.ok(model.metadata.training.fourChannelRecordingBalancedAccuracy >= 0.93);
 assert.ok(model.metadata.training.foldBalancedAccuracyRange[0] >= 0.85);
 assert.equal(model.metadata.decisionPolicy.nestedValidation.aggregate.calibrationTargetMetAllFolds, false);
+assert.equal(model.metadata.decisionPolicy.riskCoverage.length, 6);
 assert.ok(model.metadata.ood.threshold > 0);
 for (const label of model.metadata.labels) {
   const file = `real-${label}.csv`;
@@ -52,6 +53,7 @@ assert.equal(anomalyModel.metadata.training.pruning.inactiveUnitsPruned.length, 
 assert.ok(anomalyModel.metadata.training.pruning.maximumTrainingBankLogitDeltaAfterPruning <= 1e-5);
 assert.equal(anomalyModel.metadata.training.dataKind, "real experimental vibration only");
 assert.ok(anomalyModel.metadata.training.conditionBalancedAccuracy >= 0.998);
+assert.ok(anomalyModel.metadata.decisionPolicy.riskCoverage.length >= 8);
 assert.equal(anomalyModel.metadata.training.broadAnomalyBalancedAccuracy, 1);
 assert.equal(anomalyModel.metadata.training.measurementSequenceAccuracy, 1);
 assert.equal(anomalyModel.metadata.training.measurementSequences, 39);

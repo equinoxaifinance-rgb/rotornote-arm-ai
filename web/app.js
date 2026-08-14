@@ -4,6 +4,7 @@ const elements = Object.fromEntries([
   "verdictTitle", "primaryLabel", "confidence", "confidenceMeter", "duration", "waveform", "timeline", "action",
   "details", "disclaimer", "machineId", "measurementPoint", "sensorAxis", "operatingRpm", "loadPercent",
   "decisionBadge", "assurance", "machineContext", "receiptId", "downloadEvidence", "copyMaintenanceNote",
+  "validationSummary", "riskCoverage",
   "anomalyDemo", "anomalyResult", "compileDemo", "compileResult", "compileDownloads", "downloadFp32", "downloadInt8",
 ].map((id) => [id, document.getElementById(id)]));
 
@@ -113,6 +114,16 @@ function render(result) {
     ? assurance
     : `${result.decision.reasons.join(" · ").replaceAll("_", " ")} · ${assurance}`;
   elements.duration.textContent = `${result.signal.durationSeconds}s · ${result.signal.samples.toLocaleString()} samples`;
+  const validation = result.validationContext;
+  const operatingPoint = validation.operatingPoint;
+  const selectiveAccuracy = operatingPoint.selectiveAccuracy ?? operatingPoint.selectiveBalancedAccuracy;
+  elements.validationSummary.textContent = `${validation.heldOutUnits} held-out ${validation.independenceUnit}s. At the ${Math.round(operatingPoint.minimumConfidence * 100)}% score rule, observed coverage was ${Math.round(operatingPoint.coverage * 10000) / 100}% and accepted-row accuracy was ${Math.round(selectiveAccuracy * 10000) / 100}%. ${validation.interpretation}`;
+  elements.riskCoverage.replaceChildren(...validation.riskCoverage.map((row) => {
+    const line = document.createElement("tr");
+    const accuracy = row.selectiveAccuracy ?? row.selectiveBalancedAccuracy;
+    line.innerHTML = `<td>${Math.round(row.minimumConfidence * 1000) / 10}%</td><td>${Math.round(row.coverage * 10000) / 100}%</td><td>${accuracy === null ? "—" : `${Math.round(accuracy * 10000) / 100}%`}</td>`;
+    return line;
+  }));
   drawWaveform(result.signal.waveform);
   elements.timeline.replaceChildren(...result.timeline.map((point) => {
     const segment = document.createElement("span");
@@ -229,7 +240,8 @@ elements.anomalyDemo.addEventListener("click", async () => {
     const payload = await response.json();
     if (!response.ok) throw new Error(payload.message || payload.error || "Anomaly screen failed");
     const result = payload.result;
-    elements.anomalyResult.textContent = `${result.primary.replaceAll("_", " ")} · ${Math.round(result.confidence * 100)}% uncalibrated model score · ${result.engineAgreement ? "FP32/INT8 agree" : "engine review"}`;
+    const point = result.validationContext.operatingPoint;
+    elements.anomalyResult.textContent = `${result.primary.replaceAll("_", " ")} · ${Math.round(result.confidence * 100)}% uncalibrated model score · ${result.engineAgreement ? "FP32/INT8 agree" : "engine review"} · ${Math.round(point.coverage * 10000) / 100}% observed held-sequence coverage at this rule`;
   } catch (error) {
     elements.anomalyResult.textContent = error.message;
   } finally {

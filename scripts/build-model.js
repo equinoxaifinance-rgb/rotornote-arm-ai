@@ -171,6 +171,7 @@ const metadata = {
     minimumConfidence: 0.99,
     basis: "conservative engineering floor; confidence scores are not independently calibrated probabilities",
     groupedValidation: validation.aggregate.fourChannelRiskCoverage.find((row) => row.minimumConfidence === 0.99),
+    riskCoverage: validation.aggregate.fourChannelRiskCoverage,
     nestedValidation: {
       method: validation.aggregate.nestedConfidencePolicy.method,
       receipt: "field/results/open-grouped-cross-validation.json",

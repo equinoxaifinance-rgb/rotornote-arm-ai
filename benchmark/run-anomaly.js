@@ -1,9 +1,9 @@
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import os from "node:os";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadInferenceModel } from "../src/model.js";
+import { machineIdentity } from "./machine.js";
 
 function argument(name, fallback) {
   const index = process.argv.indexOf(name);
@@ -59,6 +59,16 @@ for (let iteration = 0; iteration < 10_000; iteration += 1) {
 bootstrapMedians.sort((a, b) => a - b);
 const pairedSorted = [...pairedSpeedups].sort((a, b) => a - b);
 const pairedMedian = quantile(pairedSorted, 0.5);
+const summarize = (samples) => {
+  const durations = samples.map((sample) => sample.milliseconds).sort((a, b) => a - b);
+  const median = quantile(durations, 0.5);
+  const p95 = quantile(durations, 0.95);
+  return {
+    medianMs: Number(median.toFixed(4)),
+    p95Ms: Number(p95.toFixed(4)),
+    medianInferencesPerSecond: Number(((batchSize / median) * 1000).toFixed(2)),
+  };
+};
 let agreement = 0;
 let maximumProbabilityDelta = 0;
 for (const features of featureBank) {
@@ -72,7 +82,7 @@ const hash = async (url) => createHash("sha256").update(await readFile(url)).dig
 const result = {
   schema: "rotornote-anomaly-benchmark-v1",
   recordedAt: new Date().toISOString(),
-  machine: { architecture: process.arch, platform: process.platform, cpus: os.cpus().length, cpuModel: os.cpus()[0]?.model, node: process.version },
+  machine: machineIdentity(),
   workload: { batchSize, repetitions, warmups, featureVectors: featureBank.length, inputFeatures: model.metadata.inputFeatures, temporalAggregation: "ordered_concatenation", network: model.metadata.architecture },
   artifacts: {
     fp32: { bytes: model.metadata.float.bytes, sha256: model.metadata.float.sha256 },
@@ -82,6 +92,8 @@ const result = {
   correctness: { labelAgreement: agreement / featureBank.length, maximumProbabilityDelta },
   raw,
   summary: {
+    baseline: summarize(raw.baseline),
+    optimized: summarize(raw.optimized),
     pairedMedianSpeedup: Number(pairedMedian.toFixed(4)),
     confidence95: [Number(quantile(bootstrapMedians, 0.025).toFixed(4)), Number(quantile(bootstrapMedians, 0.975).toFixed(4))],
     weightByteReduction: Number((1 - model.metadata.int8.bytes / model.metadata.float.bytes).toFixed(6)),

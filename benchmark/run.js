@@ -1,11 +1,11 @@
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import os from "node:os";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadModel } from "../src/model.js";
 import { extractFeatures, segmentSignal } from "../src/signal.js";
 import { parseCsv } from "../src/csv.js";
+import { machineIdentity } from "./machine.js";
 
 function argument(name, fallback) {
   const index = process.argv.indexOf(name);
@@ -106,7 +106,7 @@ const optimizedSummary = summarize(raw.optimized);
 const result = {
   schema: "rotornote-benchmark-v1",
   recordedAt: new Date().toISOString(),
-  machine: { architecture: process.arch, platform: process.platform, cpus: os.cpus().length, cpuModel: os.cpus()[0]?.model, node: process.version },
+  machine: machineIdentity(),
   workload: { batchSize, repetitions, warmups, featureVectors: featureBank.length, network: model.metadata.architecture },
   artifacts: {
     fp32: { bytes: model.metadata.float.bytes, sha256: model.metadata.float.sha256 },
