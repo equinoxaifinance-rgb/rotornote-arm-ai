@@ -55,7 +55,7 @@ jobs:
           ./arm-dotprod | tee arm-dotprod.json
       - name: Prove gateway-to-maintenance delivery loop
         run: |
-          npm run proof:maintenance-loop > maintenance-loop.json
+          node scripts/prove-maintenance-loop.mjs > maintenance-loop.json
           node -e "const r=require('./maintenance-loop.json'); if(r.architecture!=='arm64'||!Object.values(r.gates).every(Boolean)||r.delivery.firstState!=='accepted'||r.delivery.duplicateState!=='duplicate'||r.delivery.downstreamObjects!==1||r.delivery.tamperedStatus!==401) throw new Error('Maintenance delivery loop gate failed')"
       - name: Build and exercise the hardened Arm64 container
         run: |

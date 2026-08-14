@@ -76,7 +76,7 @@ assert.equal(anomalyResult.engineAgreement, true);
 const workflow = await readFile(new URL("../.github/workflows/native-arm64.yml", import.meta.url), "utf8");
 assert.match(workflow, /runs-on: ubuntu-24\.04-arm/);
 assert.match(workflow, /test "\$\(uname -m\)" = "aarch64"/);
-assert.match(workflow, /npm run proof:maintenance-loop/);
+assert.match(workflow, /node scripts\/prove-maintenance-loop\.mjs/);
 assert.match(workflow, /maintenance-loop\.json/);
 for (const workflowName of ["native-arm64.yml", "external-boundary.yml", "independent-supply-chain.yml"]) {
   const workflowText = await readFile(new URL(`../.github/workflows/${workflowName}`, import.meta.url), "utf8");
