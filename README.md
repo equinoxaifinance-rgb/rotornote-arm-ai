@@ -20,7 +20,7 @@ The exact receipts are [`field/results/open-grouped-cross-validation.json`](fiel
 1. Send one channel for the broad variable-speed anomaly screen, or four synchronized channels for the narrower fault-family specialist. The canonical endpoint routes by this evidence contract.
 2. Include sample rate and operating RPM; order-aware features depend on both.
 3. RotorNote runs FP32 and INT8 engines, checks signal quality and fitted-envelope coverage, applies a conservative 0.99 engineering floor, then abstains on disagreement or uncertainty. The nested audit is retained precisely because it did not validate that floor as a calibrated probability threshold.
-4. Export evidence JSON or copy a maintenance note into the existing work-order system.
+4. Export the evidence JSON or the deterministic CMMS work order. The reference delivery adapter signs the exact JSON, retries transient failures, and uses the evidence ID as an idempotency key so a retry cannot create a second work order.
 
 ## Run
 
@@ -39,7 +39,10 @@ For the shortest complete evaluation route, use [`JUDGE-PATH.md`](JUDGE-PATH.md)
 
 ```bash
 npm run gateway -- --url http://127.0.0.1:8787 --file samples/real-imbalance.csv --machine pump-7 --point drive-end-bearing --axis radial-horizontal --rate 25000 --rpm 1238 --load 74
+npm run proof:maintenance-loop
 ```
+
+The second command executes the complete local machine-to-maintenance path over real HTTP: attributed capture -> canonical screen -> evidence-bound work order -> HMAC-authenticated CMMS sink. It then replays the same delivery to prove deduplication and sends a tampered payload to prove rejection. Native Arm CI retains that receipt; this is an executable reference contract, not a claim of certification by a specific CMMS vendor.
 
 ## Arm optimization
 

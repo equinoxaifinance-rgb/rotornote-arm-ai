@@ -53,6 +53,10 @@ jobs:
           cc --version | tee arm-compiler.txt
           cc -O3 -std=c11 -Wall -Wextra -Werror -march=armv8.2-a+dotprod -o arm-dotprod native/arm-dotprod-bench.c
           ./arm-dotprod | tee arm-dotprod.json
+      - name: Prove gateway-to-maintenance delivery loop
+        run: |
+          npm run proof:maintenance-loop > maintenance-loop.json
+          node -e "const r=require('./maintenance-loop.json'); if(r.architecture!=='arm64'||!Object.values(r.gates).every(Boolean)||r.delivery.firstState!=='accepted'||r.delivery.duplicateState!=='duplicate'||r.delivery.downstreamObjects!==1||r.delivery.tamperedStatus!==401) throw new Error('Maintenance delivery loop gate failed')"
       - name: Build and exercise the hardened Arm64 container
         run: |
           set -euxo pipefail
@@ -82,7 +86,7 @@ jobs:
       - name: Record artifact hashes
         run: |
           find dist model assets/gallery -type f -print0 | sort -z | xargs -0 sha256sum | tee artifact-sha256.txt
-          sha256sum package-lock.json sbom.spdx.json benchmark/results/native-arm64.json benchmark/results/anomaly-native-arm64.json arm-dotprod.json >> artifact-sha256.txt
+          sha256sum package-lock.json sbom.spdx.json benchmark/results/native-arm64.json benchmark/results/anomaly-native-arm64.json arm-dotprod.json maintenance-loop.json >> artifact-sha256.txt
       - name: Upload raw evidence
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
@@ -103,6 +107,7 @@ jobs:
             artifact-sha256.txt
             arm-compiler.txt
             arm-dotprod.json
+            maintenance-loop.json
             container-image-inspect.json
             container-health.json
             container-one-channel.json

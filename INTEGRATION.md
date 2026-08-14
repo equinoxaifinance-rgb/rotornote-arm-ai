@@ -8,6 +8,8 @@ machine → calibrated sensors → gateway CSV → RotorNote → evidence/note �
 
 It never writes to a PLC or triggers shutdown.
 
+The executable reference path now continues beyond a copied note: every canonical screen emits an evidence-bound advisory work order, and the optional delivery adapter sends its canonical JSON to a CMMS webhook with HMAC authentication, bounded retries, and an evidence-derived idempotency key.
+
 The separate `POST /api/compile` JSON route is a developer tool, not a machine
 decision route. It creates deterministic FP32 and INT8 dense-ReLU artifacts
 under strict shape, size, and parity bounds; see `ARM-INT8-KIT.md`.
@@ -38,7 +40,17 @@ Remote endpoints require HTTPS; localhost may use HTTP. The gateway has bounded 
 
 `POST /api/screen?engine=optimized` is the canonical `text/csv` product boundary and the reference gateway uses it. Field clients should send `X-Sample-Rate`, `X-Machine-Id`, `X-Measurement-Point`, `X-Sensor-Axis`, `X-Operating-RPM`, and `X-Load-Percent`. Repeat captures must preserve sensor, units, calibration, mount, point, axis, rate, speed, load, and operating state.
 
-The response contains the decision, channel quality, supported-class distribution, envelope coverage, FP32/INT8 agreement, acquisition context, and a deterministic evidence passport. Store that passport beside the work order; do not treat it as a cryptographic signature or maintenance authorization.
+The response contains the decision, channel quality, supported-class distribution, envelope coverage, FP32/INT8 agreement, acquisition context, a deterministic evidence passport, and a deterministic `rotornote.cmms-work-order.v1` export. The work order requests qualified review; it never authorizes a shutdown or asserts a diagnosis.
+
+## Signed CMMS delivery
+
+`integrations/cmms-delivery.mjs` sends the canonical work-order JSON to an HTTPS webhook. It signs the exact body with HMAC-SHA256, binds retries to `externalId` through the `Idempotency-Key` header, retries only transient responses, and rejects short secrets. A receiver verifies `X-RotorNote-Signature` before parsing or accepting the body.
+
+```bash
+npm run proof:maintenance-loop
+```
+
+That proof starts the real RotorNote server and a reference CMMS receiver on loopback, screens the attributed imbalance capture through `/api/screen`, accepts the signed work order once, deduplicates a replay, and returns 401 for a tampered body. The native Arm workflow reruns it and uploads `maintenance-loop.json`. This proves the integration contract and its failure paths; it does not imply endorsement or compatibility certification from a commercial CMMS vendor.
 
 ## Variable-speed anomaly route
 

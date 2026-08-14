@@ -27,6 +27,7 @@
     "validate:field": "python scripts/prepare-axial-boundary.py --archive .field-work/open-real/axial-bearing-v2.zip && node scripts/evaluate-axial-boundary.js && python scripts/prepare-zhenjiang-boundary.py --archive .field-work/open-real/zhenjiang-v1.zip && node scripts/evaluate-zhenjiang-boundary.js",
     "validate:natural": "python scripts/prepare-ims-boundary.py --archive .field-work/open-real/ims-bearing.zip && node scripts/evaluate-ims-boundary.js",
     "gateway": "node integrations/edge-gateway.mjs",
+    "proof:maintenance-loop": "node scripts/prove-maintenance-loop.mjs",
     "validate": "node scripts/validate.js",
     "secret-scan": "node scripts/secret-scan.js"
   },

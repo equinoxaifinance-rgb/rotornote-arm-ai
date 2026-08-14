@@ -8,6 +8,7 @@ import { InputError, MAX_UPLOAD_BYTES, parseCsv } from "./csv.js";
 import { compileDenseModel } from "./dense-compiler.js";
 import { createAnalysisReceipt } from "./evidence.js";
 import { loadInferenceModel, loadModel } from "./model.js";
+import { buildMaintenanceWorkOrder } from "./work-order.js";
 
 const STATIC = new Map([
   ["/", [new URL("../web/index.html", import.meta.url), "text/html; charset=utf-8"]],
@@ -37,6 +38,10 @@ const securityHeaders = {
 function respond(response, status, body, contentType = "application/json; charset=utf-8", extra = {}) {
   response.writeHead(status, { ...securityHeaders, "content-type": contentType, "cache-control": "no-store", ...extra });
   response.end(typeof body === "string" || Buffer.isBuffer(body) ? body : JSON.stringify(body));
+}
+
+function screeningPayload({ requestId, route, result, context }) {
+  return { requestId, route, result, workOrder: buildMaintenanceWorkOrder(result, route, context) };
 }
 
 function parseContext(headers) {
@@ -172,7 +177,7 @@ export function createHandler({
         const context = parseContext(request.headers);
         const result = analyzeChannels(model, channels, sampleRate, engine, { verifyParity: true, context });
         result.receipt = createAnalysisReceipt({ csv: body, sampleRate, engine, model, context, result });
-        return respond(response, 200, { requestId, result });
+        return respond(response, 200, screeningPayload({ requestId, route: "four_sensor_specialist", result, context }));
       }
       if (request.method === "POST" && url.pathname === "/api/anomaly") {
         const contentType = request.headers["content-type"] || "";
@@ -187,7 +192,7 @@ export function createHandler({
         const model = await getAnomalyModel();
         const result = analyzeVariableSpeedAnomaly(model, channels[0], sampleRate, context.operatingRpm, engine);
         result.receipt = createAnalysisReceipt({ csv: body, sampleRate, engine, model, context, result });
-        return respond(response, 200, { requestId, result });
+        return respond(response, 200, screeningPayload({ requestId, route: "variable_speed_anomaly", result, context }));
       }
       if (request.method === "POST" && url.pathname === "/api/screen") {
         const contentType = request.headers["content-type"] || "";
@@ -202,13 +207,13 @@ export function createHandler({
           const model = await getModel();
           const result = analyzeChannels(model, channels, sampleRate, engine, { verifyParity: true, context });
           result.receipt = createAnalysisReceipt({ csv: body, sampleRate, engine, model, context, result });
-          return respond(response, 200, { requestId, route: "four_sensor_specialist", result });
+          return respond(response, 200, screeningPayload({ requestId, route: "four_sensor_specialist", result, context }));
         }
         if (context.operatingRpm === null || context.operatingRpm <= 0) return respond(response, 422, { error: "operating_rpm_required", message: "A positive operating RPM is required", requestId });
         const model = await getAnomalyModel();
         const result = analyzeVariableSpeedAnomaly(model, channels[0], sampleRate, context.operatingRpm, engine);
         result.receipt = createAnalysisReceipt({ csv: body, sampleRate, engine, model, context, result });
-        return respond(response, 200, { requestId, route: "variable_speed_anomaly", result });
+        return respond(response, 200, screeningPayload({ requestId, route: "variable_speed_anomaly", result, context }));
       }
       if (STATIC.has(url.pathname)) {
         if (request.method !== "GET" && request.method !== "HEAD") return respond(response, 405, { error: "method_not_allowed", requestId }, undefined, { allow: "GET, HEAD" });

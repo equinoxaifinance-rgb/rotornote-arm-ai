@@ -20,6 +20,8 @@ npm run benchmark -- --output benchmark/results/local-x64-real.json --repetition
 
 The JSON records raw alternating-order samples, checksums, medians, p95, paired speed ratios, a deterministic 10,000-resample confidence interval, machine identity, and artifact hashes.
 
+The official receipt runs on GitHub-hosted `ubuntu-24.04-arm` infrastructure. The reported machine identifies as Neoverse-N2, but the runner is shared/virtualized rather than dedicated hardware; scheduling variance can move absolute timing between runs. RotorNote therefore preserves raw samples and uncertainty and makes no dedicated-device, fleet, energy, or universal-latency claim.
+
 ## Variable-speed broad-screen evidence
 
 `npm run benchmark:anomaly` measures the fitted-unit-pruned 96->609->326->120->8

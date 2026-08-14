@@ -1,6 +1,6 @@
 .result-actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   margin-top: 10px;
 }
@@ -21,6 +21,52 @@
   background: #eef5de;
 }
 
+.handoff-lane {
+  margin: 26px 24px 0;
+  border: 1px solid #c8cec5;
+  background: #15241d;
+  color: #f5f2e9;
+  padding: clamp(24px, 4vw, 46px);
+  display: grid;
+  grid-template-columns: minmax(240px, .9fr) minmax(420px, 1.6fr);
+  gap: 36px;
+  align-items: end;
+}
+
+.handoff-copy h2 {
+  margin: 10px 0 12px;
+  max-width: 520px;
+  color: #fff;
+  font: italic 500 clamp(30px, 4vw, 52px)/1.02 Georgia, serif;
+}
+
+.handoff-copy p,
+.handoff-proof { color: #bccbc3; line-height: 1.6; }
+
+.handoff-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid #3a4d43;
+}
+
+.handoff-steps li { padding: 18px; border-right: 1px solid #3a4d43; min-height: 110px; }
+.handoff-steps li:last-child { border-right: 0; }
+.handoff-steps strong { color: #d8ff62; font: 700 10px ui-monospace, monospace; display: block; }
+.handoff-steps span { display: block; margin: 15px 0 6px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+.handoff-steps small { color: #91a198; line-height: 1.35; }
+.handoff-proof { grid-column: 2; margin: -14px 0 0; font-size: 11px; }
+
 @media (max-width: 480px) {
   .result-actions { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 860px) {
+  .handoff-lane { grid-template-columns: 1fr; }
+  .handoff-proof { grid-column: 1; margin: 0; }
+  .handoff-steps { grid-template-columns: repeat(2, 1fr); }
+  .handoff-steps li:nth-child(2) { border-right: 0; }
+  .handoff-steps li:nth-child(-n+2) { border-bottom: 1px solid #3a4d43; }
 }

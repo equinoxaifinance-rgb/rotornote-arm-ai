@@ -3,7 +3,7 @@ const elements = Object.fromEntries([
   "formatHelp", "formatCopy", "report", "emptyState", "reportContent", "engineBadge", "timing", "severity",
   "verdictTitle", "primaryLabel", "confidence", "confidenceMeter", "duration", "waveform", "timeline", "action",
   "details", "disclaimer", "machineId", "measurementPoint", "sensorAxis", "operatingRpm", "loadPercent",
-  "decisionBadge", "assurance", "machineContext", "receiptId", "downloadEvidence", "copyMaintenanceNote",
+  "decisionBadge", "assurance", "machineContext", "receiptId", "downloadEvidence", "downloadWorkOrder", "copyMaintenanceNote",
   "validationSummary", "riskCoverage",
   "anomalyDemo", "anomalyResult", "compileDemo", "compileResult", "compileDownloads", "downloadFp32", "downloadInt8",
 ].map((id) => [id, document.getElementById(id)]));
@@ -12,6 +12,7 @@ let selectedCsv = "";
 let selectedName = "";
 let lastWaveform = null;
 let lastResult = null;
+let lastWorkOrder = null;
 
 function message(text, error = false) {
   elements.inputMessage.textContent = text;
@@ -95,8 +96,9 @@ function drawWaveform(values) {
   context.stroke();
 }
 
-function render(result) {
+function render(result, workOrder) {
   lastResult = result;
+  lastWorkOrder = workOrder;
   elements.emptyState.hidden = true;
   elements.reportContent.hidden = false;
   elements.engineBadge.textContent = result.engine === "optimized" ? "INT8 · WASM SIMD" : "FP32 · JS baseline";
@@ -168,6 +170,16 @@ elements.downloadEvidence.addEventListener("click", () => {
   URL.revokeObjectURL(link.href);
 });
 
+elements.downloadWorkOrder.addEventListener("click", () => {
+  if (!lastWorkOrder) return;
+  const blob = new Blob([`${JSON.stringify(lastWorkOrder, null, 2)}\n`], { type: "application/json" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `${lastWorkOrder.externalId}.json`;
+  link.click();
+  URL.revokeObjectURL(link.href);
+});
+
 elements.copyMaintenanceNote.addEventListener("click", async () => {
   if (!lastResult) return;
   try {
@@ -201,7 +213,7 @@ async function analyze() {
     });
     const payload = await response.json();
     if (!response.ok) throw new Error(payload.message || payload.error || "Analysis failed");
-    render(payload.result);
+    render(payload.result, payload.workOrder);
     message(`${selectedName} screened with ${engine}`);
     elements.report.scrollIntoView({ behavior: "smooth", block: "start" });
   } catch (error) {

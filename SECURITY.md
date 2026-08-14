@@ -14,6 +14,7 @@ Untrusted inputs are the URL, headers, and CSV body. Static routes and sample ID
 - Two-column timestamps must increase strictly; changing column counts are rejected.
 - Model artifacts are SHA-256 verified before either engine becomes available.
 - Every API decision is witnessed by the alternate engine and receives an analysis passport binding input, context, configuration, model and output hashes.
+- Every analysis response includes a deterministic advisory work order. The optional reference CMMS adapter canonicalizes and HMAC-signs the exact body, requires HTTPS off localhost, carries the evidence-derived external ID as an idempotency key, and bounds retries. Native CI proves accepted, duplicate, and tampered-delivery paths against a real local HTTP receiver.
 - Machine-context headers use bounded values and strict allowlists where applicable.
 - Dependency failure yields a generic request ID and retry contract, not a filesystem path or stack trace.
 - CSP, frame denial, MIME sniffing denial, same-origin opener, and no-referrer headers ship on responses.

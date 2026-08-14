@@ -108,11 +108,23 @@
           </div>
           <div class="result-actions" aria-label="Export analysis">
             <button id="downloadEvidence" type="button">Download evidence JSON</button>
+            <button id="downloadWorkOrder" type="button">Download CMMS work order</button>
             <button id="copyMaintenanceNote" type="button">Copy maintenance note</button>
           </div>
           <p class="disclaimer" id="disclaimer"></p>
         </div>
       </div>
+    </section>
+
+    <section class="handoff-lane" aria-labelledby="handoffHeading">
+      <div class="handoff-copy"><span class="kicker">Maintenance handoff</span><h2 id="handoffHeading">A result that can leave the demo.</h2><p>Every screen emits one deterministic advisory work order bound to its evidence ID. The optional edge adapter signs the exact JSON, retries transient failures under the same key, and requires HTTPS away from localhost.</p></div>
+      <ol class="handoff-steps" aria-label="Verified maintenance handoff">
+        <li><strong>01</strong><span>Screen</span><small>real capture and route</small></li>
+        <li><strong>02</strong><span>Bind</span><small>evidence ID and guardrail</small></li>
+        <li><strong>03</strong><span>Deliver</span><small>HMAC and idempotency</small></li>
+        <li><strong>04</strong><span>Verify</span><small>replay safe, tamper rejected</small></li>
+      </ol>
+      <p class="handoff-proof">Native Arm CI executes the complete HTTP loop and retains the accepted, duplicate, and 401 rejection receipts. Reference contract only; no vendor certification implied.</p>
     </section>
 
     <section class="anomaly-lane" aria-labelledby="anomalyHeading">

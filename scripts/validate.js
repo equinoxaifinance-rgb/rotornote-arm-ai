@@ -8,6 +8,7 @@ import { loadInferenceModel, loadModel } from "../src/model.js";
 const required = [
   "README.md", "JUDGE-PATH.md", "ARCHITECTURE.md", "SECURITY.md", "BENCHMARKS.md", "SUBMISSION.md", "LICENSE",
   "INTEGRATION.md", "MODEL-CARD.md", "FIELD-VALIDATION.md", "DATA-LICENSES.md", "sbom.spdx.json", "dist/build-manifest.json",
+  "src/work-order.js", "integrations/edge-gateway.mjs", "integrations/cmms-delivery.mjs", "scripts/prove-maintenance-loop.mjs", "tests/work-order.test.js",
   "package.json", "package-lock.json", "Dockerfile", ".dockerignore", "compose.yaml", ".github/workflows/native-arm64.yml",
   ".github/workflows/external-boundary.yml", ".github/workflows/independent-supply-chain.yml", "requirements-field.txt", "native/arm-dotprod-bench.c", "ARM-INT8-KIT.md", "src/dense-compiler.js", "scripts/compile-dense-model.js", "examples/dense-compile-input.json",
   "scripts/prepare-open-training.py", "scripts/build-open-features.js", "scripts/train-real-crossval.py",
@@ -75,6 +76,8 @@ assert.equal(anomalyResult.engineAgreement, true);
 const workflow = await readFile(new URL("../.github/workflows/native-arm64.yml", import.meta.url), "utf8");
 assert.match(workflow, /runs-on: ubuntu-24\.04-arm/);
 assert.match(workflow, /test "\$\(uname -m\)" = "aarch64"/);
+assert.match(workflow, /npm run proof:maintenance-loop/);
+assert.match(workflow, /maintenance-loop\.json/);
 for (const workflowName of ["native-arm64.yml", "external-boundary.yml", "independent-supply-chain.yml"]) {
   const workflowText = await readFile(new URL(`../.github/workflows/${workflowName}`, import.meta.url), "utf8");
   const actionReferences = workflowText.split("\n").filter((line) => /^\s*-?\s*uses:/.test(line));

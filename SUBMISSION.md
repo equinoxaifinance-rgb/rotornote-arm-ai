@@ -65,5 +65,11 @@ non-multiple-of-16 model through the actual SIMD kernel. Independent pinned
 Syft, Grype, and npm-registry jobs cross-check the in-repo SBOM and scanner.
 
 RotorNote is useful now as a local, zero-runtime-dependency screening companion
-to DAQ gateways, CMMS notes, and qualified analysts. It is not certified, not a
-safety controller, and not a diagnosis.
+to DAQ gateways, CMMS workflows, and qualified analysts. Every canonical screen
+now emits a deterministic advisory work order bound to the analysis evidence ID.
+The reference adapter signs the exact JSON with HMAC-SHA256, retries transient
+failures under the same idempotency key, and proves that replay creates one
+downstream object while a tampered body receives 401. That complete HTTP loop is
+rerun on native Arm and retained as raw `maintenance-loop.json`; it proves the
+reference contract, not compatibility certification from any CMMS vendor.
+RotorNote is not certified, not a safety controller, and not a diagnosis.

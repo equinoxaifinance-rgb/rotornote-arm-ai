@@ -21,7 +21,7 @@ The model is a fixed linear discriminant specification with a 1e-8 numerical cov
 
 FP32 stores 192 weights plus four biases. INT8 uses dynamic symmetric input scaling and one symmetric scale per output row; biases remain FP32. Build-time parity is measured over all 2,000 real four-channel recording representations and gates the production decision path. The WASM kernel performs signed vector dot accumulation; JavaScript applies scales, bias, and softmax.
 
-The server runs as one unprivileged Node 22 process with no production npm dependencies. Uploads are bounded and processed in memory. A high-volume deployment should use authenticated gateways and multiple replicas or worker threads; RotorNote never writes to a PLC.
+The server runs as one unprivileged Node 22 process with no production npm dependencies. Uploads are bounded and processed in memory. `src/work-order.js` maps either screened route into one deterministic advisory work-order contract; `integrations/cmms-delivery.mjs` signs the canonical bytes and delivers them with bounded retries and an evidence-derived idempotency key. A high-volume deployment should use authenticated gateways and multiple replicas or worker threads; RotorNote never writes to a PLC.
 
 The native Arm64 workflow also builds the production container on an `aarch64` runner, verifies the image architecture, starts it read-only with every Linux capability dropped and `no-new-privileges`, and executes both canonical routes through the container's public HTTP boundary. Health, one-channel, four-channel, image-inspect, and container-log receipts ship with the raw native artifact.
 
@@ -45,3 +45,5 @@ This second head deliberately answers a broader but shallower question. It was t
 The compiler is also an executable product boundary. `POST /api/compile` accepts a bounded dense ReLU graph plus calibration rows, validates shape and parameter limits, ignores caller attempts to weaken parity policy, then returns deterministic FP32 and SIMD-row-padded INT8 artifacts with hashes, utilization, compute, and calibration parity. The browser calls this route and exposes the returned artifact bytes for download.
 
 `POST /api/screen` makes the two heads one bounded cascade. A single uniaxial capture routes to the broad variable-speed screen. Four synchronized channels route to the specialist. Both paths run FP32 and INT8 witnesses, apply their own training envelope, and emit a hash-bound analysis passport; the server returns the chosen route so no consumer has to infer which claim was made.
+
+Every canonical response also includes `rotornote.cmms-work-order.v1`. The work order is deterministically bound to the evidence ID and remains advisory. The executable maintenance-loop proof sends it over real loopback HTTP to a signature-verifying reference receiver, repeats delivery to prove idempotency, and mutates the body to prove authentication failure. No path writes to a PLC or automatically authorizes maintenance.
