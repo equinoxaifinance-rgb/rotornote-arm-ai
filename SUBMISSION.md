@@ -24,22 +24,24 @@ SIMD-row-padded INT8 reduces learned bytes from 1,192,564 to 307,484 (74.22%)
 while preserving 100% eight-condition label agreement over the complete signal
 bank. The exact-commit native Arm64 workflow rebuilds and measures this graph;
 local x64 timing is not promoted into an Arm claim. This materially nonlinear
-head and the separately disclosed specialist micro-workload make the tradeoff
-visible without conflating their scopes.
+head carries the performance claim; the specialist's tiny runtime is excluded
+from headline optimization evidence.
 
 The secondary four-fault specialist is a transparent 48->4 linear model over
-four sensors. It is only a 192-MAC micro-workload, so its native timing is
-disclosed separately and not presented as the primary proof of practical
-payoff. Its five-fold whole-test validation records 94.0% four-channel balanced
+four sensors. Its five-fold whole-test validation records 94.0% four-channel balanced
 accuracy and 19/20 physical tests (Wilson 95%: 76.4%-99.1%). One complete
 misalignment test—test 10—was predicted healthy; the receipt preserves that
 failure and RotorNote makes no blanket misalignment-sensitivity claim.
 
 Production training contains no generated fault signals. Two complete,
-SHA-256-pinned CC BY bearing datasets attack cross-rig behavior through the
+SHA-256-pinned CC BY seeded-fault datasets attack cross-rig behavior through the
 canonical one-channel route: all 28 axial records and all 245 Zhenjiang RPM
-challenges return `review_required`, with zero uncontained engine disagreements;
-no bearing capability is claimed. A nested audit did not establish a
+challenges return `review_required`. A third public NASA source adds three
+natural run-to-failure experiments, 12 bearing installations, 16 sensor trajectories,
+and 112 predeclared sensor cases. Every case—including all endpoint channels on
+the four documented failed bearings—returns `review_required`, with zero
+uncontained engine disagreements. This is natural-failure abstention evidence,
+not a sensitivity claim. A nested audit did not establish a
 calibrated selective-accuracy claim, so the confidence floors remain
 conservative engineering rules rather than field probabilities.
 

@@ -3,9 +3,8 @@
 RotorNote compares FP32 and INT8 implementations for two real-data workloads.
 The primary optimization claim is the reusable deterministic compiler exercised by
 the materially nonlinear 96→609→326→120→8 variable-speed head (297,078 MACs
-per inference). The secondary 48→4 specialist
-is only 192 MACs and is disclosed as a micro-workload where runtime overhead is
-material.
+per inference). The 48→4 specialist is retained for product utility and parity
+coverage, but its 192-MAC timing is not a top-level performance claim.
 
 Both compare:
 
@@ -39,7 +38,7 @@ alongside the specialist result with its different compute scope.
 
 The model artifact reduction is deterministic: FP32 is 784 bytes and INT8 is 208 bytes, a 73.4694% reduction. Across all 2,000 real four-channel recording representations, build-time parity is 100% by production label; p99 probability drift is 2.80e-10 and the disclosed maximum isolated drift is 0.01996.
 
-Current-commit runs bind the linear-head FP32, INT8, and WASM hashes on native Arm64 runners. Each uses 51 alternating-order samples of 2,048 inferences and preserves 100% label agreement. Because this network performs only 192 MACs, it remains a secondary runtime micro-benchmark rather than the primary practical-impact claim; each frozen run's JSON is the source for its exact point and interval.
+Current-commit runs bind the linear-head FP32, INT8, and WASM hashes on native Arm64 runners and preserve 100% label agreement. The network performs only 192 MACs, so its runtime ratio is quarantined inside the raw receipt and excluded from headline optimization evidence. The materially nonlinear head and reusable compiler carry the performance claim.
 
 The separate compiled `vdotq_s32` witnesses matched the scalar result exactly. Their kernel-only ratios are not presented as product throughput. GitHub artifact-zip digests differ per run because the archives include timestamps and run receipts; they are not model hashes. The hashes inside each receipt show that the compared FP32, INT8, and WASM files are identical.
 

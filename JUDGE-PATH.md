@@ -25,7 +25,7 @@ The displayed percentages are uncalibrated model scores, not real-world failure 
 ## 3. Inspect the exact Arm receipts
 
 - [Native Arm64 workflow](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/workflows/native-arm64.yml): rebuild, complete tests, deterministic validation, secret scan, two alternating-order benchmarks, exact NEON dot-product witness, and a hardened native-Arm container run through both public HTTP routes.
-- [External boundary workflow](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/workflows/external-boundary.yml): downloads and hash-verifies two complete CC BY bearing archives, then executes 28 axial records and 245 Zhenjiang RPM challenges through the canonical one-channel boundary.
+- [External boundary workflow](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/workflows/external-boundary.yml): downloads and hash-verifies two complete CC BY seeded-fault archives plus the public 1.075 GB NASA IMS natural run-to-failure archive, then executes 28 axial records, 245 Zhenjiang RPM challenges, and 112 NASA sensor cases through the canonical one-channel boundary.
 - [Independent supply-chain workflow](https://github.com/equinoxaifinance-rgb/rotornote-arm-ai/actions/workflows/independent-supply-chain.yml): Syft SPDX, Grype, and npm registry audit. Every third-party action reference is pinned to a full commit SHA.
 
 ## 4. Read the boundaries before the claims
@@ -35,5 +35,6 @@ The displayed percentages are uncalibrated model scores, not real-world failure 
 - `FIELD-VALIDATION.md`: what is not yet field-proven and the prospective pilot protocol.
 - `field/results/axial-bearing-boundary.json`: all 28 foreign-rig results with complete broad FP32/INT8 agreement.
 - `field/results/zhenjiang-bearing-boundary.json`: 35 physical traces and all 245 conservative RPM challenges from a second rig.
+- `field/results/ims-natural-failure-boundary.json`: three complete run-to-failure experiments, 12 bearing installations, 16 sensor trajectories, and all predeclared endpoint channels from four documented natural failures.
 
 RotorNote is a real local screening companion and reusable Arm INT8 developer kit. It is not a shutdown controller, field diagnosis, calibrated risk model, or certification.

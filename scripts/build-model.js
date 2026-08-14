@@ -171,7 +171,21 @@ const metadata = {
     minimumConfidence: 0.99,
     basis: "conservative engineering floor; confidence scores are not independently calibrated probabilities",
     groupedValidation: validation.aggregate.fourChannelRiskCoverage.find((row) => row.minimumConfidence === 0.99),
-    nestedValidation: validation.aggregate.nestedConfidencePolicy,
+    nestedValidation: {
+      method: validation.aggregate.nestedConfidencePolicy.method,
+      receipt: "field/results/open-grouped-cross-validation.json",
+      receiptSha256: sha256(canonicalTextBytes(validationBytes)),
+      folds: validation.aggregate.nestedConfidencePolicy.folds.map((fold) => ({
+        outerFold: fold.outerFold,
+        heldTests: fold.heldTests,
+        thresholdChosenWithoutOuterFold: fold.thresholdChosenWithoutOuterFold,
+        innerTargetMet: fold.innerTargetMet,
+        coverage: fold.coverage,
+        acceptedRecordings: fold.acceptedRecordings,
+        selectiveAccuracy: fold.selectiveAccuracy,
+      })),
+      aggregate: validation.aggregate.nestedConfidencePolicy.aggregate,
+    },
   },
   normalization: { means: Array.from(means), deviations: Array.from(deviations) },
   ood: {

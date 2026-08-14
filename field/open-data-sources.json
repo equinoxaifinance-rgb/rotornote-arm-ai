@@ -65,5 +65,28 @@
     "documentedRpms": [900, 1000, 1100, 1200, 1300, 1400, 1500],
     "expectedConditionFiles": 5,
     "selectedColumnsPerFile": 7
+  },
+  "imsNaturalFailureBoundary": {
+    "title": "IMS Bearing Data Set",
+    "authors": ["J. Lee", "H. Qiu", "G. Yu", "J. Lin", "Rexnord Technical Services"],
+    "publisher": "NASA Prognostics Center of Excellence Data Set Repository",
+    "recordUrl": "https://www.nasa.gov/intelligent-systems-division/discovery-and-systems-health/pcoe/pcoe-data-set-repository/",
+    "catalogUrl": "https://data.nasa.gov/dataset/ims-bearings",
+    "archiveUrl": "https://phm-datasets.s3.amazonaws.com/NASA/4.+Bearings.zip",
+    "archiveSha256": "21001ac266c465f5d345ec42d7b508c6a6328487fd9d4d7774422dd5ea10ad83",
+    "inner7zSha256": "c6925060e702708afc47261d349339d7cd97a98166161da6b29c377eb3e66f2c",
+    "innerSha256": {
+      "1st_test.rar": "c25241571583948462a3916d97dc11c984a839f38a0da0907fff18c958c0a484",
+      "2nd_test.rar": "b154d5ba1ae5f7f01cdd4f1bde5b08cfdc2f3134d51ad2f6614b1270a86ab632",
+      "3rd_test.rar": "01e9ec83c6c55adc0300a20003a261f9a2ac2b714aae4984050325e589252bc8",
+      "Readme Document for IMS Bearing Data.pdf": "cf46d37c21f7f292c11bbbdd4695d876c417ed1d6425e3d87c962ae2182ae6ed"
+    },
+    "license": "NASA Open Data marks access as public and links the USA.gov government-works notice; original provider is IMS, University of Cincinnati",
+    "licenseUrl": "https://www.usa.gov/government-works",
+    "acquisition": "Three test-to-failure experiments; four bearings per shaft at 2,000 RPM and 6,000 lb radial load; 20 kHz one-second snapshots; eight accelerometer channels in set 1 and four in sets 2 and 3; documented natural end-state failures in four bearing installations.",
+    "use": "Natural run-to-failure, multi-bearing, multi-sensor external fail-closed boundary evaluation only; never production training.",
+    "selectedTimepointsPerRun": 7,
+    "expectedExperiments": 3,
+    "expectedSensorTrajectories": 16
   }
 }

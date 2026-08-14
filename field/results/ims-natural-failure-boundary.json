@@ -1,0 +1,2075 @@
+{
+  "schema": "rotornote-ims-natural-failure-boundary-v1",
+  "source": {
+    "title": "IMS Bearing Data Set",
+    "authors": [
+      "J. Lee",
+      "H. Qiu",
+      "G. Yu",
+      "J. Lin",
+      "Rexnord Technical Services"
+    ],
+    "publisher": "NASA Prognostics Center of Excellence Data Set Repository",
+    "recordUrl": "https://www.nasa.gov/intelligent-systems-division/discovery-and-systems-health/pcoe/pcoe-data-set-repository/",
+    "catalogUrl": "https://data.nasa.gov/dataset/ims-bearings",
+    "archiveUrl": "https://phm-datasets.s3.amazonaws.com/NASA/4.+Bearings.zip",
+    "archiveSha256": "21001ac266c465f5d345ec42d7b508c6a6328487fd9d4d7774422dd5ea10ad83",
+    "inner7zSha256": "c6925060e702708afc47261d349339d7cd97a98166161da6b29c377eb3e66f2c",
+    "innerSha256": {
+      "1st_test.rar": "c25241571583948462a3916d97dc11c984a839f38a0da0907fff18c958c0a484",
+      "2nd_test.rar": "b154d5ba1ae5f7f01cdd4f1bde5b08cfdc2f3134d51ad2f6614b1270a86ab632",
+      "3rd_test.rar": "01e9ec83c6c55adc0300a20003a261f9a2ac2b714aae4984050325e589252bc8",
+      "Readme Document for IMS Bearing Data.pdf": "cf46d37c21f7f292c11bbbdd4695d876c417ed1d6425e3d87c962ae2182ae6ed"
+    },
+    "license": "Public U.S. government data; NASA catalog links the USA.gov government-works notice",
+    "licenseUrl": "https://www.usa.gov/government-works",
+    "acquisition": "Three test-to-failure experiments; four bearings per shaft at 2,000 RPM and 6,000 lb radial load; 20 kHz one-second snapshots; eight accelerometer channels in set 1 and four in sets 2 and 3; documented natural end-state failures in four bearing installations.",
+    "use": "Natural run-to-failure, multi-bearing, multi-sensor external fail-closed boundary evaluation only; never production training.",
+    "selectedTimepointsPerRun": 7,
+    "expectedExperiments": 3,
+    "expectedSensorTrajectories": 16
+  },
+  "route": "canonical one-channel variable-speed anomaly head",
+  "selection": "Seven linearly spaced, timestamp-ordered snapshots from each official experiment interval, fixed before inference; every sensor channel in every selected snapshot is evaluated.",
+  "transform": "No resampling, synthesis, relabeling, or amplitude transform; original 20,480-point ASCII channels at 20 kHz and documented 2,000 RPM.",
+  "outerArchiveSha256": "21001ac266c465f5d345ec42d7b508c6a6328487fd9d4d7774422dd5ea10ad83",
+  "claim": "Natural run-to-failure, multi-bearing, multi-sensor fail-closed boundary probe; not a natural-fault sensitivity estimate, early-warning claim, or field pilot.",
+  "cases": [
+    {
+      "id": "set1-0-ch1",
+      "run": "set1",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 1,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33e98b8e7c0c324b8264b4a6425df451be1ee98b45517353a39b76634034c86d",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-0-ch2",
+      "run": "set1",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 1,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33e98b8e7c0c324b8264b4a6425df451be1ee98b45517353a39b76634034c86d",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-0-ch3",
+      "run": "set1",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 2,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33e98b8e7c0c324b8264b4a6425df451be1ee98b45517353a39b76634034c86d",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-0-ch4",
+      "run": "set1",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 2,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33e98b8e7c0c324b8264b4a6425df451be1ee98b45517353a39b76634034c86d",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-0-ch5",
+      "run": "set1",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 3,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33e98b8e7c0c324b8264b4a6425df451be1ee98b45517353a39b76634034c86d",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "set1-0-ch6",
+      "run": "set1",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 3,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33e98b8e7c0c324b8264b4a6425df451be1ee98b45517353a39b76634034c86d",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-0-ch7",
+      "run": "set1",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 4,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33e98b8e7c0c324b8264b4a6425df451be1ee98b45517353a39b76634034c86d",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-0-ch8",
+      "run": "set1",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 4,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33e98b8e7c0c324b8264b4a6425df451be1ee98b45517353a39b76634034c86d",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-359-ch1",
+      "run": "set1",
+      "sourceIndex": 359,
+      "timeFraction": 0.1665893271461717,
+      "bearing": 1,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "7c41c30216bf9fd986736aa719ae87c07e22a59436a192ab664b511d6f48fb33",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-359-ch2",
+      "run": "set1",
+      "sourceIndex": 359,
+      "timeFraction": 0.1665893271461717,
+      "bearing": 1,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "7c41c30216bf9fd986736aa719ae87c07e22a59436a192ab664b511d6f48fb33",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-359-ch3",
+      "run": "set1",
+      "sourceIndex": 359,
+      "timeFraction": 0.1665893271461717,
+      "bearing": 2,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "7c41c30216bf9fd986736aa719ae87c07e22a59436a192ab664b511d6f48fb33",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "set1-359-ch4",
+      "run": "set1",
+      "sourceIndex": 359,
+      "timeFraction": 0.1665893271461717,
+      "bearing": 2,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "7c41c30216bf9fd986736aa719ae87c07e22a59436a192ab664b511d6f48fb33",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-359-ch5",
+      "run": "set1",
+      "sourceIndex": 359,
+      "timeFraction": 0.1665893271461717,
+      "bearing": 3,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "7c41c30216bf9fd986736aa719ae87c07e22a59436a192ab664b511d6f48fb33",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-359-ch6",
+      "run": "set1",
+      "sourceIndex": 359,
+      "timeFraction": 0.1665893271461717,
+      "bearing": 3,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "7c41c30216bf9fd986736aa719ae87c07e22a59436a192ab664b511d6f48fb33",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-359-ch7",
+      "run": "set1",
+      "sourceIndex": 359,
+      "timeFraction": 0.1665893271461717,
+      "bearing": 4,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "7c41c30216bf9fd986736aa719ae87c07e22a59436a192ab664b511d6f48fb33",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-359-ch8",
+      "run": "set1",
+      "sourceIndex": 359,
+      "timeFraction": 0.1665893271461717,
+      "bearing": 4,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "7c41c30216bf9fd986736aa719ae87c07e22a59436a192ab664b511d6f48fb33",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-718-ch1",
+      "run": "set1",
+      "sourceIndex": 718,
+      "timeFraction": 0.3331786542923434,
+      "bearing": 1,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33c0f68d20ae8fda2ffc4142f998424a22d944e1646662074ede81cfe4285360",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-718-ch2",
+      "run": "set1",
+      "sourceIndex": 718,
+      "timeFraction": 0.3331786542923434,
+      "bearing": 1,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33c0f68d20ae8fda2ffc4142f998424a22d944e1646662074ede81cfe4285360",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-718-ch3",
+      "run": "set1",
+      "sourceIndex": 718,
+      "timeFraction": 0.3331786542923434,
+      "bearing": 2,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33c0f68d20ae8fda2ffc4142f998424a22d944e1646662074ede81cfe4285360",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-718-ch4",
+      "run": "set1",
+      "sourceIndex": 718,
+      "timeFraction": 0.3331786542923434,
+      "bearing": 2,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33c0f68d20ae8fda2ffc4142f998424a22d944e1646662074ede81cfe4285360",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-718-ch5",
+      "run": "set1",
+      "sourceIndex": 718,
+      "timeFraction": 0.3331786542923434,
+      "bearing": 3,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33c0f68d20ae8fda2ffc4142f998424a22d944e1646662074ede81cfe4285360",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-718-ch6",
+      "run": "set1",
+      "sourceIndex": 718,
+      "timeFraction": 0.3331786542923434,
+      "bearing": 3,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33c0f68d20ae8fda2ffc4142f998424a22d944e1646662074ede81cfe4285360",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-718-ch7",
+      "run": "set1",
+      "sourceIndex": 718,
+      "timeFraction": 0.3331786542923434,
+      "bearing": 4,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33c0f68d20ae8fda2ffc4142f998424a22d944e1646662074ede81cfe4285360",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-718-ch8",
+      "run": "set1",
+      "sourceIndex": 718,
+      "timeFraction": 0.3331786542923434,
+      "bearing": 4,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "33c0f68d20ae8fda2ffc4142f998424a22d944e1646662074ede81cfe4285360",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1077-ch1",
+      "run": "set1",
+      "sourceIndex": 1077,
+      "timeFraction": 0.4997679814385151,
+      "bearing": 1,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "efb48d16848e667440a4fb208ae99237a8b6bdcbe8c6cbcd8ac7fdb719d66088",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1077-ch2",
+      "run": "set1",
+      "sourceIndex": 1077,
+      "timeFraction": 0.4997679814385151,
+      "bearing": 1,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "efb48d16848e667440a4fb208ae99237a8b6bdcbe8c6cbcd8ac7fdb719d66088",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1077-ch3",
+      "run": "set1",
+      "sourceIndex": 1077,
+      "timeFraction": 0.4997679814385151,
+      "bearing": 2,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "efb48d16848e667440a4fb208ae99237a8b6bdcbe8c6cbcd8ac7fdb719d66088",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1077-ch4",
+      "run": "set1",
+      "sourceIndex": 1077,
+      "timeFraction": 0.4997679814385151,
+      "bearing": 2,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "efb48d16848e667440a4fb208ae99237a8b6bdcbe8c6cbcd8ac7fdb719d66088",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1077-ch5",
+      "run": "set1",
+      "sourceIndex": 1077,
+      "timeFraction": 0.4997679814385151,
+      "bearing": 3,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "efb48d16848e667440a4fb208ae99237a8b6bdcbe8c6cbcd8ac7fdb719d66088",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1077-ch6",
+      "run": "set1",
+      "sourceIndex": 1077,
+      "timeFraction": 0.4997679814385151,
+      "bearing": 3,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "efb48d16848e667440a4fb208ae99237a8b6bdcbe8c6cbcd8ac7fdb719d66088",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1077-ch7",
+      "run": "set1",
+      "sourceIndex": 1077,
+      "timeFraction": 0.4997679814385151,
+      "bearing": 4,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "efb48d16848e667440a4fb208ae99237a8b6bdcbe8c6cbcd8ac7fdb719d66088",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1077-ch8",
+      "run": "set1",
+      "sourceIndex": 1077,
+      "timeFraction": 0.4997679814385151,
+      "bearing": 4,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "efb48d16848e667440a4fb208ae99237a8b6bdcbe8c6cbcd8ac7fdb719d66088",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1436-ch1",
+      "run": "set1",
+      "sourceIndex": 1436,
+      "timeFraction": 0.6663573085846868,
+      "bearing": 1,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "e8c78bf6ee5d62551635d45f1acd2bc41c7859354b812e11f80c05d3ccffdd69",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1436-ch2",
+      "run": "set1",
+      "sourceIndex": 1436,
+      "timeFraction": 0.6663573085846868,
+      "bearing": 1,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "e8c78bf6ee5d62551635d45f1acd2bc41c7859354b812e11f80c05d3ccffdd69",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "set1-1436-ch3",
+      "run": "set1",
+      "sourceIndex": 1436,
+      "timeFraction": 0.6663573085846868,
+      "bearing": 2,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "e8c78bf6ee5d62551635d45f1acd2bc41c7859354b812e11f80c05d3ccffdd69",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1436-ch4",
+      "run": "set1",
+      "sourceIndex": 1436,
+      "timeFraction": 0.6663573085846868,
+      "bearing": 2,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "e8c78bf6ee5d62551635d45f1acd2bc41c7859354b812e11f80c05d3ccffdd69",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1436-ch5",
+      "run": "set1",
+      "sourceIndex": 1436,
+      "timeFraction": 0.6663573085846868,
+      "bearing": 3,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "e8c78bf6ee5d62551635d45f1acd2bc41c7859354b812e11f80c05d3ccffdd69",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1436-ch6",
+      "run": "set1",
+      "sourceIndex": 1436,
+      "timeFraction": 0.6663573085846868,
+      "bearing": 3,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "e8c78bf6ee5d62551635d45f1acd2bc41c7859354b812e11f80c05d3ccffdd69",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1436-ch7",
+      "run": "set1",
+      "sourceIndex": 1436,
+      "timeFraction": 0.6663573085846868,
+      "bearing": 4,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "e8c78bf6ee5d62551635d45f1acd2bc41c7859354b812e11f80c05d3ccffdd69",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1436-ch8",
+      "run": "set1",
+      "sourceIndex": 1436,
+      "timeFraction": 0.6663573085846868,
+      "bearing": 4,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "e8c78bf6ee5d62551635d45f1acd2bc41c7859354b812e11f80c05d3ccffdd69",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1795-ch1",
+      "run": "set1",
+      "sourceIndex": 1795,
+      "timeFraction": 0.8329466357308585,
+      "bearing": 1,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "bcdda1b451c8445f6ddecb67c96c13ca851be44c7aa0ef28acbfa23959d21d3b",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1795-ch2",
+      "run": "set1",
+      "sourceIndex": 1795,
+      "timeFraction": 0.8329466357308585,
+      "bearing": 1,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "bcdda1b451c8445f6ddecb67c96c13ca851be44c7aa0ef28acbfa23959d21d3b",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1795-ch3",
+      "run": "set1",
+      "sourceIndex": 1795,
+      "timeFraction": 0.8329466357308585,
+      "bearing": 2,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "bcdda1b451c8445f6ddecb67c96c13ca851be44c7aa0ef28acbfa23959d21d3b",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1795-ch4",
+      "run": "set1",
+      "sourceIndex": 1795,
+      "timeFraction": 0.8329466357308585,
+      "bearing": 2,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "bcdda1b451c8445f6ddecb67c96c13ca851be44c7aa0ef28acbfa23959d21d3b",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1795-ch5",
+      "run": "set1",
+      "sourceIndex": 1795,
+      "timeFraction": 0.8329466357308585,
+      "bearing": 3,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "bcdda1b451c8445f6ddecb67c96c13ca851be44c7aa0ef28acbfa23959d21d3b",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1795-ch6",
+      "run": "set1",
+      "sourceIndex": 1795,
+      "timeFraction": 0.8329466357308585,
+      "bearing": 3,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "bcdda1b451c8445f6ddecb67c96c13ca851be44c7aa0ef28acbfa23959d21d3b",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-1795-ch7",
+      "run": "set1",
+      "sourceIndex": 1795,
+      "timeFraction": 0.8329466357308585,
+      "bearing": 4,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "bcdda1b451c8445f6ddecb67c96c13ca851be44c7aa0ef28acbfa23959d21d3b",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "set1-1795-ch8",
+      "run": "set1",
+      "sourceIndex": 1795,
+      "timeFraction": 0.8329466357308585,
+      "bearing": 4,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "bcdda1b451c8445f6ddecb67c96c13ca851be44c7aa0ef28acbfa23959d21d3b",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-2155-ch1",
+      "run": "set1",
+      "sourceIndex": 2155,
+      "timeFraction": 1,
+      "bearing": 1,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "d025a56984f34baaa3d9dd9d944e582f22d1bb0744dfe5bcc8d5ad9cc97ca0d0",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-2155-ch2",
+      "run": "set1",
+      "sourceIndex": 2155,
+      "timeFraction": 1,
+      "bearing": 1,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "d025a56984f34baaa3d9dd9d944e582f22d1bb0744dfe5bcc8d5ad9cc97ca0d0",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-2155-ch3",
+      "run": "set1",
+      "sourceIndex": 2155,
+      "timeFraction": 1,
+      "bearing": 2,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "d025a56984f34baaa3d9dd9d944e582f22d1bb0744dfe5bcc8d5ad9cc97ca0d0",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "set1-2155-ch4",
+      "run": "set1",
+      "sourceIndex": 2155,
+      "timeFraction": 1,
+      "bearing": 2,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "d025a56984f34baaa3d9dd9d944e582f22d1bb0744dfe5bcc8d5ad9cc97ca0d0",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-2155-ch5",
+      "run": "set1",
+      "sourceIndex": 2155,
+      "timeFraction": 1,
+      "bearing": 3,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": true,
+      "sourceFileSha256": "d025a56984f34baaa3d9dd9d944e582f22d1bb0744dfe5bcc8d5ad9cc97ca0d0",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-2155-ch6",
+      "run": "set1",
+      "sourceIndex": 2155,
+      "timeFraction": 1,
+      "bearing": 3,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": true,
+      "sourceFileSha256": "d025a56984f34baaa3d9dd9d944e582f22d1bb0744dfe5bcc8d5ad9cc97ca0d0",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "set1-2155-ch7",
+      "run": "set1",
+      "sourceIndex": 2155,
+      "timeFraction": 1,
+      "bearing": 4,
+      "sensorAxis": "x",
+      "documentedFailedBearingAtEndpoint": true,
+      "sourceFileSha256": "d025a56984f34baaa3d9dd9d944e582f22d1bb0744dfe5bcc8d5ad9cc97ca0d0",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set1-2155-ch8",
+      "run": "set1",
+      "sourceIndex": 2155,
+      "timeFraction": 1,
+      "bearing": 4,
+      "sensorAxis": "y",
+      "documentedFailedBearingAtEndpoint": true,
+      "sourceFileSha256": "d025a56984f34baaa3d9dd9d944e582f22d1bb0744dfe5bcc8d5ad9cc97ca0d0",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-0-ch1",
+      "run": "set2",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 1,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "bbbe024d55d76554a087bbbed3974e36505cd67da6cd066c341c6d35ecb68b7a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-0-ch2",
+      "run": "set2",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 2,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "bbbe024d55d76554a087bbbed3974e36505cd67da6cd066c341c6d35ecb68b7a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-0-ch3",
+      "run": "set2",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 3,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "bbbe024d55d76554a087bbbed3974e36505cd67da6cd066c341c6d35ecb68b7a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-0-ch4",
+      "run": "set2",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 4,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "bbbe024d55d76554a087bbbed3974e36505cd67da6cd066c341c6d35ecb68b7a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-163-ch1",
+      "run": "set2",
+      "sourceIndex": 163,
+      "timeFraction": 0.16581892166836215,
+      "bearing": 1,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "0068883760276a2d9a5e090c9eb51b045308bb9a6d54950037399df8ecf36c1e",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-163-ch2",
+      "run": "set2",
+      "sourceIndex": 163,
+      "timeFraction": 0.16581892166836215,
+      "bearing": 2,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "0068883760276a2d9a5e090c9eb51b045308bb9a6d54950037399df8ecf36c1e",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": false
+    },
+    {
+      "id": "set2-163-ch3",
+      "run": "set2",
+      "sourceIndex": 163,
+      "timeFraction": 0.16581892166836215,
+      "bearing": 3,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "0068883760276a2d9a5e090c9eb51b045308bb9a6d54950037399df8ecf36c1e",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-163-ch4",
+      "run": "set2",
+      "sourceIndex": 163,
+      "timeFraction": 0.16581892166836215,
+      "bearing": 4,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "0068883760276a2d9a5e090c9eb51b045308bb9a6d54950037399df8ecf36c1e",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-327-ch1",
+      "run": "set2",
+      "sourceIndex": 327,
+      "timeFraction": 0.3326551373346897,
+      "bearing": 1,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "284cd6f00029fa77f5b4ccca705cf68be075ba8c976766e43d4cd725cf97fc34",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-327-ch2",
+      "run": "set2",
+      "sourceIndex": 327,
+      "timeFraction": 0.3326551373346897,
+      "bearing": 2,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "284cd6f00029fa77f5b4ccca705cf68be075ba8c976766e43d4cd725cf97fc34",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-327-ch3",
+      "run": "set2",
+      "sourceIndex": 327,
+      "timeFraction": 0.3326551373346897,
+      "bearing": 3,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "284cd6f00029fa77f5b4ccca705cf68be075ba8c976766e43d4cd725cf97fc34",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-327-ch4",
+      "run": "set2",
+      "sourceIndex": 327,
+      "timeFraction": 0.3326551373346897,
+      "bearing": 4,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "284cd6f00029fa77f5b4ccca705cf68be075ba8c976766e43d4cd725cf97fc34",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-491-ch1",
+      "run": "set2",
+      "sourceIndex": 491,
+      "timeFraction": 0.49949135300101727,
+      "bearing": 1,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "c88c1f6393b4e495fd132d360aefc40c3c398d60f3aa16ce18e6e07b40112cf7",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-491-ch2",
+      "run": "set2",
+      "sourceIndex": 491,
+      "timeFraction": 0.49949135300101727,
+      "bearing": 2,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "c88c1f6393b4e495fd132d360aefc40c3c398d60f3aa16ce18e6e07b40112cf7",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-491-ch3",
+      "run": "set2",
+      "sourceIndex": 491,
+      "timeFraction": 0.49949135300101727,
+      "bearing": 3,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "c88c1f6393b4e495fd132d360aefc40c3c398d60f3aa16ce18e6e07b40112cf7",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-491-ch4",
+      "run": "set2",
+      "sourceIndex": 491,
+      "timeFraction": 0.49949135300101727,
+      "bearing": 4,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "c88c1f6393b4e495fd132d360aefc40c3c398d60f3aa16ce18e6e07b40112cf7",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-655-ch1",
+      "run": "set2",
+      "sourceIndex": 655,
+      "timeFraction": 0.6663275686673449,
+      "bearing": 1,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "5a495a9b9ad51234cda7af7a1cb8fd1f8364741fc851f4feb11500b1638d54d5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-655-ch2",
+      "run": "set2",
+      "sourceIndex": 655,
+      "timeFraction": 0.6663275686673449,
+      "bearing": 2,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "5a495a9b9ad51234cda7af7a1cb8fd1f8364741fc851f4feb11500b1638d54d5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-655-ch3",
+      "run": "set2",
+      "sourceIndex": 655,
+      "timeFraction": 0.6663275686673449,
+      "bearing": 3,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "5a495a9b9ad51234cda7af7a1cb8fd1f8364741fc851f4feb11500b1638d54d5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-655-ch4",
+      "run": "set2",
+      "sourceIndex": 655,
+      "timeFraction": 0.6663275686673449,
+      "bearing": 4,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "5a495a9b9ad51234cda7af7a1cb8fd1f8364741fc851f4feb11500b1638d54d5",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-819-ch1",
+      "run": "set2",
+      "sourceIndex": 819,
+      "timeFraction": 0.8331637843336724,
+      "bearing": 1,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "f8d8a9bb4e59a213b204a8be8bc0f44cf13bcebdf7594c8411ec59eea3058a82",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-819-ch2",
+      "run": "set2",
+      "sourceIndex": 819,
+      "timeFraction": 0.8331637843336724,
+      "bearing": 2,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "f8d8a9bb4e59a213b204a8be8bc0f44cf13bcebdf7594c8411ec59eea3058a82",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-819-ch3",
+      "run": "set2",
+      "sourceIndex": 819,
+      "timeFraction": 0.8331637843336724,
+      "bearing": 3,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "f8d8a9bb4e59a213b204a8be8bc0f44cf13bcebdf7594c8411ec59eea3058a82",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-819-ch4",
+      "run": "set2",
+      "sourceIndex": 819,
+      "timeFraction": 0.8331637843336724,
+      "bearing": 4,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "f8d8a9bb4e59a213b204a8be8bc0f44cf13bcebdf7594c8411ec59eea3058a82",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-983-ch1",
+      "run": "set2",
+      "sourceIndex": 983,
+      "timeFraction": 1,
+      "bearing": 1,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": true,
+      "sourceFileSha256": "b63bbae7f6e9e7a97b14584fe2645aae13cab7f8f6010643929f3e08c2216a24",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-983-ch2",
+      "run": "set2",
+      "sourceIndex": 983,
+      "timeFraction": 1,
+      "bearing": 2,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "b63bbae7f6e9e7a97b14584fe2645aae13cab7f8f6010643929f3e08c2216a24",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-983-ch3",
+      "run": "set2",
+      "sourceIndex": 983,
+      "timeFraction": 1,
+      "bearing": 3,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "b63bbae7f6e9e7a97b14584fe2645aae13cab7f8f6010643929f3e08c2216a24",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set2-983-ch4",
+      "run": "set2",
+      "sourceIndex": 983,
+      "timeFraction": 1,
+      "bearing": 4,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "b63bbae7f6e9e7a97b14584fe2645aae13cab7f8f6010643929f3e08c2216a24",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-0-ch1",
+      "run": "set3",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 1,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "f21b1a9ac4da9bdcff06f82ecf82599e92626e5ceab828c152691e6723f68521",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-0-ch2",
+      "run": "set3",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 2,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "f21b1a9ac4da9bdcff06f82ecf82599e92626e5ceab828c152691e6723f68521",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-0-ch3",
+      "run": "set3",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 3,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "f21b1a9ac4da9bdcff06f82ecf82599e92626e5ceab828c152691e6723f68521",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-0-ch4",
+      "run": "set3",
+      "sourceIndex": 0,
+      "timeFraction": 0,
+      "bearing": 4,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "f21b1a9ac4da9bdcff06f82ecf82599e92626e5ceab828c152691e6723f68521",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-741-ch1",
+      "run": "set3",
+      "sourceIndex": 741,
+      "timeFraction": 0.16662918821677536,
+      "bearing": 1,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "fe318b80ab61f56d5cdc1f1c10fc28fe161241455f1d8002f50de0f351777902",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-741-ch2",
+      "run": "set3",
+      "sourceIndex": 741,
+      "timeFraction": 0.16662918821677536,
+      "bearing": 2,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "fe318b80ab61f56d5cdc1f1c10fc28fe161241455f1d8002f50de0f351777902",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-741-ch3",
+      "run": "set3",
+      "sourceIndex": 741,
+      "timeFraction": 0.16662918821677536,
+      "bearing": 3,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "fe318b80ab61f56d5cdc1f1c10fc28fe161241455f1d8002f50de0f351777902",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-741-ch4",
+      "run": "set3",
+      "sourceIndex": 741,
+      "timeFraction": 0.16662918821677536,
+      "bearing": 4,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "fe318b80ab61f56d5cdc1f1c10fc28fe161241455f1d8002f50de0f351777902",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-1482-ch1",
+      "run": "set3",
+      "sourceIndex": 1482,
+      "timeFraction": 0.3332583764335507,
+      "bearing": 1,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "36f51caf50a6352474d569ca49d98396aefe40fa7e93a9ab4e03d411bac13c4a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-1482-ch2",
+      "run": "set3",
+      "sourceIndex": 1482,
+      "timeFraction": 0.3332583764335507,
+      "bearing": 2,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "36f51caf50a6352474d569ca49d98396aefe40fa7e93a9ab4e03d411bac13c4a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-1482-ch3",
+      "run": "set3",
+      "sourceIndex": 1482,
+      "timeFraction": 0.3332583764335507,
+      "bearing": 3,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "36f51caf50a6352474d569ca49d98396aefe40fa7e93a9ab4e03d411bac13c4a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-1482-ch4",
+      "run": "set3",
+      "sourceIndex": 1482,
+      "timeFraction": 0.3332583764335507,
+      "bearing": 4,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "36f51caf50a6352474d569ca49d98396aefe40fa7e93a9ab4e03d411bac13c4a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-2223-ch1",
+      "run": "set3",
+      "sourceIndex": 2223,
+      "timeFraction": 0.4998875646503261,
+      "bearing": 1,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "4026d35069dceda07500262ad0ded317d02d8ba31abcc6e765814fb89902e954",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-2223-ch2",
+      "run": "set3",
+      "sourceIndex": 2223,
+      "timeFraction": 0.4998875646503261,
+      "bearing": 2,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "4026d35069dceda07500262ad0ded317d02d8ba31abcc6e765814fb89902e954",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-2223-ch3",
+      "run": "set3",
+      "sourceIndex": 2223,
+      "timeFraction": 0.4998875646503261,
+      "bearing": 3,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "4026d35069dceda07500262ad0ded317d02d8ba31abcc6e765814fb89902e954",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-2223-ch4",
+      "run": "set3",
+      "sourceIndex": 2223,
+      "timeFraction": 0.4998875646503261,
+      "bearing": 4,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "4026d35069dceda07500262ad0ded317d02d8ba31abcc6e765814fb89902e954",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-2964-ch1",
+      "run": "set3",
+      "sourceIndex": 2964,
+      "timeFraction": 0.6665167528671014,
+      "bearing": 1,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "4b62a64760d8ce2ee362a1741ffe974f93f16b0bf30a692ad0250e0be144e3bd",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-2964-ch2",
+      "run": "set3",
+      "sourceIndex": 2964,
+      "timeFraction": 0.6665167528671014,
+      "bearing": 2,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "4b62a64760d8ce2ee362a1741ffe974f93f16b0bf30a692ad0250e0be144e3bd",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-2964-ch3",
+      "run": "set3",
+      "sourceIndex": 2964,
+      "timeFraction": 0.6665167528671014,
+      "bearing": 3,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "4b62a64760d8ce2ee362a1741ffe974f93f16b0bf30a692ad0250e0be144e3bd",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-2964-ch4",
+      "run": "set3",
+      "sourceIndex": 2964,
+      "timeFraction": 0.6665167528671014,
+      "bearing": 4,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "4b62a64760d8ce2ee362a1741ffe974f93f16b0bf30a692ad0250e0be144e3bd",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-3705-ch1",
+      "run": "set3",
+      "sourceIndex": 3705,
+      "timeFraction": 0.8331459410838767,
+      "bearing": 1,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "acbb3b28fc2a25aa243812e517ecde3180bd32a025fd6f085ea00152d5baf00a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-3705-ch2",
+      "run": "set3",
+      "sourceIndex": 3705,
+      "timeFraction": 0.8331459410838767,
+      "bearing": 2,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "acbb3b28fc2a25aa243812e517ecde3180bd32a025fd6f085ea00152d5baf00a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-3705-ch3",
+      "run": "set3",
+      "sourceIndex": 3705,
+      "timeFraction": 0.8331459410838767,
+      "bearing": 3,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "acbb3b28fc2a25aa243812e517ecde3180bd32a025fd6f085ea00152d5baf00a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-3705-ch4",
+      "run": "set3",
+      "sourceIndex": 3705,
+      "timeFraction": 0.8331459410838767,
+      "bearing": 4,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "acbb3b28fc2a25aa243812e517ecde3180bd32a025fd6f085ea00152d5baf00a",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-4447-ch1",
+      "run": "set3",
+      "sourceIndex": 4447,
+      "timeFraction": 1,
+      "bearing": 1,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "9f13458003f1badcccbdd2f1ea4613042f7aae73b03947b1da92cdfce5d9efe8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-4447-ch2",
+      "run": "set3",
+      "sourceIndex": 4447,
+      "timeFraction": 1,
+      "bearing": 2,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "9f13458003f1badcccbdd2f1ea4613042f7aae73b03947b1da92cdfce5d9efe8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-4447-ch3",
+      "run": "set3",
+      "sourceIndex": 4447,
+      "timeFraction": 1,
+      "bearing": 3,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": true,
+      "sourceFileSha256": "9f13458003f1badcccbdd2f1ea4613042f7aae73b03947b1da92cdfce5d9efe8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    },
+    {
+      "id": "set3-4447-ch4",
+      "run": "set3",
+      "sourceIndex": 4447,
+      "timeFraction": 1,
+      "bearing": 4,
+      "sensorAxis": "single",
+      "documentedFailedBearingAtEndpoint": false,
+      "sourceFileSha256": "9f13458003f1badcccbdd2f1ea4613042f7aae73b03947b1da92cdfce5d9efe8",
+      "status": "review_required",
+      "reasons": [
+        "outside_operating_envelope",
+        "outside_training_envelope"
+      ],
+      "candidateInsideSupportedScope": "review_required",
+      "engineAgreement": true,
+      "conditionRepresentationAgreement": true
+    }
+  ],
+  "summary": {
+    "experiments": 3,
+    "bearingInstallations": 12,
+    "sensorTrajectories": 16,
+    "selectedSnapshots": 21,
+    "sensorCases": 112,
+    "documentedFailedBearingsAtEndpoints": 4,
+    "documentedFailedBearingEndpointChannels": 6,
+    "endpointFailureChannelsReviewRequired": 6,
+    "automaticConclusions": 0,
+    "abstentionRate": 1,
+    "broadEngineAgreement": 1,
+    "broadEngineDisagreements": 0,
+    "uncontainedEngineDisagreements": 0
+  },
+  "limitations": [
+    "The NASA/IMS experiments are accelerated laboratory run-to-failure histories, not a prospective industrial field pilot.",
+    "RotorNote was not trained on IMS and all cases are outside its fitted RPM/training envelope; this receipt proves abstention behavior only.",
+    "Seven predeclared timestamps per experiment test early, intermediate, and documented endpoint behavior but do not estimate natural-fault sensitivity or warning lead time."
+  ]
+}

@@ -1,4 +1,4 @@
-name: External CC BY boundary probe
+name: External physical boundary probe
 
 on:
   workflow_dispatch:
@@ -10,6 +10,8 @@ on:
       - "scripts/evaluate-axial-boundary.js"
       - "scripts/prepare-zhenjiang-boundary.py"
       - "scripts/evaluate-zhenjiang-boundary.js"
+      - "scripts/prepare-ims-boundary.py"
+      - "scripts/evaluate-ims-boundary.js"
       - "field/open-data-sources.json"
       - ".github/workflows/external-boundary.yml"
 
@@ -19,7 +21,7 @@ permissions:
 jobs:
   boundary:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
@@ -33,18 +35,23 @@ jobs:
           cache-dependency-path: requirements-field.txt
       - run: npm ci
       - run: pip install -r requirements-field.txt
+      - name: Install archive reader for NASA IMS provenance
+        run: sudo apt-get update && sudo apt-get install -y p7zip-full
       - name: Download official CC BY archive
         run: |
           mkdir -p .field-work/open-real
           curl --fail --location --retry 3 --output .field-work/open-real/axial-bearing-v2.zip https://data.mendeley.com/public-api/zip/chwhh9n3bf/download/2
           curl --fail --location --retry 3 --output .field-work/open-real/zhenjiang-v1.zip https://data.mendeley.com/public-api/zip/xfj9t7cprb/download/1
+          curl --fail --location --retry 3 --output .field-work/open-real/ims-bearing.zip 'https://phm-datasets.s3.amazonaws.com/NASA/4.+Bearings.zip'
       - run: npm run build:kernel
       - run: npm run build:model
       - run: npm run build:anomaly
       - run: npm run validate:field
+      - run: npm run validate:natural
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: rotornote-external-boundary-evidence
           path: |
             field/results/axial-bearing-boundary.json
             field/results/zhenjiang-bearing-boundary.json
+            field/results/ims-natural-failure-boundary.json

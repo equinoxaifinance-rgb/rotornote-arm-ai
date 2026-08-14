@@ -11,8 +11,8 @@ const required = [
   "package.json", "package-lock.json", "Dockerfile", ".dockerignore", "compose.yaml", ".github/workflows/native-arm64.yml",
   ".github/workflows/external-boundary.yml", ".github/workflows/independent-supply-chain.yml", "requirements-field.txt", "native/arm-dotprod-bench.c", "ARM-INT8-KIT.md", "src/dense-compiler.js", "scripts/compile-dense-model.js", "examples/dense-compile-input.json",
   "scripts/prepare-open-training.py", "scripts/build-open-features.js", "scripts/train-real-crossval.py",
-  "scripts/prepare-axial-boundary.py", "scripts/evaluate-axial-boundary.js", "scripts/prepare-zhenjiang-boundary.py", "scripts/evaluate-zhenjiang-boundary.js", "field/open-data-sources.json",
-  "field/results/open-grouped-cross-validation.json", "field/results/axial-bearing-boundary.json", "field/results/zhenjiang-bearing-boundary.json",
+  "scripts/prepare-axial-boundary.py", "scripts/evaluate-axial-boundary.js", "scripts/prepare-zhenjiang-boundary.py", "scripts/evaluate-zhenjiang-boundary.js", "scripts/prepare-ims-boundary.py", "scripts/evaluate-ims-boundary.js", "field/open-data-sources.json",
+  "field/results/open-grouped-cross-validation.json", "field/results/axial-bearing-boundary.json", "field/results/zhenjiang-bearing-boundary.json", "field/results/ims-natural-failure-boundary.json",
   "field/training/mechanical-manifest.json", "field/training/mechanical-features.f32",
   "field/training/mechanical-labels.u8", "field/training/mechanical-groups.u8", "field/training/linear-export.json",
   "scripts/prepare-upatras-features.mjs", "scripts/prepare-upatras-demo.mjs", "scripts/train-upatras-anomaly.py",
@@ -93,6 +93,17 @@ assert.equal(secondBoundary.summary.rpmChallenges, 245);
 assert.equal(secondBoundary.summary.automaticConclusions, 0);
 assert.equal(secondBoundary.summary.broadEngineDisagreements, 0);
 assert.equal(secondBoundary.summary.uncontainedEngineDisagreements, 0);
+const naturalBoundary = JSON.parse(await readFile(new URL("../field/results/ims-natural-failure-boundary.json", import.meta.url), "utf8"));
+assert.equal(naturalBoundary.summary.experiments, 3);
+assert.equal(naturalBoundary.summary.bearingInstallations, 12);
+assert.equal(naturalBoundary.summary.sensorTrajectories, 16);
+assert.equal(naturalBoundary.summary.sensorCases, 112);
+assert.equal(naturalBoundary.summary.documentedFailedBearingsAtEndpoints, 4);
+assert.equal(naturalBoundary.summary.documentedFailedBearingEndpointChannels, 6);
+assert.equal(naturalBoundary.summary.endpointFailureChannelsReviewRequired, 6);
+assert.equal(naturalBoundary.summary.automaticConclusions, 0);
+assert.equal(naturalBoundary.summary.broadEngineDisagreements, 0);
+assert.equal(naturalBoundary.summary.uncontainedEngineDisagreements, 0);
 const grouped = JSON.parse(await readFile(new URL("../field/results/open-grouped-cross-validation.json", import.meta.url), "utf8"));
 assert.equal(grouped.physicalTests.length, 20);
 assert.ok(grouped.aggregate.fourChannelRecording.balancedAccuracy >= 0.93);
